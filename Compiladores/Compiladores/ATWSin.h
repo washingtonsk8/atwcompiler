@@ -1,5 +1,5 @@
-#ifndef ATWSIM_H
-#define ATWSIM_H
+#ifndef ATWSin_H
+#define ATWSin_H
 
 #include "ProgramComponent.h"
 #include "ATWLex.h"
@@ -41,10 +41,10 @@ typedef struct InfoBundle{
 	}
 }InfoBundle;
 
-class ATWSim : public ProgramComponent, public IInitializable{
+class ATWSin : public ProgramComponent, public IInitializable{
 public:
-	ATWSim(void);
-	~ATWSim(void);
+	ATWSin(void);
+	~ATWSin(void);
 
 	void initialize(int _Argc, void** _Argv);
 	void Run(int _Flag, NORMAL_BUNDLE* _nBundleP);

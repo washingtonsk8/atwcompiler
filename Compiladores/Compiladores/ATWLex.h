@@ -11,7 +11,7 @@
 #include <queue>
 
 class ATWLex;
-class ATWSim;
+class ATWSin;
 
 class ATWLex : public ProgramComponent, public IInitializable
 {

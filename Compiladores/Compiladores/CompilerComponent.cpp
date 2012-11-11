@@ -26,7 +26,7 @@ void CompilerComponent::initialize(int _Argc, void** _Argv){
 		_eManager->callHandlers(this->getGroupID(), INSUFFICIENT_ARGUMENTS, NULL);
 
 	_Lex = (ATWLex*)_Argv[0];
-	_Sin = (ATWSim*)_Argv[1];
+	_Sin = (ATWSin*)_Argv[1];
 	_Sem = (ATWSem*)_Argv[2];
 	_fHelper = 0x0;//(FileHelper*)_Argv[2];//NAO UTILIZADO NESTA VERSAO
 
@@ -111,7 +111,7 @@ DWORD WINAPI runLex(LPVOID lpParam){
 DWORD WINAPI runSin(LPVOID lpParam){
 	/*PARAMETER LIST ARGUMENTS CROSS PASSING*/
 	NORMAL_BUNDLE* _nBundle = (NORMAL_BUNDLE*)lpParam;
-	ATWSim* _Sin = _nBundle->_Sin;
+	ATWSin* _Sin = _nBundle->_Sin;
 
 	/*RUNING SINTATIC ANALYSER WITH PARALLEL FLAG AND NEW ARGUMENTS LIST*/
 	_Sin->Run(PARALLEL, _nBundle);
