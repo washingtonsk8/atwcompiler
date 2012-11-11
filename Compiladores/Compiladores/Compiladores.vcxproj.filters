@@ -1,0 +1,189 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Arquivos de Origem">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Arquivos de Cabeçalho">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Arquivos de Recurso">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Arquivos de Cabeçalho\compiler">
+      <UniqueIdentifier>{d1e9594a-93e6-45e3-b4d8-308efbea2df0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Arquivos de Cabeçalho\core">
+      <UniqueIdentifier>{d8cd1adc-776e-4724-b621-eec0e9294d0c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Arquivos de Cabeçalho\console">
+      <UniqueIdentifier>{4f8d92d3-ba56-49b0-b435-fcb07baabf2c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Arquivos de Cabeçalho\event handlers">
+      <UniqueIdentifier>{ee0626c4-344b-4437-8c5e-2a59eb2e7e55}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Arquivos de Origem\compiler">
+      <UniqueIdentifier>{5b1ffe3a-312c-435f-8a32-67aad25cad70}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Arquivos de Origem\core">
+      <UniqueIdentifier>{591bbcb9-3c79-4b9b-9c69-09a8c351e4f0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Arquivos de Origem\event handlers">
+      <UniqueIdentifier>{8f86b0ab-1fbb-4987-b6c1-811e01aa2b9c}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="ARS_PrinterHelper.h">
+      <Filter>Arquivos de Cabeçalho\console</Filter>
+    </ClInclude>
+    <ClInclude Include="ARS_ConsoleColorHandler.h">
+      <Filter>Arquivos de Cabeçalho\console</Filter>
+    </ClInclude>
+    <ClInclude Include="ATW.h">
+      <Filter>Arquivos de Cabeçalho\compiler</Filter>
+    </ClInclude>
+    <ClInclude Include="ATWLex.h">
+      <Filter>Arquivos de Cabeçalho\compiler</Filter>
+    </ClInclude>
+    <ClInclude Include="ATWSim.h">
+      <Filter>Arquivos de Cabeçalho\compiler</Filter>
+    </ClInclude>
+    <ClInclude Include="CompilerComponent.h">
+      <Filter>Arquivos de Cabeçalho\compiler</Filter>
+    </ClInclude>
+    <ClInclude Include="GeneralHashFunctions.h">
+      <Filter>Arquivos de Cabeçalho\compiler</Filter>
+    </ClInclude>
+    <ClInclude Include="SymbolTable.h">
+      <Filter>Arquivos de Cabeçalho\compiler</Filter>
+    </ClInclude>
+    <ClInclude Include="Core.h">
+      <Filter>Arquivos de Cabeçalho\core</Filter>
+    </ClInclude>
+    <ClInclude Include="EventHandler.h">
+      <Filter>Arquivos de Cabeçalho\core</Filter>
+    </ClInclude>
+    <ClInclude Include="EventsManager.h">
+      <Filter>Arquivos de Cabeçalho\core</Filter>
+    </ClInclude>
+    <ClInclude Include="FileManager.h">
+      <Filter>Arquivos de Cabeçalho\core</Filter>
+    </ClInclude>
+    <ClInclude Include="Globals.h">
+      <Filter>Arquivos de Cabeçalho\core</Filter>
+    </ClInclude>
+    <ClInclude Include="ILoadable.h">
+      <Filter>Arquivos de Cabeçalho\core</Filter>
+    </ClInclude>
+    <ClInclude Include="IDisposable.h">
+      <Filter>Arquivos de Cabeçalho\core</Filter>
+    </ClInclude>
+    <ClInclude Include="IInitializable.h">
+      <Filter>Arquivos de Cabeçalho\core</Filter>
+    </ClInclude>
+    <ClInclude Include="ProgramComponent.h">
+      <Filter>Arquivos de Cabeçalho\core</Filter>
+    </ClInclude>
+    <ClInclude Include="ERRO_DEF.h">
+      <Filter>Arquivos de Cabeçalho\core</Filter>
+    </ClInclude>
+    <ClInclude Include="ProgramEvents.h">
+      <Filter>Arquivos de Cabeçalho\event handlers</Filter>
+    </ClInclude>
+    <ClInclude Include="ATWLexEvents.h">
+      <Filter>Arquivos de Cabeçalho\event handlers</Filter>
+    </ClInclude>
+    <ClInclude Include="ATWSinEvents.h">
+      <Filter>Arquivos de Cabeçalho\event handlers</Filter>
+    </ClInclude>
+    <ClInclude Include="FileHelper.h">
+      <Filter>Arquivos de Cabeçalho\compiler</Filter>
+    </ClInclude>
+    <ClInclude Include="ThreadManager.h">
+      <Filter>Arquivos de Cabeçalho\core</Filter>
+    </ClInclude>
+    <ClInclude Include="CHBuffer.h">
+      <Filter>Arquivos de Cabeçalho\core</Filter>
+    </ClInclude>
+    <ClInclude Include="ATWSem.h">
+      <Filter>Arquivos de Cabeçalho\compiler</Filter>
+    </ClInclude>
+    <ClInclude Include="GlobalStructSite.h">
+      <Filter>Arquivos de Cabeçalho\compiler</Filter>
+    </ClInclude>
+    <ClInclude Include="globaEnumSite.h">
+      <Filter>Arquivos de Cabeçalho\compiler</Filter>
+    </ClInclude>
+    <ClInclude Include="ATWSemEvents.h">
+      <Filter>Arquivos de Cabeçalho\event handlers</Filter>
+    </ClInclude>
+    <ClInclude Include="CodeGeneratorModule.h">
+      <Filter>Arquivos de Cabeçalho\compiler</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="main.cpp">
+      <Filter>Arquivos de Origem</Filter>
+    </ClCompile>
+    <ClCompile Include="ATW.cpp">
+      <Filter>Arquivos de Origem\compiler</Filter>
+    </ClCompile>
+    <ClCompile Include="ATWlLex.cpp">
+      <Filter>Arquivos de Origem\compiler</Filter>
+    </ClCompile>
+    <ClCompile Include="ATWSim.cpp">
+      <Filter>Arquivos de Origem\compiler</Filter>
+    </ClCompile>
+    <ClCompile Include="CompilerComponent.cpp">
+      <Filter>Arquivos de Origem\compiler</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneralHashFunctions.cpp">
+      <Filter>Arquivos de Origem\compiler</Filter>
+    </ClCompile>
+    <ClCompile Include="SymbolTable.cpp">
+      <Filter>Arquivos de Origem\compiler</Filter>
+    </ClCompile>
+    <ClCompile Include="Core.cpp">
+      <Filter>Arquivos de Origem\core</Filter>
+    </ClCompile>
+    <ClCompile Include="EventHandler.cpp">
+      <Filter>Arquivos de Origem\core</Filter>
+    </ClCompile>
+    <ClCompile Include="EventsManager.cpp">
+      <Filter>Arquivos de Origem\core</Filter>
+    </ClCompile>
+    <ClCompile Include="FileManager.cpp">
+      <Filter>Arquivos de Origem\core</Filter>
+    </ClCompile>
+    <ClCompile Include="ProgramComponent.cpp">
+      <Filter>Arquivos de Origem\core</Filter>
+    </ClCompile>
+    <ClCompile Include="FileHelper.cpp">
+      <Filter>Arquivos de Origem\compiler</Filter>
+    </ClCompile>
+    <ClCompile Include="ATWLexEvents.cpp">
+      <Filter>Arquivos de Origem\event handlers</Filter>
+    </ClCompile>
+    <ClCompile Include="ATWSinEvents.cpp">
+      <Filter>Arquivos de Origem\event handlers</Filter>
+    </ClCompile>
+    <ClCompile Include="ProgramEvents.cpp">
+      <Filter>Arquivos de Origem\event handlers</Filter>
+    </ClCompile>
+    <ClCompile Include="ThreadManager.cpp">
+      <Filter>Arquivos de Origem\core</Filter>
+    </ClCompile>
+    <ClCompile Include="ATWSem.cpp">
+      <Filter>Arquivos de Origem\compiler</Filter>
+    </ClCompile>
+    <ClCompile Include="ATWSemEvents.cpp">
+      <Filter>Arquivos de Origem\event handlers</Filter>
+    </ClCompile>
+    <ClCompile Include="CodeGeneratorModule.cpp">
+      <Filter>Arquivos de Origem\compiler</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>
