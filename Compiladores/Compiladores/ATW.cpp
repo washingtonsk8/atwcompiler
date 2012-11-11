@@ -39,7 +39,7 @@ void ATW::initialize(int _Argc, void** _Argv){
 
 		CompilerComponent* _nComp = new CompilerComponent();
 		ATWLex* _Lex = new ATWLex();
-		ATWSim* _Sin = new ATWSim();
+		ATWSin* _Sin = new ATWSin();
 		ATWSem* _Sem = new ATWSem();
 		FileHelper* _fHelper = new FileHelper();
 

@@ -2,7 +2,7 @@
 #define COMPILERCOMPONENT_H
 
 #include "ATWLex.h"
-#include "ATWSim.h"
+#include "ATWSin.h"
 #include "FileHelper.h"
 #include "ProgramComponent.h"
 #include "Globals.h"
@@ -22,7 +22,7 @@ public:
 	CompilerComponent(void);
 	~CompilerComponent(void);
 
-	int create(ATWLex* _lInstance, ATWSim* _sInstance, ATWSem* _seInstance, FileHelper* _fInstance){
+	int create(ATWLex* _lInstance, ATWSin* _sInstance, ATWSem* _seInstance, FileHelper* _fInstance){
 		_Lex     = _lInstance;
 		_Sin     = _sInstance;
 		_Sem     = _seInstance;
@@ -35,13 +35,13 @@ public:
 	void run(int _Flag);
 
 	ATWLex* getLex(){return _Lex;}
-	ATWSim* getSin(){return _Sin;}
+	ATWSin* getSin(){return _Sin;}
 	ATWSem* getSem(){return _Sem;}
 	FileHelper* getfHelper(){return _fHelper;}
 
 private:
 	ATWLex* _Lex;
-	ATWSim* _Sin;
+	ATWSin* _Sin;
 	ATWSem* _Sem;
 	FileHelper* _fHelper;
 

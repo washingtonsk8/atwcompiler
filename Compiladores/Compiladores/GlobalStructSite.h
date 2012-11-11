@@ -3,7 +3,7 @@
 #include "CHBuffer.h"
 #include "globaEnumSite.h"
 
-class ATWSim;
+class ATWSin;
 class ATWLex;
 
 /*USED BY COMPILERCOMPONENT*/
@@ -32,17 +32,17 @@ typedef struct{
 }ATW_BUFF_ELEMENT;
 /*USED BY COMPILERCOMPONENT*/
 
-/*USED BY ATWLEX N' ATWSIM FOR PARALLEL OPERATIONS*/
+/*USED BY ATWLEX N' ATWSin FOR PARALLEL OPERATIONS*/
 typedef struct{
 	ATWLex* _Lex;
-	ATWSim* _Sin;
+	ATWSin* _Sin;
 	CHBuffer<ATW_BUFF_ELEMENT>* _tBuffer;
 
-	void create(CHBuffer<ATW_BUFF_ELEMENT>* _tBufferP, ATWLex* _LexP, ATWSim* _SinP){
+	void create(CHBuffer<ATW_BUFF_ELEMENT>* _tBufferP, ATWLex* _LexP, ATWSin* _SinP){
 		_Lex = _LexP;
 		_Sin = _SinP;
 		_tBuffer = _tBufferP;
 	}
 }NORMAL_BUNDLE;
-/*USED BY ATWLEX N' ATWSIM FOR PARALLEL OPERATIONS*/
+/*USED BY ATWLEX N' ATWSin FOR PARALLEL OPERATIONS*/
 #endif

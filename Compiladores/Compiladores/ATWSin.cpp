@@ -1,4 +1,4 @@
-#include "ATWSim.h"
+#include "ATWSin.h"
 #include "Globals.h"
 #include "FileHelper.h"
 #include "ERRO_DEF.h"
@@ -7,13 +7,13 @@
 //---------------------------------------------------------------------------------------------------------------------
 using namespace ARS_PRINTER_HELPER;
 //---------------------------------------------------------------------------------------------------------------------
-ATWSim::ATWSim(void){
+ATWSin::ATWSin(void){
 }
 //---------------------------------------------------------------------------------------------------------------------
-ATWSim::~ATWSim(void){
+ATWSin::~ATWSin(void){
 }
 //---------------------------------------------------------------------------------------------------------------------
-void ATWSim::CT(Token _Token){
+void ATWSin::CT(Token _Token){
 	if(_LexAnalyzer==NULL)
 		_eManager->callHandlers(this->getGroupID(), NULL_ARGUMENT, NULL);
 
@@ -43,7 +43,7 @@ void ATWSim::CT(Token _Token){
 		_CurrentToken = _LexAnalyzer->getToken();
 }
 //---------------------------------------------------------------------------------------------------------------------
-void ATWSim::initialize(int _Argc, void** _Argv){
+void ATWSin::initialize(int _Argc, void** _Argv){
 	if(_Argc < 3)
 		_eManager->callHandlers(this->getGroupID(), INSUFFICIENT_ARGUMENTS, NULL);
 
@@ -52,7 +52,7 @@ void ATWSim::initialize(int _Argc, void** _Argv){
 	_Sem = (ATWSem*)_Argv[1];
 }
 //---------------------------------------------------------------------------------------------------------------------
-void ATWSim::Run(int _Flag, NORMAL_BUNDLE* _nBundleP){
+void ATWSin::Run(int _Flag, NORMAL_BUNDLE* _nBundleP){
 	_Parallel = _Flag;
 
 	if(_LexAnalyzer==NULL)
@@ -78,7 +78,7 @@ void ATWSim::Run(int _Flag, NORMAL_BUNDLE* _nBundleP){
 	}
 }
 //---------------------------------------------------------------------------------------------------------------------
-void ATWSim::Start(){
+void ATWSin::Start(){
 	while(_CurrentToken._Token == DPONTO || _CurrentToken._Token ==  DCOR || _CurrentToken._Token ==  DLUZ ||
 		_CurrentToken._Token ==  DFACE || _CurrentToken._Token ==  DOBJETO || _CurrentToken._Token ==  DVAR ||
 		_CurrentToken._Token ==  DCONST || _CurrentToken._Token == EXP_END ||  _CurrentToken._Token == INICIO ||
@@ -132,7 +132,7 @@ void ATWSim::Start(){
 	}//end while
 }
 //---------------------------------------------------------------------------------------------------------------------
-void ATWSim::DPontoD(){
+void ATWSin::DPontoD(){
 	do{
 		CT(ID);
 
@@ -176,7 +176,7 @@ void ATWSim::DPontoD(){
 	}while(_CurrentToken._Token == ID);
 }
 //---------------------------------------------------------------------------------------------------------------------
-void ATWSim::DLuzD(){
+void ATWSin::DLuzD(){
 	do{
 		CT(ID);
 
@@ -220,7 +220,7 @@ void ATWSim::DLuzD(){
 	}while(_CurrentToken._Token == ID);
 }
 //---------------------------------------------------------------------------------------------------------------------
-void ATWSim::DColorD(){
+void ATWSin::DColorD(){
 	do{
 		CT(ID);
 		
@@ -271,7 +271,7 @@ void ATWSim::DColorD(){
 	}while(_CurrentToken._Token == ID);
 }
 //---------------------------------------------------------------------------------------------------------------------
-void ATWSim::DFaceD(){
+void ATWSin::DFaceD(){
 	do{
 		CT(ID);
 
@@ -312,7 +312,7 @@ void ATWSim::DFaceD(){
 	}while(_CurrentToken._Token == ID);
 }
 //---------------------------------------------------------------------------------------------------------------------
-void ATWSim::ObjD(){
+void ATWSin::ObjD(){
 	do{
 		CT(ID);
 
@@ -335,7 +335,7 @@ void ATWSim::ObjD(){
 	}while(_CurrentToken._Token == ID);
 }
 //---------------------------------------------------------------------------------------------------------------------
-void ATWSim::DVarD(){
+void ATWSin::DVarD(){
 	while(_CurrentToken._Token == INTEIRO || _CurrentToken._Token == REAL){
 		Type _tipo = NULO; //(10) - AZUL
 
@@ -364,7 +364,7 @@ void ATWSim::DVarD(){
 	}
 }
 //---------------------------------------------------------------------------------------------------------------------
-void ATWSim::DConstD(){
+void ATWSin::DConstD(){
 	while(_CurrentToken._Token == ID){
 		CT(ID);
 
@@ -388,7 +388,7 @@ void ATWSim::DConstD(){
 	}
 }
 //---------------------------------------------------------------------------------------------------------------------
-void ATWSim::Block(){
+void ATWSin::Block(){
 	if(_CurrentToken._Token == INICIO){
 		CT(INICIO);
 		CT(EXP_END);
@@ -405,7 +405,7 @@ void ATWSim::Block(){
 	}
 }
 //---------------------------------------------------------------------------------------------------------------------
-void ATWSim::Command(){
+void ATWSin::Command(){
 	InfoBundle _auxInfo;//PARA VERIFICAÇÃO DO QUE SEJA NECESSÁRIO
 	Type _vType[2] = {TIPO_INTEIRO, TIPO_REAL};//(32)(34) - AZUL
 	ATW_BUFF_ELEMENT _idAux;//(32) - AZUL
@@ -552,7 +552,7 @@ void ATWSim::Command(){
 	}
 }
 //---------------------------------------------------------------------------------------------------------------------
-void ATWSim::Exp(InfoBundle* _inf){
+void ATWSin::Exp(InfoBundle* _inf){
 	EXPS(_inf);//(29) - AZUL
 
 	if(_CurrentToken._Token == LT || _CurrentToken._Token == GT || _CurrentToken._Token == LE || 
@@ -570,7 +570,7 @@ void ATWSim::Exp(InfoBundle* _inf){
 	}
 }
 //---------------------------------------------------------------------------------------------------------------------
-void ATWSim::R(){
+void ATWSin::R(){
 	switch(_CurrentToken._Token){
 	case LT:
 		CT(LT);
@@ -593,7 +593,7 @@ void ATWSim::R(){
 	}
 }
 //---------------------------------------------------------------------------------------------------------------------
-void ATWSim::EXPS(InfoBundle* _inf){
+void ATWSin::EXPS(InfoBundle* _inf){
 	Token _tOp = PLUS;
 
 	if(_CurrentToken._Token == PLUS){
@@ -655,7 +655,7 @@ void ATWSim::EXPS(InfoBundle* _inf){
 	}//END WHILE
 }
 //---------------------------------------------------------------------------------------------------------------------
-void ATWSim::T(InfoBundle* _inf){	
+void ATWSin::T(InfoBundle* _inf){	
 	 F(_inf);//(18) - AZUL
 
 	while(_CurrentToken._Token == TIMES || _CurrentToken._Token == OVER || _CurrentToken._Token == E){
@@ -721,7 +721,7 @@ void ATWSim::T(InfoBundle* _inf){
 	}
 }
 //---------------------------------------------------------------------------------------------------------------------
-void ATWSim::F(InfoBundle* _inf){
+void ATWSin::F(InfoBundle* _inf){
 	Class _class[2] = {CLASSE_CONST, CLASSE_VAR};//(9) - VERDE
 	ATW_BUFF_ELEMENT _tAux = _PreviousToken;//(16) - AZUL
 

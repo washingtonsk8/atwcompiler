@@ -82,7 +82,7 @@
     <ClInclude Include="ATWLexEvents.h" />
     <ClInclude Include="ATWSem.h" />
     <ClInclude Include="ATWSemEvents.h" />
-    <ClInclude Include="ATWSim.h" />
+    <ClInclude Include="ATWSin.h" />
     <ClInclude Include="ATWSinEvents.h" />
     <ClInclude Include="CHBuffer.h" />
     <ClInclude Include="CodeGeneratorModule.h" />
@@ -111,7 +111,7 @@
     <ClCompile Include="ATWlLex.cpp" />
     <ClCompile Include="ATWSem.cpp" />
     <ClCompile Include="ATWSemEvents.cpp" />
-    <ClCompile Include="ATWSim.cpp" />
+    <ClCompile Include="ATWSin.cpp" />
     <ClCompile Include="ATWSinEvents.cpp" />
     <ClCompile Include="CodeGeneratorModule.cpp" />
     <ClCompile Include="ThreadManager.cpp" />
