@@ -228,7 +228,7 @@ Type SymbolTable::getType(string _Lexeme){
 	}//end if
 
 	_eManager->callHandlers(this->getGroupID(), NULL_ARGUMENT, NULL);
-	return NULO;
+	return TIPO_VAZIO;
 }
 //---------------------------------------------------------------------------------------------------------------------
 Class SymbolTable::getClass(string _Lexeme){

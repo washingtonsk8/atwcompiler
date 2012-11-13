@@ -84,6 +84,8 @@
     <ClInclude Include="ATWSemEvents.h" />
     <ClInclude Include="ATWSin.h" />
     <ClInclude Include="ATWSinEvents.h" />
+    <ClInclude Include="ATW_LabelTable.h" />
+    <ClInclude Include="ATW_MemoryManager.h" />
     <ClInclude Include="CHBuffer.h" />
     <ClInclude Include="CodeGeneratorModule.h" />
     <ClInclude Include="globaEnumSite.h" />

@@ -22,7 +22,7 @@ void ATWSinEvents::treatEvent(int _Args, void* _Argv[]){
 		exit(UNEXPECTED_TOKEN);
 		break;
 	case NULL_ARGUMENT:
-		//printf("ERRO FATAL: argumento nulo no codigo fonte na classe ATWsin.\n");
+		//printf("ERRO FATAL: argumento TIPO_VAZIO no codigo fonte na classe ATWsin.\n");
 		//system("pause");
 		//exit(NULL_ARGUMENT);
 		break;

@@ -164,6 +164,10 @@ public:
 		return false;
 	}
 	//-----------------------------------------------------------------------------------------
+	void updateIDAddress(ATW_BUFF_ELEMENT _Token, unsigned int _Address){
+		_SymbolTable->setEnd(_Token._Lex, _Address);
+	}
+	//-----------------------------------------------------------------------------------------
 private:
 	SymbolTable* _SymbolTable;
 };

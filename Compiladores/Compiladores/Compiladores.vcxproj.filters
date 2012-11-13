@@ -123,6 +123,12 @@
     <ClInclude Include="ATWSin.h">
       <Filter>Arquivos de Cabeçalho\compiler</Filter>
     </ClInclude>
+    <ClInclude Include="ATW_MemoryManager.h">
+      <Filter>Arquivos de Cabeçalho</Filter>
+    </ClInclude>
+    <ClInclude Include="ATW_LabelTable.h">
+      <Filter>Arquivos de Cabeçalho</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
