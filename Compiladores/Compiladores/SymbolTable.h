@@ -30,8 +30,7 @@ typedef enum tipo{
 	TIPO_INTEIRO,
 	TIPO_REAL,
 	TIPO_LOGICO,
-	TIPO_NUMERICO,
-	NULO
+	TIPO_VAZIO
 }Type;
 //---------------------------------------------------------------------------------------------------------------------
 typedef enum classe{
@@ -63,7 +62,7 @@ typedef struct TableElement{
 		const char* _LexemeP,
 		unsigned int _EndP = 0x0,
 		Class classeP = CLASSE_VAZIO,
-		Type tipoP = NULO){
+		Type tipoP = TIPO_VAZIO){
 			_TokenID = _TokenIDP;
 			copyStr(_LexemeP);
 			_End = _EndP;

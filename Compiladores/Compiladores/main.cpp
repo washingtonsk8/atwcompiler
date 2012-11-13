@@ -229,10 +229,10 @@ int main (int argc, char* argv[], char* envp[]){
 	//FILE_WRITING_T();	
 
 	/*CODE GENERATOR TEST*/
-	CODE_GENERATOR_T();
+	//CODE_GENERATOR_T();
 
 	/*Compiler Running*/
-	//_RunCompiler(argc, argv, envp);
+	_RunCompiler(argc, argv, envp);
 
 	system("pause");
 	return 0;

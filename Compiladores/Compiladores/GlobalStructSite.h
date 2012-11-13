@@ -11,9 +11,8 @@ typedef struct{
 	int _LINE;
 	Token _Token;
 	Type _Tipo;
-	int _valI;
-	float _valF;
 	char _Lex[25];
+	unsigned int _End;
 
 	void copyStr(const char* _Value){
 		memset(_Lex, 0, 25);
@@ -21,13 +20,12 @@ typedef struct{
 		strncpy_s(_Lex, _Value, cpySize);
 	}
 
-	void Build(int _LineP, Token _TokenP, const char* _LexP, Type _TipoP = NULO, int _valIP = 0, float _valFP = 0.0f){
+	void Build(int _LineP, Token _TokenP, const char* _LexP, Type _TipoP = TIPO_VAZIO, unsigned int _Address = 0){
 		_LINE = _LineP;
 		_Token = _TokenP;
 		copyStr(_LexP);
 		_Tipo = _TipoP;
-		_valI = _valIP;
-		_valF = _valFP;
+		_End = _Address;
 	}
 }ATW_BUFF_ELEMENT;
 /*USED BY COMPILERCOMPONENT*/

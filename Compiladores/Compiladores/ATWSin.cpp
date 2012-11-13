@@ -136,7 +136,7 @@ void ATWSin::DPontoD(){
 	do{
 		CT(ID);
 
-		_Sem->unicidadeAlreadyDeclared(_PreviousToken, CLASSE_PONTO);//(2) - VERMELHO
+		_Sem->unicidadeAlreadyDeclared(_PreviousToken, CLASSE_PONTO);//(2) - SEMÂNTICO
 
 		CT(EQ);
 		CT(LPAREN);
@@ -149,6 +149,8 @@ void ATWSin::DPontoD(){
 		}
 
 		CT(CONSTANT);
+
+		//_Sem->updateIDAddress(
 		
 		CT(COMMA);
 
@@ -337,7 +339,7 @@ void ATWSin::ObjD(){
 //---------------------------------------------------------------------------------------------------------------------
 void ATWSin::DVarD(){
 	while(_CurrentToken._Token == INTEIRO || _CurrentToken._Token == REAL){
-		Type _tipo = NULO; //(10) - AZUL
+		Type _tipo = TIPO_VAZIO; //(10) - AZUL
 
 		if(_CurrentToken._Token == INTEIRO){
 			CT(INTEIRO);

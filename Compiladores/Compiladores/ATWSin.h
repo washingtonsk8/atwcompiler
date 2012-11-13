@@ -32,7 +32,7 @@ typedef struct InfoBundle{
 		const char* _LexemeP,
 		unsigned int _EndP = 0x0,
 		Class classeP = CLASSE_VAZIO,
-		Type tipoP = NULO){
+		Type tipoP = TIPO_VAZIO){
 			_TokenID = _TokenIDP;
 			copyStr(_LexemeP);
 			_End = _EndP;
@@ -51,7 +51,7 @@ public:
 
 private:
 	ATWLex*     _LexAnalyzer;
-	ATWSem*     _Sem;
+	ATWSem*     _Sem;	
 
 	//FileHelper* _fHelper;
 	ATW_BUFF_ELEMENT _CurrentToken, _PreviousToken, _tToken;
