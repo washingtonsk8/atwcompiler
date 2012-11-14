@@ -4,6 +4,12 @@ CodeGeneratorModule::CodeGeneratorModule(void){}
 //---------------------------------------------------------------------------------------------------------------------
 CodeGeneratorModule::~CodeGeneratorModule(void){}
 //---------------------------------------------------------------------------------------------------------------------
+void CodeGeneratorModule::pushInstruction(const char* _Instruction, const char* A, const char* B,  const char* _BaseAddress){
+	char _buffWritter[255];
+	sprintf_s(_buffWritter, "%s %s %s %s", _Instruction, A, B, _BaseAddress);
+	insertCodeToWrite(_buffWritter);
+}
+//---------------------------------------------------------------------------------------------------------------------
 void CodeGeneratorModule::initialize(const char* _icFile){
 	this->setGroupID(COMPILER_GROUP);
 	clearWritingBuffer();
@@ -94,3 +100,4 @@ void CodeGeneratorModule::flush(){
 	_lIIBF = 0;
 	_hIIBF = 0;
 }
+//----------------------------------------------------------------------------------------------------------------------

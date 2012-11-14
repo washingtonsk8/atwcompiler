@@ -1,3 +1,4 @@
+#include "ATW_MemoryManager.h"
 #include "ATWSin.h"
 #include "Globals.h"
 #include "FileHelper.h"
@@ -6,11 +7,19 @@
 #include <Windows.h>
 //---------------------------------------------------------------------------------------------------------------------
 using namespace ARS_PRINTER_HELPER;
+using namespace MemoryManager;
 //---------------------------------------------------------------------------------------------------------------------
 ATWSin::ATWSin(void){
 }
 //---------------------------------------------------------------------------------------------------------------------
 ATWSin::~ATWSin(void){
+}
+//---------------------------------------------------------------------------------------------------------------------
+const char* ATWSin::ATWgetCStr(int _val){
+	char _conversion[255];
+	_itoa_s(_val, _conversion, 10);
+	string _return  = _conversion;
+	return _return.c_str();
 }
 //---------------------------------------------------------------------------------------------------------------------
 void ATWSin::CT(Token _Token){
@@ -50,6 +59,7 @@ void ATWSin::initialize(int _Argc, void** _Argv){
 	this->setGroupID(COMPILER_GROUP);
 	_LexAnalyzer = (ATWLex*)_Argv[0];
 	_Sem = (ATWSem*)_Argv[1];
+	_cg = new CodeGeneratorModule();
 }
 //---------------------------------------------------------------------------------------------------------------------
 void ATWSin::Run(int _Flag, NORMAL_BUNDLE* _nBundleP){
@@ -135,6 +145,7 @@ void ATWSin::Start(){
 void ATWSin::DPontoD(){
 	do{
 		CT(ID);
+		string _idLex = _PreviousToken._Lex;
 
 		_Sem->unicidadeAlreadyDeclared(_PreviousToken, CLASSE_PONTO);//(2) - SEMÂNTICO
 
@@ -150,8 +161,11 @@ void ATWSin::DPontoD(){
 
 		CT(CONSTANT);
 
-		//_Sem->updateIDAddress(
-		
+		_cg->pushInstruction("STIF",
+		_PreviousToken._Lex, 
+		_Sem->updateIDAddress(_idLex.c_str(), _memory->ATWMalloc(TIPO_REAL)), 
+		"(DS)");
+
 		CT(COMMA);
 
 		if(_CurrentToken._Token == PLUS){
@@ -162,6 +176,9 @@ void ATWSin::DPontoD(){
 		}
 
 		CT(CONSTANT);
+		
+		_cg->pushInstruction(NEG,"difjd");
+		
 		CT(COMMA);
 
 		if(_CurrentToken._Token == PLUS){

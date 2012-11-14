@@ -1,6 +1,6 @@
 #ifndef ATW_SEM_H
 #define ATW_SEM_H
-
+//---------------------------------------------------------------------------------------------
 #include "ProgramComponent.h"
 #include "IInitializable.h"
 #include "SymbolTable.h"
@@ -164,8 +164,12 @@ public:
 		return false;
 	}
 	//-----------------------------------------------------------------------------------------
-	void updateIDAddress(ATW_BUFF_ELEMENT _Token, unsigned int _Address){
-		_SymbolTable->setEnd(_Token._Lex, _Address);
+	const char* updateIDAddress(const char* _lex, unsigned int _Address){
+		_SymbolTable->setEnd(_lex, _Address);
+		char _buffBAA[255];
+		_itoa_s(_Address, _buffBAA, 10);
+		string _return = _buffBAA;
+		return _return.c_str();
 	}
 	//-----------------------------------------------------------------------------------------
 private:

@@ -191,5 +191,8 @@
     <ClCompile Include="ATWSin.cpp">
       <Filter>Arquivos de Origem\compiler</Filter>
     </ClCompile>
+    <ClCompile Include="ATWMemory.cpp">
+      <Filter>Arquivos de Origem</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
