@@ -15,13 +15,6 @@ ATWSin::ATWSin(void){
 ATWSin::~ATWSin(void){
 }
 //---------------------------------------------------------------------------------------------------------------------
-const char* ATWSin::ATWgetCStr(int _val){
-	char _conversion[255];
-	_itoa_s(_val, _conversion, 10);
-	string _return  = _conversion;
-	return _return.c_str();
-}
-//---------------------------------------------------------------------------------------------------------------------
 void ATWSin::CT(Token _Token){
 	if(_LexAnalyzer==NULL)
 		_eManager->callHandlers(this->getGroupID(), NULL_ARGUMENT, NULL);
@@ -161,10 +154,6 @@ void ATWSin::DPontoD(){
 
 		CT(CONSTANT);
 
-		_cg->pushInstruction("STIF",
-		_PreviousToken._Lex, 
-		_Sem->updateIDAddress(_idLex.c_str(), _memory->ATWMalloc(TIPO_REAL)), 
-		"(DS)");
 
 		CT(COMMA);
 
@@ -176,8 +165,6 @@ void ATWSin::DPontoD(){
 		}
 
 		CT(CONSTANT);
-		
-		_cg->pushInstruction(NEG,"difjd");
 		
 		CT(COMMA);
 

@@ -87,6 +87,7 @@
     <ClInclude Include="ATW_LabelTable.h" />
     <ClInclude Include="ATW_MemoryManager.h" />
     <ClInclude Include="CHBuffer.h" />
+    <ClInclude Include="CodeGeneratorHelper.h" />
     <ClInclude Include="CodeGeneratorModule.h" />
     <ClInclude Include="globaEnumSite.h" />
     <ClInclude Include="GlobalStructSite.h" />
