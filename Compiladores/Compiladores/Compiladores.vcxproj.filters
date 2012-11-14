@@ -129,9 +129,6 @@
     <ClInclude Include="ATW_LabelTable.h">
       <Filter>Arquivos de Cabeçalho</Filter>
     </ClInclude>
-    <ClInclude Include="CodeGeneratorHelper.h">
-      <Filter>Arquivos de Cabeçalho\compiler</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">

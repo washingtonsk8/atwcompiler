@@ -95,3 +95,20 @@ void CodeGeneratorModule::flush(){
 	_hIIBF = 0;
 }
 //----------------------------------------------------------------------------------------------------------------------
+int CodeGeneratorModule::ADD(char* A, char* B, char* _Comment)
+{
+	return 0;
+}
+//----------------------------------------------------------------------------------------------------------------------
+int CodeGeneratorModule::STI(int A, int B, char* _Comment){
+	int _InstIndexBase = _InstIndex;
+	insertCodeToWrite("STI #", _InstIndex++);
+	insertCodeToWrite(ATWgetCStr(A), _InstIndex++);
+	insertCodeToWrite(", ", _InstIndex++);
+	insertCodeToWrite(ATWgetCStr(B), _InstIndex++); 
+	insertCodeToWrite("(DS)\n", _InstIndex++);
+	insertCodeToWrite(_Comment, _InstIndex++);
+
+	return _InstIndexBase;
+}
+//----------------------------------------------------------------------------------------------------------------------

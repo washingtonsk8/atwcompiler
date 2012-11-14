@@ -7,7 +7,6 @@
 #include "Globals.h"
 #include "IInitializable.h"
 #include "IDisposable.h"
-#include "CodeGeneratorHelper.h"
 
 //---------------------------------------------------------------------------------------------------------------------
 #define MAX_WRITING_BUFFER 100
@@ -33,17 +32,26 @@ public:
 	void insertCodeToWrite(char* _Code, int _codeIndex = -1, bool _Overlap = true);
 	string getCode(int _codeIndex = -1);
 	void flush();
-	void STI(int A, int B, char* _Comment = ""){
-		int _InstIndexBase = _InstIndex;
-		insertCodeToWrite("STI #", _InstIndex++);
-		insertCodeToWrite(ATWgetCStr(A), _InstIndex++);
-		insertCodeToWrite(", ", _InstIndex++);
-		insertCodeToWrite(ATWgetCStr(B), _InstIndex++); 
-		insertCodeToWrite("(DS)\n", _InstIndex++);
-		insertCodeToWrite(_Comment, _InstIndex++);
 
-		return _InstIndexBase;
+	//---------------------------------------------------------------------------------------------------------------------
+	const char* ATWgetCCStr(int _val){
+		static char _conversion[255];
+		_itoa_s(_val, _conversion, 10);
+		string _return = _conversion;
+		return _return.c_str();
 	}
+	//---------------------------------------------------------------------------------------------------------------------
+	char* ATWgetCStr(int _val){
+		static char _conversion[255];
+		_itoa_s(_val, _conversion, 10);
+		return _conversion;
+	}
+	//---------------------------------------------------------------------------------------------------------------------
+	/* Funções utilizadas para a escrita do código no arquivo */
+	int ADD(char* A, char* B, char* _Comment = "");
+	//TODO: Todas as Funções
+	int STI(int A, int B, char* _Comment = "");
+
 
 private:
 	int _currentI;//QUEUE BEHAVIOR
