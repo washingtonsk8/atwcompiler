@@ -49,8 +49,7 @@ public:
 
 	void initialize(int _Argc, void** _Argv);
 	void Run(int _Flag, NORMAL_BUNDLE* _nBundleP);
-	const char* ATWgetCStr(int _val);
-
+	
 private:
 	CodeGeneratorModule* _cg;
 	ATWLex*              _LexAnalyzer;
