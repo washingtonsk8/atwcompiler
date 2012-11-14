@@ -7,6 +7,8 @@
 #include "Globals.h"
 #include "IInitializable.h"
 #include "IDisposable.h"
+#include "CodeGeneratorHelper.h"
+
 //---------------------------------------------------------------------------------------------------------------------
 #define MAX_WRITING_BUFFER 100
 //---------------------------------------------------------------------------------------------------------------------
@@ -29,14 +31,25 @@ public:
 	void clearWritingBufferFULL();
 	void clearWritingBuffer();
 	void insertCodeToWrite(char* _Code, int _codeIndex = -1, bool _Overlap = true);
-	void pushInstruction(const char* _Instruction, const char* A = "", const char* B = "", const char* _BaseAddress = "");
 	string getCode(int _codeIndex = -1);
 	void flush();
+	void STI(int A, int B, char* _Comment = ""){
+		int _InstIndexBase = _InstIndex;
+		insertCodeToWrite("STI #", _InstIndex++);
+		insertCodeToWrite(ATWgetCStr(A), _InstIndex++);
+		insertCodeToWrite(", ", _InstIndex++);
+		insertCodeToWrite(ATWgetCStr(B), _InstIndex++); 
+		insertCodeToWrite("(DS)\n", _InstIndex++);
+		insertCodeToWrite(_Comment, _InstIndex++);
+
+		return _InstIndexBase;
+	}
 
 private:
 	int _currentI;//QUEUE BEHAVIOR
 	int _lIIBF;//LAST INSERTED INDEX BEFORE FLUSHING
 	int _hIIBF;//HIGH INSERTED INDEX BEFORE FLUSHING
+	int _InstIndex;//Índice para utilizar o buffer de instruções
 	string _wBuffer[MAX_WRITING_BUFFER];
 	FileManager* fManager;
 };
