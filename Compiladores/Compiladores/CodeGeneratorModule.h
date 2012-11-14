@@ -10,6 +10,13 @@
 //---------------------------------------------------------------------------------------------------------------------
 #define MAX_WRITING_BUFFER 100
 //---------------------------------------------------------------------------------------------------------------------
+typedef enum{
+	NO_INSTRUCTION, ADD, ADDF, ADI, ADIF, BNG, BNGF, BNN, BNNF, BNP, BNPF,
+	BNZ, BNZF, BPS, BPSF, BZR, BZRF, CNV, DIV, ESC, HLT,
+	JNP, LDI, LDIF, LGT, LOD, LODF, MVE, MVEF, MUL, MULF,
+	NEG, NEGF, RTR, STI, STIF, STO, STOF, SUB, SUBF, TME
+}Instruction;
+//---------------------------------------------------------------------------------------------------------------------
 class CodeGeneratorModule : public ProgramComponent, public IInitializable, public IDisposable
 {
 public:
@@ -22,6 +29,7 @@ public:
 	void clearWritingBufferFULL();
 	void clearWritingBuffer();
 	void insertCodeToWrite(char* _Code, int _codeIndex = -1, bool _Overlap = true);
+	void pushInstruction(const char* _Instruction, const char* A = "", const char* B = "", const char* _BaseAddress = "");
 	string getCode(int _codeIndex = -1);
 	void flush();
 

@@ -111,6 +111,7 @@
     <ClCompile Include="ATW.cpp" />
     <ClCompile Include="ATWLexEvents.cpp" />
     <ClCompile Include="ATWlLex.cpp" />
+    <ClCompile Include="ATWMemory.cpp" />
     <ClCompile Include="ATWSem.cpp" />
     <ClCompile Include="ATWSemEvents.cpp" />
     <ClCompile Include="ATWSin.cpp" />

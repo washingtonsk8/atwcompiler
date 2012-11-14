@@ -1,8 +1,10 @@
 #ifndef ATW_MEMMANAGER_H
 #define ATW_MEMMANAGER_H
 //--------------------------------------------------------------------------------------------------------
+#include "SymbolTable.h"
+//--------------------------------------------------------------------------------------------------------
 #define MEM_BASE_address 0
-#define ZERO            0
+#define ZERO             0
 //--------------------------------------------------------------------------------------------------------
 class ATWMemory{
 public:
@@ -13,35 +15,35 @@ public:
 	}
 	//--------------------------------------------------------------------------------------------------------
 	ATWMemory(void){
-		_PC                 = ZERO;
-		_TotalMemAllocation = ZERO;
-		_MemBaseaddress      = MEM_BASE_address
-		_LastMemaddress      = _MemBaseaddress;
-		_LastTempaddress     = _LastMemaddress;
-		_TempBaseaddress     = _LastMemaddress;
+		_PC                  = ZERO;
+		_TotalMemAllocation  = ZERO;
+		_MemBaseAddress      = MEM_BASE_address;
+		_LastMemAddress      = MEM_BASE_address;
+		_LastTempAddress     = MEM_BASE_address;
+		_TempBaseAddress     = MEM_BASE_address;
 	}
 	//--------------------------------------------------------------------------------------------------------
 	~ATWMemory(void){}
 	//--------------------------------------------------------------------------------------------------------
 	int ATWMalloc(Type _Type = TIPO_VAZIO){
-		int _PreviousMemaddress = _LastMemaddress;
+		int _PreviousMemAddress = _LastMemAddress;
 
 		if (_Type == TIPO_REAL)
-			_LastMemaddress += 2;
+			_LastMemAddress += 2;
 		else if (_Type == TIPO_INTEIRO || _Type == TIPO_LOGICO)
-			_LastMemaddress ++;
+			_LastMemAddress ++;
 
-		_TotalMemAllocation = _LastMemaddress;
-		return _PreviousMemaddress;
+		_TotalMemAllocation = _LastMemAddress;
+		return _PreviousMemAddress;
 	}
 	//--------------------------------------------------------------------------------------------------------
 	int ATWNovoTemp(){
-		_LastTempaddress ++;
-		return _LastTempaddress-1;
+		_LastTempAddress ++;
+		return _LastTempAddress-1;
 	}
 	//--------------------------------------------------------------------------------------------------------
 	void ATWResetTemp(){
-		_LastTempaddress = _TempBaseaddress;
+		_LastTempAddress = _TempBaseAddress;
 	}
 	//--------------------------------------------------------------------------------------------------------
 	int getPC(){
@@ -55,9 +57,13 @@ public:
 private:
 	int	_PC;
 	int _TotalMemAllocation;
-	int _MemBaseaddress;
-	int	_LastMemaddress;
-	int	_LastTempaddress;
-	int	_TempBaseaddress;
+	int _MemBaseAddress;
+	int	_LastMemAddress;
+	int	_LastTempAddress;
+	int	_TempBaseAddress;
 };
 #endif
+
+namespace MemoryManager{
+	extern ATWMemory* _memory;
+}

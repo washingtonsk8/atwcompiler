@@ -7,6 +7,7 @@
 #include "GlobalStructSite.h"
 #include "CHBuffer.h"
 #include "ATWSem.h"
+#include "CodeGeneratorModule.h"
 
 //----------------------------------------------------
 //TODO::COLOCANDO AÇÕES SEMANTICAS E GERAÇÃO DE CÓDIGO
@@ -50,8 +51,10 @@ public:
 	void Run(int _Flag, NORMAL_BUNDLE* _nBundleP);
 
 private:
-	ATWLex*     _LexAnalyzer;
-	ATWSem*     _Sem;	
+	const char* ATWgetCStr(int _val);
+	CodeGeneratorModule* _cg;
+	ATWLex*              _LexAnalyzer;
+	ATWSem*              _Sem;	
 
 	//FileHelper* _fHelper;
 	ATW_BUFF_ELEMENT _CurrentToken, _PreviousToken, _tToken;
