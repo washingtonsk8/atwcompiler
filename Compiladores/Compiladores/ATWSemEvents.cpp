@@ -37,7 +37,8 @@ void ATWSemEvents::treatEvent(int _Args, void* _Argv[]){
 		break;
 	case VAL_RESTRICTION:
 		printf("%i: Restricao de valores quebrada.\n", (int)_Argv[0]);
-		exit(INCOMPATILBE_TYPES);
+		system("pause");
+		exit(VAL_RESTRICTION);
 		break;
 	}
 }

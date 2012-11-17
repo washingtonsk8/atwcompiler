@@ -82,17 +82,20 @@
     <ClInclude Include="ARS_ConsoleColorHandler.h" />
     <ClInclude Include="ARS_PrinterHelper.h" />
     <ClInclude Include="ATW.h" />
+    <ClInclude Include="ATWCodeOptimizer.h" />
     <ClInclude Include="ATWLex.h" />
     <ClInclude Include="ATWLexEvents.h" />
     <ClInclude Include="ATWSem.h" />
     <ClInclude Include="ATWSemEvents.h" />
     <ClInclude Include="ATWSin.h" />
     <ClInclude Include="ATWSinEvents.h" />
+    <ClInclude Include="ATW_GCXSimulator.h" />
+    <ClInclude Include="ATW_Helper.h" />
     <ClInclude Include="ATW_LabelTable.h" />
     <ClInclude Include="ATW_MemoryManager.h" />
     <ClInclude Include="CHBuffer.h" />
     <ClInclude Include="CodeGeneratorModule.h" />
-    <ClInclude Include="globaEnumSite.h" />
+    <ClInclude Include="GlobalEnumSite.h" />
     <ClInclude Include="GlobalStructSite.h" />
     <ClInclude Include="ThreadManager.h" />
     <ClInclude Include="CompilerComponent.h" />
@@ -113,6 +116,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ATW.cpp" />
+    <ClCompile Include="ATWCodeOptimizer.cpp" />
     <ClCompile Include="ATWLexEvents.cpp" />
     <ClCompile Include="ATWlLex.cpp" />
     <ClCompile Include="ATWMemory.cpp" />
@@ -120,6 +124,8 @@
     <ClCompile Include="ATWSemEvents.cpp" />
     <ClCompile Include="ATWSin.cpp" />
     <ClCompile Include="ATWSinEvents.cpp" />
+    <ClCompile Include="ATW_GCXSimulator.cpp" />
+    <ClCompile Include="ATW_Helper.cpp" />
     <ClCompile Include="CodeGeneratorModule.cpp" />
     <ClCompile Include="ThreadManager.cpp" />
     <ClCompile Include="CompilerComponent.cpp" />

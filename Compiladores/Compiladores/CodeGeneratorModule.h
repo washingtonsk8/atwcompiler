@@ -1,5 +1,6 @@
 #ifndef CODEGENERATORMODULE_H
 #define CODEGENERATORMODULE_H
+//---------------------------------------------------------------------------------------------------------------------
 #include <stdio.h>
 #include <stdlib.h>
 #include "FileManager.h"
@@ -7,9 +8,9 @@
 #include "Globals.h"
 #include "IInitializable.h"
 #include "IDisposable.h"
-
+#include "ATW_LabelTable.h"
 //---------------------------------------------------------------------------------------------------------------------
-#define MAX_WRITING_BUFFER 100
+#define MAX_WRITING_BUFFER 10000
 //---------------------------------------------------------------------------------------------------------------------
 typedef enum{
 	NO_INSTRUCTION, ADD, ADDF, ADI, ADIF, BNG, BNGF, BNN, BNNF, BNP, BNPF,
@@ -30,29 +31,54 @@ public:
 	void clearWritingBufferFULL();
 	void clearWritingBuffer();
 	void insertCodeToWrite(char* _Code, int _codeIndex = -1, bool _Overlap = true);
+	void fixCode(int _Address, char* _value);
 	string getCode(int _codeIndex = -1);
 	void flush();
-
 	//---------------------------------------------------------------------------------------------------------------------
-	const char* ATWgetCCStr(int _val){
-		static char _conversion[255];
-		_itoa_s(_val, _conversion, 10);
-		string _return = _conversion;
-		return _return.c_str();
-	}
+	/*
+	* Funções utilizadas para a escrita do código no arquivo
+	*/
+	int ADD(char* _RegD, char* _RegO, char* _Comment = "");
+	int ADDF(char* _RegD, char* _RegO, char* _Comment = "");
+	int ADI(char* _RegD, char* _Imed, char* _Comment = "");
+	int ADIF(char* _RegD, char* _Imed, char* _Comment = "");
+	int BNG(char* _Reg, int _Desl, char* _Comment = "");
+	int BNGF(char* _Reg, int _Desl, char* _Comment = "");
+	int BNN(char* _Reg, int _Desl, char* _Comment = "");
+	int BNNF(char* _Reg, int _Desl, char* _Comment = "");
+	int BNP(char* _Reg, int _Desl, char* _Comment = "");
+	int BNPF(char* _Reg, int _Desl, char* _Comment = "");
+	int BNZ(char* _Reg, int _Desl, char* _Comment = "");
+	int BNZF(char* _Reg, int _Desl, char* _Comment = "");
+	int BPS(char* _Reg, int _Desl, char* _Comment = "");
+	int BPSF(char* _Reg, int _Desl, char* _Comment = "");
+	int BZR(char* _Reg, int _Desl, char* _Comment = "");
+	int BZRF(char* _Reg, int _Desl, char* _Comment = "");
+	int CNV(char* _RegD, char* _RegO, char* _Comment = "");
+	int DIV(char* _RegD, char* _RegO, char* _Comment = "");
+	int ESC(char* _Reg1, char* _Reg2, char* _Comment = "");
+	int HLT(char* _Comment = "");
+	int JMP(char* _Label, char* _Comment = "");//TODO:Label necessita conversão para o inteiro correspondente
+	int LDI(char* _RegD, char* _Imed, char* _Comment = "");
+	int LDIF(char* _RegD, char* _Imed, char* _Comment = "");
+	int LGT(char* _Reg, char* _Comment = "");
+	int LOD(char* _RegD, int _Desl, char* _Comment = "");
+	int LODF(char* _RegD, int _Desl, char* _Comment = "");
+	int MVE(char* _RegD, char* _RegO, char* _Comment = "");
+	int MVEF(char* _RegD, char* _RegO, char* _Comment = "");
+	int MUL(char* _RegD, char* _RegO, char* _Comment = "");
+	int MULF(char* _RegD, char* _RegO, char* _Comment = "");
+	int NEG(char* _Reg, char* _Comment = "");
+	int NEGF(char* _Reg, char* _Comment = "");
+	int RTR(char* _Comment = "");
+	int STI(char* _Imed, int _Desl, char* _Comment = "");
+	int STIF(char* _Imed, int _Desl, char* _Comment = "");
+	int STO(char* _Reg, int _Desl, char* _Comment = "");
+	int STOF(char* _Reg, int _Desl, char* _Comment = "");
+	int SUB(char* _RegD, char* _RegO, char* _Comment = "");
+	int SUBF(char* _RegD, char* _RegO, char* _Comment = "");
+	int TME(char* _Reg, char* _Comment = "");
 	//---------------------------------------------------------------------------------------------------------------------
-	char* ATWgetCStr(int _val){
-		static char _conversion[255];
-		_itoa_s(_val, _conversion, 10);
-		return _conversion;
-	}
-	//---------------------------------------------------------------------------------------------------------------------
-	/* Funções utilizadas para a escrita do código no arquivo */
-	int ADD(char* A, char* B, char* _Comment = "");
-	//TODO: Todas as Funções
-	int STI(int A, int B, char* _Comment = "");
-
-
 private:
 	int _currentI;//QUEUE BEHAVIOR
 	int _lIIBF;//LAST INSERTED INDEX BEFORE FLUSHING
@@ -62,3 +88,4 @@ private:
 	FileManager* fManager;
 };
 #endif
+

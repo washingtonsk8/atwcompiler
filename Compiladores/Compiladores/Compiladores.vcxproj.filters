@@ -111,9 +111,6 @@
     <ClInclude Include="GlobalStructSite.h">
       <Filter>Arquivos de Cabeçalho\compiler</Filter>
     </ClInclude>
-    <ClInclude Include="globaEnumSite.h">
-      <Filter>Arquivos de Cabeçalho\compiler</Filter>
-    </ClInclude>
     <ClInclude Include="ATWSemEvents.h">
       <Filter>Arquivos de Cabeçalho\event handlers</Filter>
     </ClInclude>
@@ -127,6 +124,18 @@
       <Filter>Arquivos de Cabeçalho</Filter>
     </ClInclude>
     <ClInclude Include="ATW_LabelTable.h">
+      <Filter>Arquivos de Cabeçalho</Filter>
+    </ClInclude>
+    <ClInclude Include="GlobalEnumSite.h">
+      <Filter>Arquivos de Cabeçalho\compiler</Filter>
+    </ClInclude>
+    <ClInclude Include="ATW_Helper.h">
+      <Filter>Arquivos de Cabeçalho</Filter>
+    </ClInclude>
+    <ClInclude Include="ATWCodeOptimizer.h">
+      <Filter>Arquivos de Cabeçalho</Filter>
+    </ClInclude>
+    <ClInclude Include="ATW_GCXSimulator.h">
       <Filter>Arquivos de Cabeçalho</Filter>
     </ClInclude>
   </ItemGroup>
@@ -192,6 +201,15 @@
       <Filter>Arquivos de Origem\compiler</Filter>
     </ClCompile>
     <ClCompile Include="ATWMemory.cpp">
+      <Filter>Arquivos de Origem</Filter>
+    </ClCompile>
+    <ClCompile Include="ATW_Helper.cpp">
+      <Filter>Arquivos de Origem</Filter>
+    </ClCompile>
+    <ClCompile Include="ATWCodeOptimizer.cpp">
+      <Filter>Arquivos de Origem</Filter>
+    </ClCompile>
+    <ClCompile Include="ATW_GCXSimulator.cpp">
       <Filter>Arquivos de Origem</Filter>
     </ClCompile>
   </ItemGroup>
