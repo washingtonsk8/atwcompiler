@@ -1,4 +1,3 @@
-//Vai!
 #include "ATWCodeOptimizer.h"
 
 
