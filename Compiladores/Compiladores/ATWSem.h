@@ -164,12 +164,11 @@ public:
 		return false;
 	}
 	//-----------------------------------------------------------------------------------------
-	const char* updateIDAddress(const char* _lex, unsigned int _Address){
+	int updateIDAddress(string _lex, unsigned int _Address){
 		_SymbolTable->setEnd(_lex, _Address);
-		char _buffBAA[255];
-		_itoa_s(_Address, _buffBAA, 10);
-		string _return = _buffBAA;
-		return _return.c_str();
+		//char* _return = new char [32];
+		//_itoa_s(_Address, _return, 32, 10);
+		return _Address;
 	}
 	//-----------------------------------------------------------------------------------------
 private:

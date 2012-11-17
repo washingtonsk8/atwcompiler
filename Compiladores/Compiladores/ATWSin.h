@@ -13,6 +13,20 @@
 //TODO::COLOCANDO AÇÕES SEMANTICAS E GERAÇÃO DE CÓDIGO
 //----------------------------------------------------
 
+/*
+ *NOTAS GERAIS DO ANALISADOR SINTÁTICO
+ */
+
+//----------------------------------------------------------------------------------------------------
+//_Sem->updateIDAddress(_IdLex, _memory->ATWMalloc(TIPO_INTEIRO))-------------------------------------
+//----------------------------------------------------------------------------------------------------
+//Gera Instrução já armazenando endereço de ID para a primeira posição válida usando updateIDAddress--
+//----------------------------------------------------------------------------------------------------
+
+/*
+ *NOTAS GERAIS DO ANALISADOR SINTÁTICO
+ */
+
 //---------------------------------------------------------------------------------------------------------------------
 typedef struct InfoBundle{
 	int	_TokenID;
@@ -49,7 +63,7 @@ public:
 
 	void initialize(int _Argc, void** _Argv);
 	void Run(int _Flag, NORMAL_BUNDLE* _nBundleP);
-	
+
 private:
 	CodeGeneratorModule* _cg;
 	ATWLex*              _LexAnalyzer;
@@ -76,10 +90,10 @@ private:
 	void Command();
 
 	//--PARA EXPRESSÕES--
-	void Exp(InfoBundle* _inf);
+	void Exp(InfoBundle* _inf, int& _fAddress);
 	void R();
-	void EXPS(InfoBundle* _inf);
-	void T(InfoBundle* _inf);
-	void F(InfoBundle* _inf);
+	void EXPS(InfoBundle* _inf, int& _fAddress);
+	void T(InfoBundle* _inf, int& _fAddress);
+	void F(InfoBundle* _inf, int& _fAddress);
 };
 #endif

@@ -1,7 +1,7 @@
 #ifndef GLOBALSTRUCTSITE_H
 #define GLOBALSTRUCTSITE_H
 #include "CHBuffer.h"
-#include "globaEnumSite.h"
+#include "GlobalEnumSite.h"
 
 class ATWSin;
 class ATWLex;

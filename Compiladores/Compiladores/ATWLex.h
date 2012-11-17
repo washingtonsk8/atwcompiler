@@ -7,7 +7,7 @@
 #include "SymbolTable.h"
 #include "IInitializable.h"
 #include "GlobalStructSite.h"
-#include "globaEnumSite.h"
+#include "GlobalEnumSite.h"
 #include <queue>
 
 class ATWLex;

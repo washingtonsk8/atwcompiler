@@ -11,9 +11,9 @@
 //--------------------------------------------------------------------------------------------------------
 typedef struct LabelElement{
 	int    _PCAddress;
-	string _Label;
+	char* _Label;
 
-	bool BuildElement(string _labelP, int _PCAddressP){
+	bool BuildElement(char* _labelP, int _PCAddressP){
 		_Label     = _labelP;
 		_PCAddress = _PCAddressP;
 		return true;
@@ -25,11 +25,11 @@ public:
 	//--------------------------------------------------------------------------------------------------------
 	static ATWLabelTable* getInstance(){
 		static ATWLabelTable* _instance;
-		return &_instance;
+		return _instance;
 	}
 	//--------------------------------------------------------------------------------------------------------
 	ATWLabelTable(void){
-		_labelsTable = new Labelelement[MAX_TOTAL_LABELS];
+		_labelsTable = new LabelElement*[MAX_TOTAL_LABELS];
 		for(int i = 0; i < MAX_TOTAL_LABELS; i++){
 			_labelsTable[i] = 0x0;
 		}
@@ -52,28 +52,28 @@ public:
 		}
 	}
 	//--------------------------------------------------------------------------------------------------------
-	void pushLabelAddress(string _element, unsigned int _PCAddress){
+	void pushLabelAddress(char* _element, unsigned int _PCAddress){
 		unsigned int _hashing = SDBMHash(_element) % MAX_TOTAL_LABELS;
 
 		if(_labelsTable[_hashing] != 0x0)
 			exit(-88);//TODO TRATAR EXCEPTION
 
-		LabelElement* _newElement = new Labelelement();
+		LabelElement* _newElement = new LabelElement();
 		_newElement->BuildElement(_element, _PCAddress);
 
 		_labelsTable[_hashing] = _newElement;
 	}
 	//--------------------------------------------------------------------------------------------------------
-	unsigned int (string _element){
+	unsigned int getLabelAddress (char* _element){
 		unsigned int _hashing = SDBMHash(_element) % MAX_TOTAL_LABELS;
 
 		if(_labelsTable[_hashing] == 0x0)
 			exit(-88);//TODO TRATAR EXCEPTION
 
-		return _labelTable[_hashing]->_PCAddress;
+		return _labelsTable[_hashing]->_PCAddress;
 	}
 	//--------------------------------------------------------------------------------------------------------
 private:
-	Labelelement** _labelsTable;
+	LabelElement** _labelsTable;
 };
 #endif

@@ -252,8 +252,8 @@ unsigned int SymbolTable::getEnd(string _Lexeme){
 		}
 	}//end if
 
-	_eManager->callHandlers(this->getGroupID(), NULL_ARGUMENT, NULL);
-	return 0x0;
+	//_eManager->callHandlers(this->getGroupID(), NULL_ARGUMENT, NULL);
+	return -1;
 }
 //---------------------------------------------------------------------------------------------------------------------
 bool SymbolTable::typeCompare(string _Lexeme, Type _Type){
