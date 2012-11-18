@@ -55,6 +55,14 @@ void CodeGeneratorModule::clearWritingBuffer(){
 		_wBuffer[i] = "";
 }
 //---------------------------------------------------------------------------------------------------------------------
+void CodeGeneratorModule::insertCodeToWriteBin(int _Element){
+	if(_Element < 255)
+		*_bBuffer[0] = '0';
+	else
+		*_bBuffer[0] = (char)_Element%255;
+	*_bBuffer[1] = (char)_Element;
+}
+//---------------------------------------------------------------------------------------------------------------------
 void CodeGeneratorModule::insertCodeToWriteMac(char* _Code, int _codeIndex, bool _Overlap){
 	if(_codeIndex > MAX_WRITING_BUFFER || _codeIndex < 0)
 		_eManager->callHandlers(this->getGroupID(), FATAL_ERROR, NULL);
@@ -101,6 +109,15 @@ void CodeGeneratorModule::flush(){
 	_currentI = 0;
 	_lIIBF = 0;
 	_hIIBF = 0;
+}
+//---------------------------------------------------------------------------------------------------------------------
+void CodeGeneratorModule::flushBin(){
+	//fManager->writeInFile(_bBuffer[0]);
+
+	_bBuffer[0] = (char)0;
+	//fManager->writeInFile(_bBuffer[1].c_str());
+	_bBuffer[1] = 0;
+	
 }
 //----------------------------------------------------------------------------------------------------------------------
 int CodeGeneratorModule::ADD(char* _RegD, char* _RegO, char* _Comment)

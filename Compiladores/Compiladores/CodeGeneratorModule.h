@@ -11,6 +11,7 @@
 #include "ATW_LabelTable.h"
 //---------------------------------------------------------------------------------------------------------------------
 #define MAX_WRITING_BUFFER 10000
+#define WORD_SIZE		   2
 //---------------------------------------------------------------------------------------------------------------------
 typedef enum{
 	NO_INSTRUCTION, ADD, ADDF, ADI, ADIF, BNG, BNGF, BNN, BNNF, BNP, BNPF,
@@ -30,11 +31,12 @@ public:
 	void dispose(int _Argc, void** _Argv);
 	void clearWritingBufferFULL();
 	void clearWritingBuffer();
+	void insertCodeToWriteBin(int _Element);
 	void insertCodeToWriteMac(char* _Code, int _codeIndex = -1, bool _Overlap = true);
-	void insertCodeToWriteBin(char* _Code, int _codeIndex = -1, bool _Overlap = true);
 	void fixCode(int _Address, char* _value);
 	string getCode(int _codeIndex = -1);
 	void flush();
+	void flushBin();
 	//---------------------------------------------------------------------------------------------------------------------
 	/*
 	* Funções utilizadas para a escrita do código no arquivo
@@ -86,6 +88,7 @@ private:
 	int _hIIBF;//HIGH INSERTED INDEX BEFORE FLUSHING
 	int _InstIndex;//Índice para utilizar o buffer de instruções
 	string _wBuffer[MAX_WRITING_BUFFER];
+	char*  _bBuffer[WORD_SIZE];
 	FileManager* fManager;
 };
 #endif
