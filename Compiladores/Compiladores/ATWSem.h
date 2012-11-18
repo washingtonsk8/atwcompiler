@@ -113,6 +113,15 @@ public:
 	}
 	//-----------------------------------------------------------------------------------------
 	//COMPATIBILIDADE DE TIPOS
+	void DiffTypeVerify(ATW_BUFF_ELEMENT _Token, Type _A, Type _B){
+		if(_A != _B)
+			return;
+
+		void* _Param[1] = {(void*)_Token._LINE};
+		_eManager->callHandlers(this->getGroupID(), INCOMPATILBE_TYPES, _Param);
+	}
+	//-----------------------------------------------------------------------------------------
+	//COMPATIBILIDADE DE TIPOS
 	void tTypeVerify(ATW_BUFF_ELEMENT _Token, Type _A){
 		TableElement* _tTokenA = _SymbolTable->getElement(_Token._Lex);
 		if(_A == _tTokenA->_Type)
@@ -166,8 +175,6 @@ public:
 	//-----------------------------------------------------------------------------------------
 	int updateIDAddress(string _lex, unsigned int _Address){
 		_SymbolTable->setEnd(_lex, _Address);
-		//char* _return = new char [32];
-		//_itoa_s(_Address, _return, 32, 10);
 		return _Address;
 	}
 	//-----------------------------------------------------------------------------------------

@@ -141,6 +141,7 @@
     <ClCompile Include="SymbolTable.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="symbols.dat" />
     <None Include="teste1.asm" />
     <None Include="teste1.gl" />
   </ItemGroup>

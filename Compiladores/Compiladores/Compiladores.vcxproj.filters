@@ -220,5 +220,8 @@
     <None Include="teste1.gl">
       <Filter>Arquivos de Recurso</Filter>
     </None>
+    <None Include="symbols.dat">
+      <Filter>Arquivos de Recurso</Filter>
+    </None>
   </ItemGroup>
 </Project>
