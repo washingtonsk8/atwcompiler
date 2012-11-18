@@ -30,7 +30,8 @@ public:
 	void dispose(int _Argc, void** _Argv);
 	void clearWritingBufferFULL();
 	void clearWritingBuffer();
-	void insertCodeToWrite(char* _Code, int _codeIndex = -1, bool _Overlap = true);
+	void insertCodeToWriteMac(char* _Code, int _codeIndex = -1, bool _Overlap = true);
+	void insertCodeToWriteBin(char* _Code, int _codeIndex = -1, bool _Overlap = true);
 	void fixCode(int _Address, char* _value);
 	string getCode(int _codeIndex = -1);
 	void flush();
