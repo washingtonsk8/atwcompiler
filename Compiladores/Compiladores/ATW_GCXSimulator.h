@@ -15,9 +15,9 @@
 class ATW_GCXSimulator
 {
 public:
-	ATW_GCXSimulator(void){}
+	ATW_GCXSimulator(void);
 	//------------------------------------------------------------------------------------------------------------------------
-	~ATW_GCXSimulator(void){}
+	~ATW_GCXSimulator(void);
 	//------------------------------------------------------------------------------------------------------------------------
 	bool initialize(CodeGeneratorModule* _cgModule){
 		this->_cgModule = _cgModule;
