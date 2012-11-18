@@ -61,6 +61,7 @@ void CodeGeneratorModule::insertCodeToWriteBin(int _Element){
 	else
 		*_bBuffer[0] = (char)_Element%255;
 	*_bBuffer[1] = (char)_Element;
+	flushBin();
 }
 //---------------------------------------------------------------------------------------------------------------------
 void CodeGeneratorModule::insertCodeToWriteMac(char* _Code, int _codeIndex, bool _Overlap){
@@ -112,10 +113,9 @@ void CodeGeneratorModule::flush(){
 }
 //---------------------------------------------------------------------------------------------------------------------
 void CodeGeneratorModule::flushBin(){
-	//fManager->writeInFile(_bBuffer[0]);
-
+	fManager->writeInFile(_bBuffer[0]);
 	_bBuffer[0] = (char)0;
-	//fManager->writeInFile(_bBuffer[1].c_str());
+	fManager->writeInFile(_bBuffer[1]);
 	_bBuffer[1] = 0;
 	
 }
