@@ -140,6 +140,10 @@
     <ClCompile Include="ProgramEvents.cpp" />
     <ClCompile Include="SymbolTable.cpp" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="teste1.asm" />
+    <None Include="teste1.gl" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

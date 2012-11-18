@@ -213,4 +213,12 @@
       <Filter>Arquivos de Origem</Filter>
     </ClCompile>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="teste1.asm">
+      <Filter>Arquivos de Recurso</Filter>
+    </None>
+    <None Include="teste1.gl">
+      <Filter>Arquivos de Recurso</Filter>
+    </None>
+  </ItemGroup>
 </Project>
