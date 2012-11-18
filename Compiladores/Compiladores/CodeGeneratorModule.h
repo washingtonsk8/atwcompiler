@@ -35,6 +35,7 @@ public:
 	void insertCodeToWriteMac(char* _Code, int _codeIndex = -1, bool _Overlap = true);
 	void fixCode(int _Address, char* _value);
 	string getCode(int _codeIndex = -1);
+	string transformToBin(int _Number);
 	void flush();
 	void flushBin();
 	//---------------------------------------------------------------------------------------------------------------------
@@ -87,8 +88,9 @@ private:
 	int _lIIBF;//LAST INSERTED INDEX BEFORE FLUSHING
 	int _hIIBF;//HIGH INSERTED INDEX BEFORE FLUSHING
 	int _InstIndex;//Índice para utilizar o buffer de instruções
+	int _Value;
 	string _wBuffer[MAX_WRITING_BUFFER];
-	char*  _bBuffer[WORD_SIZE];
+	string _bBuffer[WORD_SIZE];
 	FileManager* fManager;
 };
 #endif
