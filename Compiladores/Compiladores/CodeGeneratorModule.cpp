@@ -61,8 +61,8 @@ void CodeGeneratorModule::insertCodeToWriteBin(int _Element){
 	else
 		*_bBuffer[0] = (char)_Element%255;
 	*_bBuffer[1] = (char)_Element;
-	flushBin();
-}
+	flushBin(); 
+} 
 //---------------------------------------------------------------------------------------------------------------------
 void CodeGeneratorModule::insertCodeToWriteMac(char* _Code, int _codeIndex, bool _Overlap){
 	if(_codeIndex > MAX_WRITING_BUFFER || _codeIndex < 0)
