@@ -506,7 +506,8 @@ void ATWSin::Block(){
 }
 //---------------------------------------------------------------------------------------------------------------------
 void ATWSin::Command(){
-	InfoBundle _auxInfo;//PARA VERIFICAÇÃO DO QUE SEJA NECESSÁRIO
+	Type _ExpType;
+	int _ExpAdr;
 	Type _vType[2] = {TIPO_INTEIRO, TIPO_REAL};//(32)(34) - SEMÂNTICO
 	ATW_BUFF_ELEMENT _idAux;//(32) - SEMÂNTICO
 
@@ -521,9 +522,9 @@ void ATWSin::Command(){
 		CT(EQ);
 
 		_memory->ATWResetTemp();//46
-		Exp(&_auxInfo);
-		_Sem->nTypeVerify(_PreviousToken, _auxInfo._Type, 2, _vType);//(31) - SEMÂNTICO
-		_Sem->tTypeVerify(_idAux, _auxInfo._Type);//(31) - SEMÂNTICO
+		Exp(_ExpType, _ExpAdr);
+		_Sem->nTypeVerify(_PreviousToken, _ExpType, 2, _vType);//(31) - SEMÂNTICO
+		_Sem->tTypeVerify(_idAux, _ExpType);//(31) - SEMÂNTICO
 
 		CT(EXP_END);
 		break;
@@ -531,8 +532,8 @@ void ATWSin::Command(){
 		CT(ENQUANTO);
 
 		_memory->ATWResetTemp();//46
-		 Exp(&_auxInfo);//(32) - SEMÂNTICO
-		_Sem->TypeVerify(_PreviousToken, _auxInfo._Type, TIPO_LOGICO);//(32) - SEMÂNTICO
+		 Exp(_ExpType, _ExpAdr);//(32) - SEMÂNTICO
+		_Sem->TypeVerify(_PreviousToken, _ExpType, TIPO_LOGICO);//(32) - SEMÂNTICO
 
 		CT(FACA);
 
@@ -556,8 +557,8 @@ void ATWSin::Command(){
 		CT(COMMA);
 
 		_memory->ATWResetTemp();//46
-		Exp(&_auxInfo);//(33) - SEMÂNTICO
-		_Sem->nTypeVerify(_PreviousToken, _auxInfo._Type, 2, _vType);//(34) - SEMÂNTICO
+		Exp(_ExpType, _ExpAdr);//(33) - SEMÂNTICO
+		_Sem->nTypeVerify(_PreviousToken, _ExpType, 2, _vType);//(34) - SEMÂNTICO
 
 		CT(EXP_END);
 		break;
@@ -565,8 +566,8 @@ void ATWSin::Command(){
 		CT(PAUSA);
 
 		_memory->ATWResetTemp();//46
-		Exp(&_auxInfo);//(33) - SEMÂNTICO
-		_Sem->nTypeVerify(_PreviousToken, _auxInfo._Type, 2, _vType);//(34) - SEMÂNTICO
+		Exp(_ExpType, _ExpAdr);//(33) - SEMÂNTICO
+		_Sem->nTypeVerify(_PreviousToken, _ExpType, 2, _vType);//(34) - SEMÂNTICO
 		
 		CT(EXP_END);
 		break;
@@ -589,38 +590,38 @@ void ATWSin::Command(){
 		CT(COMMA);
 
 		_memory->ATWResetTemp();//46
-		Exp(&_auxInfo);//(33) - SEMÂNTICO
-		_Sem->nTypeVerify(_PreviousToken, _auxInfo._Type, 2, _vType);//(33) - SEMÂNTICO
+		Exp(_ExpType, _ExpAdr);//(33) - SEMÂNTICO
+		_Sem->nTypeVerify(_PreviousToken, _ExpType, 2, _vType);//(33) - SEMÂNTICO
 
 		CT(COMMA);
 
 		_memory->ATWResetTemp();//46
-		Exp(&_auxInfo);//(33) - SEMÂNTICO
-		_Sem->nTypeVerify(_PreviousToken, _auxInfo._Type, 2, _vType);//(33) - SEMÂNTICO
+		Exp(_ExpType, _ExpAdr);//(33) - SEMÂNTICO
+		_Sem->nTypeVerify(_PreviousToken, _ExpType, 2, _vType);//(33) - SEMÂNTICO
 		
 		CT(COMMA);
 
 		_memory->ATWResetTemp();//46
-		Exp(&_auxInfo);//(33) - SEMÂNTICO
-		_Sem->nTypeVerify(_PreviousToken, _auxInfo._Type, 2, _vType);//(33) - SEMÂNTICO
+		Exp(_ExpType, _ExpAdr);//(33) - SEMÂNTICO
+		_Sem->nTypeVerify(_PreviousToken, _ExpType, 2, _vType);//(33) - SEMÂNTICO
 		
 		CT(COMMA);
 
 		_memory->ATWResetTemp();//46
-		Exp(&_auxInfo);//(33) - SEMÂNTICO
-		_Sem->nTypeVerify(_PreviousToken, _auxInfo._Type, 2, _vType);//(33) - SEMÂNTICO
+		Exp(_ExpType, _ExpAdr);//(33) - SEMÂNTICO
+		_Sem->nTypeVerify(_PreviousToken, _ExpType, 2, _vType);//(33) - SEMÂNTICO
 		
 		CT(COMMA);
 
 		_memory->ATWResetTemp();//46
-		Exp(&_auxInfo);//(33) - SEMÂNTICO
-		_Sem->nTypeVerify(_PreviousToken, _auxInfo._Type, 2, _vType);//(33) - SEMÂNTICO
+		Exp(_ExpType, _ExpAdr);//(33) - SEMÂNTICO
+		_Sem->nTypeVerify(_PreviousToken, _ExpType, 2, _vType);//(33) - SEMÂNTICO
 
 		CT(COMMA);
 
 		_memory->ATWResetTemp();//46
-		Exp(&_auxInfo);//(33) - SEMÂNTICO
-		_Sem->nTypeVerify(_PreviousToken, _auxInfo._Type, 2, _vType);//(33) - SEMÂNTICO
+		Exp(_ExpType, _ExpAdr);//(33) - SEMÂNTICO
+		_Sem->nTypeVerify(_PreviousToken, _ExpType, 2, _vType);//(33) - SEMÂNTICO
 
 		CT(EXP_END);
 		break;
@@ -628,8 +629,8 @@ void ATWSin::Command(){
 		CT(SE);
 
 		_memory->ATWResetTemp();//46
-		Exp(&_auxInfo);//(32) - SEMÂNTICO
-		_Sem->TypeVerify(_PreviousToken, _auxInfo._Type, TIPO_LOGICO);//(32) - SEMÂNTICO
+		Exp(_ExpType, _ExpAdr);//(32) - SEMÂNTICO
+		_Sem->TypeVerify(_PreviousToken, _ExpType, TIPO_LOGICO);//(32) - SEMÂNTICO
 
 		CT(ENTAO);
 
@@ -663,49 +664,105 @@ void ATWSin::Command(){
 	}
 }
 //---------------------------------------------------------------------------------------------------------------------
-void ATWSin::Exp(InfoBundle* _inf){
-	EXPS(_inf);//(29) - SEMÂNTICO
+void ATWSin::Exp(Type& _ExpType, int& _ExpAdr){
+	Type _ExpSType, _ExpS1Type;
+	int _ExpSAdr, _ExpS1Adr;
+
+	EXPS(_ExpSType, _ExpSAdr);//(29) - SEMÂNTICO
+	_ExpType = _ExpSType;
+	_ExpSAdr = _ExpSAdr;
 
 	if(_CurrentToken._Token == LT || _CurrentToken._Token == GT || _CurrentToken._Token == LE || 
 		_CurrentToken._Token == GE || _CurrentToken._Token == EQ || _CurrentToken._Token == DIFF){
-			InfoBundle _Exp1S;//(30) - SEMÂNTICO
-			_Exp1S.build_element(-1,"");//(30) - SEMÂNTICO
+			Token _ROp;	
+			R(_ROp);
 
-			R();
-			EXPS(&_Exp1S);
+			_Sem->TypeVerify(_PreviousToken, _ExpType, TIPO_LOGICO);//(30) - SEMÂNTICO
 
-			_Sem->TypeVerify(_PreviousToken, _inf->_Type, TIPO_LOGICO);
-			_Sem->TypeVerify(_PreviousToken, _Exp1S._Type, TIPO_LOGICO);
+			EXPS(_ExpS1Type, _ExpS1Adr);
 
-			_inf->_Type = TIPO_LOGICO;//(30) - SEMÂNTICO
+			_Sem->TypeVerify(_PreviousToken, _ExpS1Type, TIPO_LOGICO);//(28) - SEMÂNTICO
+
+			//(28) - COD -----------------------------------------------------------------------------
+			if(_ExpType == TIPO_INTEIRO)
+			{
+				_cg->LOD("A", _ExpAdr);
+				if(_ExpSType == TIPO_INTEIRO)
+				{
+					_cg->LOD("B", _ExpSAdr);
+					_ExpType = TIPO_INTEIRO;
+				}
+				else
+				{
+					_cg->CNV("A", "A");
+					_cg->LODF("B", _ExpSAdr);
+					_ExpType = TIPO_REAL;
+				}
+			}//end if
+			else
+			{
+				_cg->LODF("A", _ExpAdr);
+				if(_ExpSType == TIPO_INTEIRO)
+				{
+					_cg->LOD("B", _ExpSAdr);
+					_cg->CNV("B", "B");
+					_ExpType = TIPO_REAL;
+				}
+				else
+				{
+					_cg->LODF("B", _ExpSAdr);
+					_ExpType = TIPO_REAL;
+				}
+			}//end else
+
+			if(_ExpType == TIPO_INTEIRO)
+			{
+				_cg->SUB("A","B");
+				//TODO: Ação 28 - Geração de código de Saltos
+			}//end if
+			else
+			{
+				_cg->SUBF("A","B");
+				//TODO: Ação 28 - Geração de código de Saltos
+			}//end else
+			//(28) - COD -----------------------------------------------------------------------------
+			_ExpType = TIPO_LOGICO;
 	}
 }
 //---------------------------------------------------------------------------------------------------------------------
-void ATWSin::R(){
+void ATWSin::R(Token& _ROp){
 	switch(_CurrentToken._Token){
 	case LT:
 		CT(LT);
+		_ROp = LT;//(50) - COD
 		break;
 	case GT:
 		CT(GT);
+		_ROp = GT;//(51) - COD
 		break;
 	case LE:
 		CT(LE);
+		_ROp = LE;//(52) - COD
 		break;
 	case GE:
 		CT(GE);
+		_ROp = GE;//(53) - COD
 		break;
 	case EQ:
 		CT(EQ);
+		_ROp = EQ;//(54) - COD
 		break;
 	case DIFF:
 		CT(DIFF);
+		_ROp = DIFF;//(55) - COD
 		break;
 	}
 }
 //---------------------------------------------------------------------------------------------------------------------
-void ATWSin::EXPS(InfoBundle* _inf, int & _ExpSAdr){
+void ATWSin::EXPS(Type& _ExpSType, int & _ExpSAdr){
 	Token _ExpSOp = PLUS;
+	int _TAdr, _T1Adr;
+	Type _TType, _T1Type;
 
 	if(_CurrentToken._Token == PLUS){
 		CT(PLUS);
@@ -715,102 +772,200 @@ void ATWSin::EXPS(InfoBundle* _inf, int & _ExpSAdr){
 		_ExpSOp = MINUS;
 	}
 
-	T(_inf);//(23) - SEMÂNTICO
+	T(_TType, _TAdr);//(23) - SEMÂNTICO
+	_ExpSType = _TType;//(23) - SEMÂNTICO
 
+	//(23) - COD --------------------------------------------------------------------
+	if (_ExpSOp == MINUS)
+	{
+		_ExpSAdr = _memory->ATWNovoTemp(_ExpSType);
+		if (_TType == TIPO_INTEIRO)
+		{
+			_cg->LOD("A", _TAdr);
+			_cg->NEG("A");
+			_cg->STO("A", _ExpSAdr);
+		}//end if
+		else
+		{
+			_cg->LODF("A", _TAdr);
+			_cg->NEGF("A");
+			_cg->STOF("A", _ExpSAdr);
+		}//end else
+	}
+	else
+		_ExpSAdr = _TAdr;
+	//(23) - COD --------------------------------------------------------------------
 
 	while(_CurrentToken._Token == PLUS || _CurrentToken._Token == MINUS || _CurrentToken._Token == OU){
 		if(_CurrentToken._Token == PLUS){
 			CT(PLUS);
-			_ExpSOp = PLUS;
+			_ExpSOp = PLUS;//(24) - SEMÂNTICO
 		}
 		else if(_CurrentToken._Token == MINUS){
 			CT(MINUS);
-			_ExpSOp = MINUS;
+			_ExpSOp = MINUS;//(25) - SEMÂNTICO
 		}
 		else if(_CurrentToken._Token == OU){
 			CT(OU);
-			_ExpSOp = OU;
+			_ExpSOp = OU;//(26) - SEMÂNTICO
 		}
 
-		InfoBundle _auxInf;
-		_auxInf.build_element(-1, "");
-		T(&_auxInf);
+		T(_T1Type, _T1Adr);
 
 		//(27) - SEMÂNTICO --------------------------------------------------------------------------------
-		//(27) - SEMÂNTICO --------------------------------------------------------------------------------
-		Type _ExpsT = _inf->_Type;
-		Type _T1    = _auxInf._Type;
+		//(27) - COD --------------------------------------------------------------------------------------
 
-		if(_ExpSOp == PLUS || _ExpSOp == MINUS){
-			if(_ExpsT == TIPO_INTEIRO && _T1 == TIPO_INTEIRO)
-				_inf->_Type = TIPO_INTEIRO;
-			else if(_ExpsT == TIPO_INTEIRO && _T1 == TIPO_REAL)
-				_inf->_Type = TIPO_REAL;
-			else if(_ExpsT == TIPO_REAL && _T1 == TIPO_INTEIRO)
-				_inf->_Type = TIPO_REAL;
-			else if(_ExpsT == TIPO_REAL && _T1 == TIPO_REAL)
-				_inf->_Type = TIPO_REAL;
+		if(_ExpSOp == PLUS){
+			if(_ExpSType == TIPO_INTEIRO && _T1Type == TIPO_INTEIRO)
+			{
+				_ExpSType = TIPO_INTEIRO;
+				_cg->LOD("A", _ExpSAdr);
+				_cg->LOD("B", _T1Adr);
+				_cg->ADD("A", "B");
+				_ExpSAdr = _memory->ATWNovoTemp(TIPO_INTEIRO);
+				_cg->STO("A", _ExpSAdr);
+			}
+			else if(_ExpSType == TIPO_INTEIRO && _T1Type == TIPO_REAL)
+			{
+				_ExpSType = TIPO_REAL;
+				_cg->LOD("A", _ExpSAdr);
+				_cg->CNV("A", "A");
+				_cg->LODF("B", _T1Adr);
+				_cg->ADDF("A", "B");
+				_ExpSAdr = _memory->ATWNovoTemp(TIPO_REAL);
+				_cg->STOF("A", _ExpSAdr);
+			}
+			else if(_ExpSType == TIPO_REAL && _T1Type == TIPO_INTEIRO)
+			{
+				_ExpSType = TIPO_REAL;
+				_cg->LODF("A", _ExpSAdr);
+				_cg->LOD("B", _T1Adr);
+				_cg->CNV("B", "B");
+				_cg->ADDF("A", "B");
+				_ExpSAdr = _memory->ATWNovoTemp(TIPO_REAL);
+				_cg->STOF("A", _ExpSAdr);
+			}
+			else if(_ExpSType == TIPO_REAL && _T1Type == TIPO_REAL)
+			{
+				_ExpSType = TIPO_REAL;
+				_cg->LODF("A", _ExpSAdr);
+				_cg->LODF("B", _T1Adr);
+				_cg->ADDF("A", "B");
+				_ExpSAdr = _memory->ATWNovoTemp(TIPO_REAL);
+				_cg->STOF("A", _ExpSAdr);
+			}
+			else{
+				void* _Param[1] = {(void*)_PreviousToken._LINE};
+				_eManager->callHandlers(this->getGroupID(), INCOMPATILBE_TYPES, _Param);
+			}//end else
+		}//end if
+		else if (_ExpSOp == MINUS)
+		{
+			if(_ExpSType == TIPO_INTEIRO && _T1Type == TIPO_INTEIRO)
+			{
+				_ExpSType = TIPO_INTEIRO;
+				_cg->LOD("A", _ExpSAdr);
+				_cg->LOD("B", _T1Adr);
+				_cg->SUB("A", "B");
+				_ExpSAdr = _memory->ATWNovoTemp(TIPO_INTEIRO);
+				_cg->STO("A", _ExpSAdr);
+			}
+			else if(_ExpSType == TIPO_INTEIRO && _T1Type == TIPO_REAL)
+			{
+				_ExpSType = TIPO_REAL;
+				_cg->LOD("A", _ExpSAdr);
+				_cg->CNV("A", "A");
+				_cg->LODF("B", _T1Adr);
+				_cg->SUBF("A", "B");
+				_ExpSAdr = _memory->ATWNovoTemp(TIPO_REAL);
+				_cg->STOF("A", _ExpSAdr);
+			}
+			else if(_ExpSType == TIPO_REAL && _T1Type == TIPO_INTEIRO)
+			{
+				_ExpSType = TIPO_REAL;
+				_cg->LODF("A", _ExpSAdr);
+				_cg->LOD("B", _T1Adr);
+				_cg->CNV("B", "B");
+				_cg->SUBF("A", "B");
+				_ExpSAdr = _memory->ATWNovoTemp(TIPO_REAL);
+				_cg->STOF("A", _ExpSAdr);
+			}
+			else if(_ExpSType == TIPO_REAL && _T1Type == TIPO_REAL)
+			{
+				_ExpSType = TIPO_REAL;
+				_cg->LODF("A", _ExpSAdr);
+				_cg->LODF("B", _T1Adr);
+				_cg->SUBF("A", "B");
+				_ExpSAdr = _memory->ATWNovoTemp(TIPO_REAL);
+				_cg->STOF("A", _ExpSAdr);
+			}
+			else{
+				void* _Param[1] = {(void*)_PreviousToken._LINE};
+				_eManager->callHandlers(this->getGroupID(), INCOMPATILBE_TYPES, _Param);
+			}//end else
+		}//end elseif
+		else
+		{
+			if (_ExpSType == TIPO_LOGICO && _T1Type == TIPO_LOGICO)
+			{
+				_ExpSType = TIPO_LOGICO;
+				_cg->LOD("A", _ExpSAdr);
+				_cg->LOD("B", _T1Adr);
+				_cg->ADD("A", "B");
+				//TODO: Terminar ação 27 de código (Gerar Rótulo faltando)
+			}
 			else{
 				void* _Param[1] = {(void*)_PreviousToken._LINE};
 				_eManager->callHandlers(this->getGroupID(), INCOMPATILBE_TYPES, _Param);
 			}
-		}else{
-			if (_ExpsT == TIPO_LOGICO && _T1 == TIPO_LOGICO)
-				_inf->_Type = TIPO_LOGICO;
-			else{
-				void* _Param[1] = {(void*)_PreviousToken._LINE};
-				_eManager->callHandlers(this->getGroupID(), INCOMPATILBE_TYPES, _Param);
-			}
-		}
+		}//end else
+		//(27) - COD --------------------------------------------------------------------------------------
 		//(27) - SEMÂNTICO --------------------------------------------------------------------------------
-		//(27) - SEMÂNTICO --------------------------------------------------------------------------------
-	}//END WHILE
+	}//end while
 }
 //---------------------------------------------------------------------------------------------------------------------
-void ATWSin::T(InfoBundle* _inf, int & _TAdr){
+void ATWSin::T(Type& _TType, int& _TAdr){
 	int _FAdr, _F1Adr;
+	Type _FType, _F1Type;
 	 
-	F(_inf, _FAdr);//(18) - SEMÂNTICO
+	F(_FType, _FAdr);//(18) - SEMÂNTICO
+	_TType = _FType;//(18) - SEMÂNTICO
 	_TAdr = _FAdr;//(18) - COD
 
 	while(_CurrentToken._Token == TIMES || _CurrentToken._Token == OVER || _CurrentToken._Token == E){
-		Token _tOp;
+		Token _TOp;
 
 		if(_CurrentToken._Token == TIMES){
 			CT(TIMES);
-			_tOp = TIMES;
+			_TOp = TIMES;//(19) - SEMÂNTICO
 		}else if(_CurrentToken._Token == OVER){
 			CT(OVER);
-			_tOp = OVER;
+			_TOp = OVER;//(20) - SEMÂNTICO
 		}
 		else{
 			CT(E);
-			_tOp = E;
+			_TOp = E;//(21) - SEMÂNTICO
 		}
 
-		InfoBundle _auxInf;
-		_auxInf.build_element(-1, "");
-		F(&_auxInf, _F1Adr);
+		F(_F1Type, _F1Adr);
 
 		//(22) - SEMÂNTICO --------------------------------------------------------------------------------
 		//(22) - COD -------------------------------------------------------------------------------------
-		Type _T     = _inf->_Type;
-		Type _F1    = _auxInf._Type;
 
-		if(_tOp == TIMES)
+		if(_TOp == TIMES)
 		{
-			if(_T == TIPO_INTEIRO && _F1 == TIPO_INTEIRO)
+			if(_TType == TIPO_INTEIRO && _F1Type == TIPO_INTEIRO)
 			{
-				_inf->_Type = TIPO_INTEIRO;
+				_TType = TIPO_INTEIRO;
 				_cg->LOD("A", _TAdr);
 				_cg->LOD("B", _F1Adr);
 				_cg->MUL("A", "B");
 				_TAdr = _memory->ATWNovoTemp(TIPO_INTEIRO);
 				_cg->STO("A", _TAdr);
 			}
-			else if(_T == TIPO_INTEIRO && _F1 == TIPO_REAL)
+			else if(_TType == TIPO_INTEIRO && _F1Type == TIPO_REAL)
 			{
-				_inf->_Type = TIPO_REAL;
+				_TType = TIPO_REAL;
 				_cg->LOD("A", _TAdr);
 				_cg->CNV("A","A");
 				_cg->LODF("B", _F1Adr);
@@ -818,9 +973,9 @@ void ATWSin::T(InfoBundle* _inf, int & _TAdr){
 				_TAdr = _memory->ATWNovoTemp(TIPO_REAL);
 				_cg->STOF("A", _TAdr);
 			}
-			else if(_T == TIPO_REAL && _F1 == TIPO_INTEIRO)
+			else if(_TType == TIPO_REAL && _F1Type == TIPO_INTEIRO)
 			{
-				_inf->_Type = TIPO_REAL;
+				_TType = TIPO_REAL;
 				_cg->LODF("A", _TAdr);
 				_cg->LOD("B", _F1Adr);
 				_cg->CNV("B","B");
@@ -828,9 +983,9 @@ void ATWSin::T(InfoBundle* _inf, int & _TAdr){
 				_TAdr = _memory->ATWNovoTemp(TIPO_REAL);
 				_cg->STOF("A", _TAdr);
 			}
-			else if(_T == TIPO_REAL && _F1 == TIPO_REAL)
+			else if(_TType == TIPO_REAL && _F1Type == TIPO_REAL)
 			{
-				_inf->_Type = TIPO_REAL;
+				_TType = TIPO_REAL;
 				_cg->LODF("A", _TAdr);
 				_cg->LODF("B", _F1Adr);
 				_cg->MULF("A", "B");
@@ -841,10 +996,10 @@ void ATWSin::T(InfoBundle* _inf, int & _TAdr){
 				void* _Param[1] = {(void*)_PreviousToken._LINE};
 				_eManager->callHandlers(this->getGroupID(), INCOMPATILBE_TYPES, _Param);
 			}
-		}else if(_tOp == OVER){
-			if(_T == TIPO_INTEIRO && _F1 == TIPO_INTEIRO)
+		}else if(_TOp == OVER){
+			if(_TType == TIPO_INTEIRO && _F1Type == TIPO_INTEIRO)
 			{
-				_inf->_Type = TIPO_INTEIRO;
+				_TType = TIPO_INTEIRO;
 				_cg->LOD("A", _TAdr);
 				_cg->CNV("A","A");
 				_cg->LOD("B", _F1Adr);
@@ -853,9 +1008,9 @@ void ATWSin::T(InfoBundle* _inf, int & _TAdr){
 				_TAdr = _memory->ATWNovoTemp(TIPO_REAL);
 				_cg->STOF("A", _TAdr);
 			}
-			else if(_T == TIPO_INTEIRO && _F1 == TIPO_REAL)
+			else if(_TType == TIPO_INTEIRO && _F1Type == TIPO_REAL)
 			{
-				_inf->_Type = TIPO_REAL;
+				_TType = TIPO_REAL;
 				_cg->LOD("A", _TAdr);
 				_cg->CNV("A","A");
 				_cg->LODF("B", _F1Adr);
@@ -863,9 +1018,9 @@ void ATWSin::T(InfoBundle* _inf, int & _TAdr){
 				_TAdr = _memory->ATWNovoTemp(TIPO_REAL);
 				_cg->STOF("A", _TAdr);
 			}
-			else if(_T == TIPO_REAL && _F1 == TIPO_INTEIRO)
+			else if(_TType == TIPO_REAL && _F1Type == TIPO_INTEIRO)
 			{
-				_inf->_Type = TIPO_REAL;
+				_TType = TIPO_REAL;
 				_cg->LODF("A", _TAdr);
 				_cg->LOD("B", _F1Adr);
 				_cg->CNV("B","B");
@@ -873,9 +1028,9 @@ void ATWSin::T(InfoBundle* _inf, int & _TAdr){
 				_TAdr = _memory->ATWNovoTemp(TIPO_REAL);
 				_cg->STOF("A", _TAdr);
 			}
-			else if(_T == TIPO_REAL && _F1 == TIPO_REAL)
+			else if(_TType == TIPO_REAL && _F1Type == TIPO_REAL)
 			{
-				_inf->_Type = TIPO_REAL;
+				_TType = TIPO_REAL;
 				_cg->LODF("A", _TAdr);
 				_cg->LODF("B", _F1Adr);
 				_cg->DIV("A", "B");
@@ -887,9 +1042,9 @@ void ATWSin::T(InfoBundle* _inf, int & _TAdr){
 				_eManager->callHandlers(this->getGroupID(), INCOMPATILBE_TYPES, _Param);
 			}
 		}else{
-			if (_T == TIPO_LOGICO && _F1 == TIPO_LOGICO)
+			if (_TType == TIPO_LOGICO && _F1Type == TIPO_LOGICO)
 			{
-				_inf->_Type = TIPO_LOGICO;
+				_TType = TIPO_LOGICO;
 				_cg->LOD("A", _TAdr);
 				_cg->LOD("B", _F1Adr);
 				_cg->MUL("A", "B");
@@ -906,7 +1061,7 @@ void ATWSin::T(InfoBundle* _inf, int & _TAdr){
 	}
 }
 //---------------------------------------------------------------------------------------------------------------------
-void ATWSin::F(InfoBundle* _inf, int& _FAdr){//Fend = _FAdr
+void ATWSin::F(Type& _FType, int& _FAdr){//Fend = _FAdr
 	Class _class[2] = {CLASSE_CONST, CLASSE_VAR};//(9) - SEMÂNTICO
 	ATW_BUFF_ELEMENT _tAux = _PreviousToken;//(16) - SEMÂNTICO
 	
@@ -914,10 +1069,12 @@ void ATWSin::F(InfoBundle* _inf, int& _FAdr){//Fend = _FAdr
 	case LPAREN:
 		CT(LPAREN);
 		
+		Type _ExpType;
 		int _ExpAdr;
 
 		_memory->ATWResetTemp();
-		Exp(_inf, _ExpAdr);//(17) - SEMÂNTICO
+		Exp(_ExpType, _ExpAdr);//(17) - SEMÂNTICO
+		_FType = _ExpType;
 		_FAdr = _ExpAdr;//(17) - COD
 
 		CT(RPAREN);
@@ -926,12 +1083,14 @@ void ATWSin::F(InfoBundle* _inf, int& _FAdr){//Fend = _FAdr
 		CT(NAO);
 		
 		int _F1Adr;
+		Type _F1Type;
 
-		F(_inf, _F1Adr);//(16) - SEMÂNTICO
-		_Sem->TypeVerify(_tAux, _inf->_Type, TIPO_LOGICO);//(16) - SEMÂNTICO
+		F(_F1Type, _F1Adr);//(16) - SEMÂNTICO
+		_FType = _F1Type;//(16) - SEMÂNTICO
+		_Sem->TypeVerify(_tAux, _F1Type, TIPO_LOGICO);//(16) - SEMÂNTICO
 		
 		//(16) - COD-------------------------------------------------------------------
-		_FAdr = _memory->ATWNovoTemp(_inf->_Type);
+		_FAdr = _memory->ATWNovoTemp(_FType);
 
 		_cg->LOD("A",_F1Adr);
 		_cg->NEG("A");
@@ -944,19 +1103,19 @@ void ATWSin::F(InfoBundle* _inf, int& _FAdr){//Fend = _FAdr
 
 		_Sem->unicidadeNotDeclared(_PreviousToken);//(1) - SEMÂNTICO
 		_Sem->nClassVerify(_PreviousToken, 2, _class);//(8) - SEMÂNTICO
-		_inf->_Type = _Sem->getType(_PreviousToken);//(14) - SEMÂNTICO
+		_FType = _Sem->getType(_PreviousToken);//(14) - SEMÂNTICO
 		_FAdr = _PreviousToken._End;//(14) - COD
 
 		break;
 	case CONSTANT:
 		CT(CONSTANT);
 
-		_inf->_Type = _PreviousToken._Tipo;//(15) - SEMÂNTICO
+		_FType = _PreviousToken._Tipo;//(15) - SEMÂNTICO
 
 		//(15) - COD-------------------------------------------------------------------
-		_FAdr = _memory->ATWNovoTemp(_inf->_Type);
+		_FAdr = _memory->ATWNovoTemp(_FType);
 		
-		if (_inf->_Type == TIPO_INTEIRO)
+		if (_FType == TIPO_INTEIRO)
 			_cg->STI(_PreviousToken._Lex,_FAdr);
 		else
 			_cg->STIF(_PreviousToken._Lex,_FAdr);
