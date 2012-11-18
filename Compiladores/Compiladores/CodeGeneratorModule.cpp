@@ -137,11 +137,11 @@ int CodeGeneratorModule::ADD(char* _RegD, char* _RegO, char* _Comment)
 	insertCodeToWriteMac("ADD #", _InstIndex++);
 	//insertCodeToWriteBin(1);
 	insertCodeToWriteMac(_RegD, _InstIndex++);
-	itoa(_Value,_RegD,10);
+	//itoa(_Value,_RegD,10);
 	//insertCodeToWriteBin(_Value);
 	insertCodeToWriteMac(", ", _InstIndex++);
 	insertCodeToWriteMac(_RegO, _InstIndex++);
-	itoa(_Value,_RegO,10);
+	//itoa(_Value,_RegO,10);
 	//insertCodeToWriteBin(_Value);
 	if(strcmp(_Comment, "") != 0){char _sPrint[255];sprintf_s(_sPrint, " ATW_COMMENT: %s", _Comment);insertCodeToWriteMac(_sPrint, _InstIndex++);}
 	insertCodeToWriteMac("\n", _InstIndex++);
@@ -157,11 +157,11 @@ int CodeGeneratorModule::ADDF(char* _RegD, char* _RegO, char* _Comment)
 	insertCodeToWriteMac("ADDF ", _InstIndex++);
 	//insertCodeToWriteBin(2);
 	insertCodeToWriteMac(_RegD, _InstIndex++);
-	itoa(_Value,_RegD,10);
+	//itoa(_Value,_RegD,10);
 	//insertCodeToWriteBin(_Value);
 	insertCodeToWriteMac(", ", _InstIndex++);
 	insertCodeToWriteMac(_RegO, _InstIndex++);
-	itoa(_Value,_RegO,10);
+	//itoa(_Value,_RegO,10);
 	//insertCodeToWriteBin(_Value);
 	if(strcmp(_Comment, "") != 0){char _sPrint[255];sprintf_s(_sPrint, " ATW_COMMENT: %s", _Comment);insertCodeToWriteMac(_sPrint, _InstIndex++);}
 	insertCodeToWriteMac("\n", _InstIndex++);
@@ -177,11 +177,11 @@ int CodeGeneratorModule::ADI(char* _RegD, char* _Imed, char* _Comment)
 	insertCodeToWriteMac("ADI ", _InstIndex++);
 	//insertCodeToWriteBin(3);
 	insertCodeToWriteMac(_RegD, _InstIndex++);
-	itoa(_Value,_RegD,10);
+	//itoa(_Value,_RegD,10);
 	//insertCodeToWriteBin(_Value);
 	insertCodeToWriteMac(", #", _InstIndex++);
 	insertCodeToWriteMac(_Imed, _InstIndex++);
-	itoa(_Value,_Imed,10);
+	//itoa(_Value,_Imed,10);
 	//insertCodeToWriteBin(_Value);
 	if(strcmp(_Comment, "") != 0){char _sPrint[255];sprintf_s(_sPrint, " ATW_COMMENT: %s", _Comment);insertCodeToWriteMac(_sPrint, _InstIndex++);}
 	insertCodeToWriteMac("\n", _InstIndex++);
@@ -197,11 +197,11 @@ int CodeGeneratorModule::ADIF(char* _RegD, char* _Imed, char* _Comment)
 	insertCodeToWriteMac("ADIF ", _InstIndex++);
 	//insertCodeToWriteBin(4);
 	insertCodeToWriteMac(_RegD, _InstIndex++);
-	itoa(_Value,_RegD,10);
+	//itoa(_Value,_RegD,10);
 	//insertCodeToWriteBin(_Value);
 	insertCodeToWriteMac(", #", _InstIndex++);
 	insertCodeToWriteMac(_Imed, _InstIndex++);
-	itoa(_Value,_Imed,10);
+	//itoa(_Value,_Imed,10);
 	//insertCodeToWriteBin(_Value);
 	if(strcmp(_Comment, "") != 0){if(strcmp(_Comment, "") != 0){char _sPrint[255];sprintf_s(_sPrint, " ATW_COMMENT: %s", _Comment);insertCodeToWriteMac(_sPrint, _InstIndex++);}}
 	insertCodeToWriteMac("\n", _InstIndex++);
@@ -217,11 +217,11 @@ int CodeGeneratorModule::BNG(char* _Reg, int _Desl, char* _Comment)
 	insertCodeToWriteMac("BNG ", _InstIndex++);
 	//insertCodeToWriteBin(5);
 	insertCodeToWriteMac(_Reg, _InstIndex++);
-	itoa(_Value,_Reg,10);
+	//itoa(_Value,_Reg,10);
 	//insertCodeToWriteBin(_Value);
 	insertCodeToWriteMac(", ", _InstIndex++);
 	insertCodeToWriteMac(ATWgetCStr(_Desl), _InstIndex++);
-	itoa(_Value, ATWgetCStr(_Desl),10);
+	//itoa(_Value, ATWgetCStr(_Desl),10);
 	//insertCodeToWriteBin(_Value);
 	insertCodeToWriteMac("(CS)", _InstIndex++);
 	if(strcmp(_Comment, "") != 0){char _sPrint[255];sprintf_s(_sPrint, " ATW_COMMENT: %s", _Comment);insertCodeToWriteMac(_sPrint, _InstIndex++);}
@@ -238,11 +238,11 @@ int CodeGeneratorModule::BNGF(char* _Reg, int _Desl, char* _Comment)
 	insertCodeToWriteMac("BNGF ", _InstIndex++);
 	//insertCodeToWriteBin(6);
 	insertCodeToWriteMac(_Reg, _InstIndex++);	
-	itoa(_Value,_Reg,10);
+	//itoa(_Value,_Reg,10);
 	//insertCodeToWriteBin(_Value);
 	insertCodeToWriteMac(", ", _InstIndex++);
 	insertCodeToWriteMac(ATWgetCStr(_Desl), _InstIndex++);
-	itoa(_Value, ATWgetCStr(_Desl),10);
+	//itoa(_Value, ATWgetCStr(_Desl),10);
 	//insertCodeToWriteBin(_Value);
 	insertCodeToWriteMac("(CS)", _InstIndex++);
 	if(strcmp(_Comment, "") != 0){char _sPrint[255];sprintf_s(_sPrint, " ATW_COMMENT: %s", _Comment);insertCodeToWriteMac(_sPrint, _InstIndex++);}
@@ -259,11 +259,11 @@ int CodeGeneratorModule::BNN(char* _Reg, int _Desl, char* _Comment)
 	insertCodeToWriteMac("BNN ", _InstIndex++);
 	//insertCodeToWriteBin(7);
 	insertCodeToWriteMac(_Reg, _InstIndex++);	
-	itoa(_Value,_Reg,10);
+	//itoa(_Value,_Reg,10);
 	//insertCodeToWriteBin(_Value);
 	insertCodeToWriteMac(", ", _InstIndex++);
 	insertCodeToWriteMac(ATWgetCStr(_Desl), _InstIndex++);
-	itoa(_Value, ATWgetCStr(_Desl),10);
+	//itoa(_Value, ATWgetCStr(_Desl),10);
 	//insertCodeToWriteBin(_Value);
 	insertCodeToWriteMac("(CS)", _InstIndex++);
 	if(strcmp(_Comment, "") != 0){char _sPrint[255];sprintf_s(_sPrint, " ATW_COMMENT: %s", _Comment);insertCodeToWriteMac(_sPrint, _InstIndex++);}
@@ -280,11 +280,11 @@ int CodeGeneratorModule::BNNF(char* _Reg, int _Desl, char* _Comment)
 	insertCodeToWriteMac("BNNF ", _InstIndex++);
 	//insertCodeToWriteBin(8);
 	insertCodeToWriteMac(_Reg, _InstIndex++);
-	itoa(_Value,_Reg,10);
+	//itoa(_Value,_Reg,10);
 	//insertCodeToWriteBin(_Value);
 	insertCodeToWriteMac(", ", _InstIndex++);
 	insertCodeToWriteMac(ATWgetCStr(_Desl), _InstIndex++);
-	itoa(_Value, ATWgetCStr(_Desl),10);
+	//itoa(_Value, ATWgetCStr(_Desl),10);
 	//insertCodeToWriteBin(_Value);
 	insertCodeToWriteMac("(CS)", _InstIndex++);
 	if(strcmp(_Comment, "") != 0){char _sPrint[255];sprintf_s(_sPrint, " ATW_COMMENT: %s", _Comment);insertCodeToWriteMac(_sPrint, _InstIndex++);}
@@ -301,11 +301,11 @@ int CodeGeneratorModule::BNP(char* _Reg, int _Desl, char* _Comment)
 	insertCodeToWriteMac("BNP ", _InstIndex++);
 	//insertCodeToWriteBin(9);
 	insertCodeToWriteMac(_Reg, _InstIndex++);
-	itoa(_Value,_Reg,10);
+	//itoa(_Value,_Reg,10);
 	//insertCodeToWriteBin(_Value);
 	insertCodeToWriteMac(", ", _InstIndex++);
 	insertCodeToWriteMac(ATWgetCStr(_Desl), _InstIndex++);
-	itoa(_Value, ATWgetCStr(_Desl),10);
+	//itoa(_Value, ATWgetCStr(_Desl),10);
 	//insertCodeToWriteBin(_Value);
 	insertCodeToWriteMac("(CS)", _InstIndex++);
 	if(strcmp(_Comment, "") != 0){char _sPrint[255];sprintf_s(_sPrint, " ATW_COMMENT: %s", _Comment);insertCodeToWriteMac(_sPrint, _InstIndex++);}
@@ -322,11 +322,11 @@ int CodeGeneratorModule::BNPF(char* _Reg, int _Desl, char* _Comment)
 	insertCodeToWriteMac("BNPF ", _InstIndex++);
 	//insertCodeToWriteBin(10);
 	insertCodeToWriteMac(_Reg, _InstIndex++);
-	itoa(_Value,_Reg,10);
+	//itoa(_Value,_Reg,10);
 	//insertCodeToWriteBin(_Value);
 	insertCodeToWriteMac(", ", _InstIndex++);
 	insertCodeToWriteMac(ATWgetCStr(_Desl), _InstIndex++);
-	itoa(_Value, ATWgetCStr(_Desl),10);
+	//itoa(_Value, ATWgetCStr(_Desl),10);
 	//insertCodeToWriteBin(_Value);
 	insertCodeToWriteMac("(CS)", _InstIndex++);
 	if(strcmp(_Comment, "") != 0){char _sPrint[255];sprintf_s(_sPrint, " ATW_COMMENT: %s", _Comment);insertCodeToWriteMac(_sPrint, _InstIndex++);}
@@ -343,11 +343,11 @@ int CodeGeneratorModule::BNZ(char* _Reg, int _Desl, char* _Comment)
 	insertCodeToWriteMac("BNZ ", _InstIndex++);
 	//insertCodeToWriteBin(11);
 	insertCodeToWriteMac(_Reg, _InstIndex++);
-	itoa(_Value,_Reg,10);
+	//itoa(_Value,_Reg,10);
 	//insertCodeToWriteBin(_Value);
 	insertCodeToWriteMac(", ", _InstIndex++);
 	insertCodeToWriteMac(ATWgetCStr(_Desl), _InstIndex++);
-	itoa(_Value, ATWgetCStr(_Desl),10);
+	//itoa(_Value, ATWgetCStr(_Desl),10);
 	//insertCodeToWriteBin(_Value);
 	insertCodeToWriteMac("(CS)", _InstIndex++);
 	if(strcmp(_Comment, "") != 0){char _sPrint[255];sprintf_s(_sPrint, " ATW_COMMENT: %s", _Comment);insertCodeToWriteMac(_sPrint, _InstIndex++);}
@@ -364,11 +364,11 @@ int CodeGeneratorModule::BNZF(char* _Reg, int _Desl, char* _Comment)
 	insertCodeToWriteMac("BNZF ", _InstIndex++);
 	//insertCodeToWriteBin(12);
 	insertCodeToWriteMac(_Reg, _InstIndex++);
-	itoa(_Value,_Reg,10);
+	//itoa(_Value,_Reg,10);
 	//insertCodeToWriteBin(_Value);
 	insertCodeToWriteMac(", ", _InstIndex++);
 	insertCodeToWriteMac(ATWgetCStr(_Desl), _InstIndex++);
-	itoa(_Value, ATWgetCStr(_Desl),10);
+	//itoa(_Value, ATWgetCStr(_Desl),10);
 	//insertCodeToWriteBin(_Value);
 	insertCodeToWriteMac("(CS)", _InstIndex++);
 	if(strcmp(_Comment, "") != 0){char _sPrint[255];sprintf_s(_sPrint, " ATW_COMMENT: %s", _Comment);insertCodeToWriteMac(_sPrint, _InstIndex++);}
@@ -385,11 +385,11 @@ int CodeGeneratorModule::BPS(char* _Reg, int _Desl, char* _Comment)
 	insertCodeToWriteMac("BPS ", _InstIndex++);
 	//insertCodeToWriteBin(13);
 	insertCodeToWriteMac(_Reg, _InstIndex++);
-	itoa(_Value,_Reg,10);
+	//itoa(_Value,_Reg,10);
 	//insertCodeToWriteBin(_Value);
 	insertCodeToWriteMac(", ", _InstIndex++);
 	insertCodeToWriteMac(ATWgetCStr(_Desl), _InstIndex++);
-	itoa(_Value, ATWgetCStr(_Desl),10);
+	//itoa(_Value, ATWgetCStr(_Desl),10);
 	//insertCodeToWriteBin(_Value);
 	insertCodeToWriteMac("(CS)", _InstIndex++);
 	if(strcmp(_Comment, "") != 0){char _sPrint[255];sprintf_s(_sPrint, " ATW_COMMENT: %s", _Comment);insertCodeToWriteMac(_sPrint, _InstIndex++);}
@@ -406,11 +406,11 @@ int CodeGeneratorModule::BPSF(char* _Reg, int _Desl, char* _Comment)
 	insertCodeToWriteMac("BPSF", _InstIndex++);
 	//insertCodeToWriteBin(14);
 	insertCodeToWriteMac(_Reg, _InstIndex++);	
-	itoa(_Value,_Reg,10);
+	//itoa(_Value,_Reg,10);
 	//insertCodeToWriteBin(_Value);
 	insertCodeToWriteMac(", ", _InstIndex++);
 	insertCodeToWriteMac(ATWgetCStr(_Desl), _InstIndex++);
-	itoa(_Value, ATWgetCStr(_Desl),10);
+	//itoa(_Value, ATWgetCStr(_Desl),10);
 	//insertCodeToWriteBin(_Value);
 	insertCodeToWriteMac("(CS)", _InstIndex++);
 	if(strcmp(_Comment, "") != 0){char _sPrint[255];sprintf_s(_sPrint, " ATW_COMMENT: %s", _Comment);insertCodeToWriteMac(_sPrint, _InstIndex++);}
@@ -427,11 +427,11 @@ int CodeGeneratorModule::BZR(char* _Reg, int _Desl, char* _Comment)
 	insertCodeToWriteMac("BZR ", _InstIndex++);
 	//insertCodeToWriteBin(15);
 	insertCodeToWriteMac(_Reg, _InstIndex++);	
-	itoa(_Value,_Reg,10);
+	//itoa(_Value,_Reg,10);
 	//insertCodeToWriteBin(_Value);
 	insertCodeToWriteMac(", ", _InstIndex++);
 	insertCodeToWriteMac(ATWgetCStr(_Desl), _InstIndex++);
-	itoa(_Value, ATWgetCStr(_Desl),10);
+	//itoa(_Value, ATWgetCStr(_Desl),10);
 	//insertCodeToWriteBin(_Value);
 	insertCodeToWriteMac("(CS)", _InstIndex++);
 	if(strcmp(_Comment, "") != 0){char _sPrint[255];sprintf_s(_sPrint, " ATW_COMMENT: %s", _Comment);insertCodeToWriteMac(_sPrint, _InstIndex++);}
@@ -448,11 +448,11 @@ int CodeGeneratorModule::BZRF(char* _Reg, int _Desl, char* _Comment)
 	insertCodeToWriteMac("BZRF ", _InstIndex++);
 	//insertCodeToWriteBin(16);
 	insertCodeToWriteMac(_Reg, _InstIndex++);	
-	itoa(_Value,_Reg,10);
+	//itoa(_Value,_Reg,10);
 	//insertCodeToWriteBin(_Value);
 	insertCodeToWriteMac(", ", _InstIndex++);
 	insertCodeToWriteMac(ATWgetCStr(_Desl), _InstIndex++);
-	itoa(_Value, ATWgetCStr(_Desl),10);
+	//itoa(_Value, ATWgetCStr(_Desl),10);
 	//insertCodeToWriteBin(_Value);
 	insertCodeToWriteMac("(CS)", _InstIndex++);
 	if(strcmp(_Comment, "") != 0){char _sPrint[255];sprintf_s(_sPrint, " ATW_COMMENT: %s", _Comment);insertCodeToWriteMac(_sPrint, _InstIndex++);}
@@ -469,11 +469,11 @@ int CodeGeneratorModule::CNV(char* _RegD, char* _RegO, char* _Comment)
 	insertCodeToWriteMac("CNV ", _InstIndex++);
 	//insertCodeToWriteBin(17);
 	insertCodeToWriteMac(_RegD, _InstIndex++);
-	itoa(_Value,_RegD,10);
+	//itoa(_Value,_RegD,10);
 	//insertCodeToWriteBin(_Value);
 	insertCodeToWriteMac(", ", _InstIndex++);
 	insertCodeToWriteMac(_RegO, _InstIndex++);
-	itoa(_Value,_RegO,10);
+	//itoa(_Value,_RegO,10);
 	//insertCodeToWriteBin(_Value);
 	if(strcmp(_Comment, "") != 0){char _sPrint[255];sprintf_s(_sPrint, " ATW_COMMENT: %s", _Comment);insertCodeToWriteMac(_sPrint, _InstIndex++);}
 	insertCodeToWriteMac("\n", _InstIndex++);
@@ -489,11 +489,11 @@ int CodeGeneratorModule::DIV(char* _RegD, char* _RegO, char* _Comment)
 	insertCodeToWriteMac("DIV ", _InstIndex++);
 	//insertCodeToWriteBin(18);
 	insertCodeToWriteMac(_RegD, _InstIndex++);
-	itoa(_Value,_RegD,10);
+	//itoa(_Value,_RegD,10);
 	//insertCodeToWriteBin(_Value);
 	insertCodeToWriteMac(", ", _InstIndex++);
 	insertCodeToWriteMac(_RegO, _InstIndex++);
-	itoa(_Value,_RegO,10);
+	//itoa(_Value,_RegO,10);
 	//insertCodeToWriteBin(_Value);
 	if(strcmp(_Comment, "") != 0){char _sPrint[255];sprintf_s(_sPrint, " ATW_COMMENT: %s", _Comment);insertCodeToWriteMac(_sPrint, _InstIndex++);}
 	insertCodeToWriteMac("\n", _InstIndex++);
@@ -509,11 +509,11 @@ int CodeGeneratorModule::ESC(char* _Reg1, char* _Reg2, char* _Comment)
 	insertCodeToWriteMac("ESC ", _InstIndex++);
 	//insertCodeToWriteBin(19);
 	insertCodeToWriteMac(_Reg1, _InstIndex++);
-	itoa(_Value,_Reg1,10);
+	//itoa(_Value,_Reg1,10);
 	//insertCodeToWriteBin(_Value);
 	insertCodeToWriteMac(", ", _InstIndex++);
 	insertCodeToWriteMac(_Reg2, _InstIndex++);
-	itoa(_Value,_Reg2,10);
+	//itoa(_Value,_Reg2,10);
 	//insertCodeToWriteBin(_Value);
 	if(strcmp(_Comment, "") != 0){char _sPrint[255];sprintf_s(_sPrint, " ATW_COMMENT: %s", _Comment);insertCodeToWriteMac(_sPrint, _InstIndex++);}
 	insertCodeToWriteMac("\n", _InstIndex++);
@@ -542,7 +542,7 @@ int CodeGeneratorModule::JMP(char* _Label, char* _Comment)//TODO:Label necessita
 	insertCodeToWriteMac("JMP ", _InstIndex++);
 	//insertCodeToWriteBin(21);
 	insertCodeToWriteMac(_Label, _InstIndex++);
-	itoa(_Value,_Label,10);
+	//itoa(_Value,_Label,10);
 	//insertCodeToWriteBin(_Value);
 	if(strcmp(_Comment, "") != 0){char _sPrint[255];sprintf_s(_sPrint, " ATW_COMMENT: %s", _Comment);insertCodeToWriteMac(_sPrint, _InstIndex++);}
 	insertCodeToWriteMac("\n", _InstIndex++);
@@ -558,11 +558,11 @@ int CodeGeneratorModule::LDI(char* _RegD, char* _Imed, char* _Comment)
 	insertCodeToWriteMac("LDI ", _InstIndex++);
 	//insertCodeToWriteBin(22);
 	insertCodeToWriteMac(_RegD, _InstIndex++);	
-	itoa(_Value,_RegD,10);
+	//itoa(_Value,_RegD,10);
 	//insertCodeToWriteBin(_Value);
 	insertCodeToWriteMac(", #", _InstIndex++);
 	insertCodeToWriteMac(_Imed, _InstIndex++);
-	itoa(_Value,_Imed,10);
+	//itoa(_Value,_Imed,10);
 	//insertCodeToWriteBin(_Value);
 	if(strcmp(_Comment, "") != 0){char _sPrint[255];sprintf_s(_sPrint, " ATW_COMMENT: %s", _Comment);insertCodeToWriteMac(_sPrint, _InstIndex++);}
 	insertCodeToWriteMac("\n", _InstIndex++);
@@ -578,11 +578,11 @@ int CodeGeneratorModule::LDIF(char* _RegD, char* _Imed, char* _Comment)
 	insertCodeToWriteMac("LDIF ", _InstIndex++);
 	//insertCodeToWriteBin(23);
 	insertCodeToWriteMac(_RegD, _InstIndex++);
-	itoa(_Value,_RegD,10);
+	//itoa(_Value,_RegD,10);
 	//insertCodeToWriteBin(_Value);
 	insertCodeToWriteMac(", #", _InstIndex++);
 	insertCodeToWriteMac(_Imed, _InstIndex++);
-	itoa(_Value,_Imed,10);
+	//itoa(_Value,_Imed,10);
 	//insertCodeToWriteBin(_Value);
 	if(strcmp(_Comment, "") != 0){char _sPrint[255];sprintf_s(_sPrint, " ATW_COMMENT: %s", _Comment);insertCodeToWriteMac(_sPrint, _InstIndex++);}
 	insertCodeToWriteMac("\n", _InstIndex++);
@@ -598,7 +598,7 @@ int CodeGeneratorModule::LGT(char* _Reg, char* _Comment)
 	insertCodeToWriteMac("LGT ", _InstIndex++);
 	//insertCodeToWriteBin(24);
 	insertCodeToWriteMac(_Reg, _InstIndex++);
-	itoa(_Value,_Reg,10);
+	//itoa(_Value,_Reg,10);
 	//insertCodeToWriteBin(_Value);
 	if(strcmp(_Comment, "") != 0){char _sPrint[255];sprintf_s(_sPrint, " ATW_COMMENT: %s", _Comment);insertCodeToWriteMac(_sPrint, _InstIndex++);}
 	insertCodeToWriteMac("\n", _InstIndex++);
@@ -614,11 +614,11 @@ int CodeGeneratorModule::LOD(char* _RegD, int _Desl, char* _Comment)
 	insertCodeToWriteMac("LOD ", _InstIndex++);
 	//insertCodeToWriteBin(25);
 	insertCodeToWriteMac(_RegD, _InstIndex++);	
-	itoa(_Value,_RegD,10);
+	//itoa(_Value,_RegD,10);
 	//insertCodeToWriteBin(_Value);
 	insertCodeToWriteMac(", ", _InstIndex++);
 	insertCodeToWriteMac(ATWgetCStr(_Desl), _InstIndex++);
-	itoa(_Value, ATWgetCStr(_Desl),10);
+	//itoa(_Value, ATWgetCStr(_Desl),10);
 	//insertCodeToWriteBin(_Value);
 	insertCodeToWriteMac("(DS)", _InstIndex++);
 	if(strcmp(_Comment, "") != 0){char _sPrint[255];sprintf_s(_sPrint, " ATW_COMMENT: %s", _Comment);insertCodeToWriteMac(_sPrint, _InstIndex++);}
@@ -635,11 +635,11 @@ int CodeGeneratorModule::LODF(char* _RegD, int _Desl, char* _Comment)
 	insertCodeToWriteMac("LODF ", _InstIndex++);
 	//insertCodeToWriteBin(26);
 	insertCodeToWriteMac(_RegD, _InstIndex++);	
-	itoa(_Value,_RegD,10);
+	//itoa(_Value,_RegD,10);
 	//insertCodeToWriteBin(_Value);
 	insertCodeToWriteMac(", ", _InstIndex++);
 	insertCodeToWriteMac(ATWgetCStr(_Desl), _InstIndex++);
-	itoa(_Value, ATWgetCStr(_Desl),10);
+	//itoa(_Value, ATWgetCStr(_Desl),10);
 	//insertCodeToWriteBin(_Value);
 	insertCodeToWriteMac("(DS)", _InstIndex++);
 	if(strcmp(_Comment, "") != 0){char _sPrint[255];sprintf_s(_sPrint, " ATW_COMMENT: %s", _Comment);insertCodeToWriteMac(_sPrint, _InstIndex++);}
@@ -656,11 +656,11 @@ int CodeGeneratorModule::MVE(char* _RegD, char* _RegO, char* _Comment)
 	insertCodeToWriteMac("MVE ", _InstIndex++);
 	//insertCodeToWriteBin(27);
 	insertCodeToWriteMac(_RegD, _InstIndex++);
-	itoa(_Value,_RegD,10);
+	//itoa(_Value,_RegD,10);
 	//insertCodeToWriteBin(_Value);
 	insertCodeToWriteMac(", ", _InstIndex++);
 	insertCodeToWriteMac(_RegO, _InstIndex++);
-	itoa(_Value,_RegO,10);
+	//itoa(_Value,_RegO,10);
 	//insertCodeToWriteBin(_Value);
 	if(strcmp(_Comment, "") != 0){char _sPrint[255];sprintf_s(_sPrint, " ATW_COMMENT: %s", _Comment);insertCodeToWriteMac(_sPrint, _InstIndex++);}
 	insertCodeToWriteMac("\n", _InstIndex++);
@@ -676,11 +676,11 @@ int CodeGeneratorModule::MVEF(char* _RegD, char* _RegO, char* _Comment)
 	insertCodeToWriteMac("MVEF ", _InstIndex++);
 	//insertCodeToWriteBin(28);
 	insertCodeToWriteMac(_RegD, _InstIndex++);
-	itoa(_Value,_RegD,10);
+	//itoa(_Value,_RegD,10);
 	//insertCodeToWriteBin(_Value);
 	insertCodeToWriteMac(", ", _InstIndex++);
 	insertCodeToWriteMac(_RegO, _InstIndex++);
-	itoa(_Value,_RegO,10);
+	//itoa(_Value,_RegO,10);
 	//insertCodeToWriteBin(_Value);
 	if(strcmp(_Comment, "") != 0){char _sPrint[255];sprintf_s(_sPrint, " ATW_COMMENT: %s", _Comment);insertCodeToWriteMac(_sPrint, _InstIndex++);}
 	insertCodeToWriteMac("\n", _InstIndex++);
@@ -696,11 +696,11 @@ int CodeGeneratorModule::MUL(char* _RegD, char* _RegO, char* _Comment)
 	insertCodeToWriteMac("MUL ", _InstIndex++);
 	//insertCodeToWriteBin(29);
 	insertCodeToWriteMac(_RegD, _InstIndex++);
-	itoa(_Value,_RegD,10);
+	//itoa(_Value,_RegD,10);
 	//insertCodeToWriteBin(_Value);
 	insertCodeToWriteMac(", ", _InstIndex++);
 	insertCodeToWriteMac(_RegO, _InstIndex++);
-	itoa(_Value,_RegO,10);
+	//itoa(_Value,_RegO,10);
 	//insertCodeToWriteBin(_Value);
 	if(strcmp(_Comment, "") != 0){char _sPrint[255];sprintf_s(_sPrint, " ATW_COMMENT: %s", _Comment);insertCodeToWriteMac(_sPrint, _InstIndex++);}
 	insertCodeToWriteMac("\n", _InstIndex++);
@@ -732,7 +732,7 @@ int CodeGeneratorModule::NEG(char* _Reg, char* _Comment)
 	insertCodeToWriteMac("NEG ", _InstIndex++);
 	//insertCodeToWriteBin(31);
 	insertCodeToWriteMac(_Reg, _InstIndex++);	
-	itoa(_Value,_Reg,10);
+	//itoa(_Value,_Reg,10);
 	//insertCodeToWriteBin(_Value);
 	if(strcmp(_Comment, "") != 0){char _sPrint[255];sprintf_s(_sPrint, " ATW_COMMENT: %s", _Comment);insertCodeToWriteMac(_sPrint, _InstIndex++);}
 	insertCodeToWriteMac("\n", _InstIndex++);
@@ -748,7 +748,7 @@ int CodeGeneratorModule::NEGF(char* _Reg, char* _Comment)
 	insertCodeToWriteMac("NEGF ", _InstIndex++);
 	//insertCodeToWriteBin(32);
 	insertCodeToWriteMac(_Reg, _InstIndex++);	
-	itoa(_Value,_Reg,10);
+	//itoa(_Value,_Reg,10);
 	//insertCodeToWriteBin(_Value);
 	if(strcmp(_Comment, "") != 0){char _sPrint[255];sprintf_s(_sPrint, " ATW_COMMENT: %s", _Comment);insertCodeToWriteMac(_sPrint, _InstIndex++);}
 	insertCodeToWriteMac("\n", _InstIndex++);
@@ -776,11 +776,11 @@ int CodeGeneratorModule::STI(char* _Imed, int _Desl, char* _Comment){
 	insertCodeToWriteMac("STI #", _InstIndex++);
 	//insertCodeToWriteBin(34);
 	insertCodeToWriteMac(_Imed, _InstIndex++);
-	itoa(_Value,_Imed,10);
+	//itoa(_Value,_Imed,10);
 	//insertCodeToWriteBin(_Value);
 	insertCodeToWriteMac(", ", _InstIndex++);
 	insertCodeToWriteMac(ATWgetCStr(_Desl), _InstIndex++); 
-	itoa(_Value,ATWgetCStr(_Desl),10);
+	//itoa(_Value,ATWgetCStr(_Desl),10);
 	//insertCodeToWriteBin(_Value);
 	insertCodeToWriteMac("(DS)", _InstIndex++);
 	if(strcmp(_Comment, "") != 0){char _sPrint[255];sprintf_s(_sPrint, " ATW_COMMENT: %s", _Comment);insertCodeToWriteMac(_sPrint, _InstIndex++);}
@@ -797,11 +797,11 @@ int CodeGeneratorModule::STIF(char* _Imed, int _Desl, char* _Comment)
 	insertCodeToWriteMac("STIF #", _InstIndex++);
 	//insertCodeToWriteBin(35);
 	insertCodeToWriteMac(_Imed, _InstIndex++);
-	itoa(_Value,_Imed,10);
+	//itoa(_Value,_Imed,10);
 	//insertCodeToWriteBin(_Value);
 	insertCodeToWriteMac(", ", _InstIndex++);
 	insertCodeToWriteMac(ATWgetCStr(_Desl), _InstIndex++); 
-	itoa(_Value, ATWgetCStr(_Desl),10);
+	//itoa(_Value, ATWgetCStr(_Desl),10);
 	//insertCodeToWriteBin(_Value);
 	insertCodeToWriteMac("(DS)", _InstIndex++);
 
@@ -822,11 +822,11 @@ int CodeGeneratorModule::STO(char* _Reg, int _Desl, char* _Comment)
 	insertCodeToWriteMac("STO ", _InstIndex++);
 	//insertCodeToWriteBin(36);
 	insertCodeToWriteMac(_Reg, _InstIndex++);
-	itoa(_Value,_Reg,10);
+	//itoa(_Value,_Reg,10);
 	//insertCodeToWriteBin(_Value);
 	insertCodeToWriteMac(", ", _InstIndex++);
 	insertCodeToWriteMac(ATWgetCStr(_Desl), _InstIndex++);
-	itoa(_Value, ATWgetCStr(_Desl),10);
+	//itoa(_Value, ATWgetCStr(_Desl),10);
 	//insertCodeToWriteBin(_Value);
 	insertCodeToWriteMac("(DS)", _InstIndex++);
 	if(strcmp(_Comment, "") != 0){char _sPrint[255];sprintf_s(_sPrint, " ATW_COMMENT: %s", _Comment);insertCodeToWriteMac(_sPrint, _InstIndex++);}
@@ -843,11 +843,11 @@ int CodeGeneratorModule::STOF(char* _Reg, int _Desl, char* _Comment)
 	insertCodeToWriteMac("STOF ", _InstIndex++);
 	//insertCodeToWriteBin(37);
 	insertCodeToWriteMac(_Reg, _InstIndex++);
-	itoa(_Value,_Reg,10);
+	//itoa(_Value,_Reg,10);
 	//insertCodeToWriteBin(_Value);
 	insertCodeToWriteMac(", ", _InstIndex++);
 	insertCodeToWriteMac(ATWgetCStr(_Desl), _InstIndex++);
-	itoa(_Value, ATWgetCStr(_Desl),10);
+	//itoa(_Value, ATWgetCStr(_Desl),10);
 	//insertCodeToWriteBin(_Value);
 	insertCodeToWriteMac("(DS)", _InstIndex++);
 	if(strcmp(_Comment, "") != 0){char _sPrint[255];sprintf_s(_sPrint, " ATW_COMMENT: %s", _Comment);insertCodeToWriteMac(_sPrint, _InstIndex++);}
@@ -864,11 +864,11 @@ int CodeGeneratorModule::SUB(char* _RegD, char* _RegO, char* _Comment)
 	insertCodeToWriteMac("SUB ", _InstIndex++);
 	//insertCodeToWriteBin(38);
 	insertCodeToWriteMac(_RegD, _InstIndex++);
-	itoa(_Value,_RegD,10);
+	//itoa(_Value,_RegD,10);
 	//insertCodeToWriteBin(_Value);
 	insertCodeToWriteMac(", ", _InstIndex++);
 	insertCodeToWriteMac(_RegO, _InstIndex++);
-	itoa(_Value,_RegO,10);
+	//itoa(_Value,_RegO,10);
 	//insertCodeToWriteBin(_Value);
 	if(strcmp(_Comment, "") != 0){char _sPrint[255];sprintf_s(_sPrint, " ATW_COMMENT: %s", _Comment);insertCodeToWriteMac(_sPrint, _InstIndex++);}
 	insertCodeToWriteMac("\n", _InstIndex++);
@@ -884,11 +884,11 @@ int CodeGeneratorModule::SUBF(char* _RegD, char* _RegO, char* _Comment)
 	insertCodeToWriteMac("SUBF ", _InstIndex++);
 	//insertCodeToWriteBin(39);
 	insertCodeToWriteMac(_RegD, _InstIndex++);
-	itoa(_Value,_RegD,10);
+	//itoa(_Value,_RegD,10);
 	//insertCodeToWriteBin(_Value);
 	insertCodeToWriteMac(", ", _InstIndex++);
 	insertCodeToWriteMac(_RegO, _InstIndex++);
-	itoa(_Value,_RegO,10);
+	//itoa(_Value,_RegO,10);
 	//insertCodeToWriteBin(_Value);
 	if(strcmp(_Comment, "") != 0){char _sPrint[255];sprintf_s(_sPrint, " ATW_COMMENT: %s", _Comment);insertCodeToWriteMac(_sPrint, _InstIndex++);}
 	insertCodeToWriteMac("\n", _InstIndex++);
@@ -904,7 +904,7 @@ int CodeGeneratorModule::TME(char* _Reg, char* _Comment)
 	insertCodeToWriteMac("TME ", _InstIndex++);
 	//insertCodeToWriteBin(40);
 	insertCodeToWriteMac(_Reg, _InstIndex++);
-	itoa(_Value,_Reg,10);
+	//itoa(_Value,_Reg,10);
 	//insertCodeToWriteBin(_Value);
 	if(strcmp(_Comment, "") != 0){char _sPrint[255];sprintf_s(_sPrint, " ATW_COMMENT: %s", _Comment);insertCodeToWriteMac(_sPrint, _InstIndex++);}
 	insertCodeToWriteMac("\n", _InstIndex++);
