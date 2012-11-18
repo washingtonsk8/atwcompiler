@@ -25,21 +25,27 @@ public:
 	//--------------------------------------------------------------------------------------------------------
 	~ATWMemory(void){}
 	//--------------------------------------------------------------------------------------------------------
-	int ATWMalloc(Type _Type = TIPO_VAZIO){
+	int ATWMalloc(Type _Type){
 		int _PreviousMemAddress = _LastMemAddress;
 
 		if (_Type == TIPO_REAL)
 			_LastMemAddress += 2;
-		else if (_Type == TIPO_INTEIRO || _Type == TIPO_LOGICO)
+		else
 			_LastMemAddress ++;
 
 		_TotalMemAllocation = _LastMemAddress;
 		return _PreviousMemAddress;
 	}
 	//--------------------------------------------------------------------------------------------------------
-	int ATWNovoTemp(){
-		_LastTempAddress ++;
-		return _LastTempAddress-1;
+	int ATWNovoTemp(Type _Type){
+		int _PreviousTempAddress = _LastTempAddress;
+
+		if (_Type == TIPO_REAL)
+			_LastTempAddress += 2;
+		else
+			_LastTempAddress ++;
+
+		return _PreviousTempAddress;
 	}
 	//--------------------------------------------------------------------------------------------------------
 	void ATWResetTemp(){
@@ -59,12 +65,12 @@ public:
 	}
 	//--------------------------------------------------------------------------------------------------------
 private:
-	int	_PC;
-	int _TotalMemAllocation;
-	int _MemBaseAddress;
-	int	_LastMemAddress;
-	int	_LastTempAddress;
-	int	_TempBaseAddress;
+	int	_PC;//Contador de programa
+	int _TotalMemAllocation;//Possui o total de memória alocado no momento
+	int _MemBaseAddress;//Possui o endereço de memória base do início da memória de dados
+	int	_LastMemAddress;//Possui o primeiro endereço de memória vazio
+	int	_LastTempAddress;//Possui o primeiro endereço de memória vazio após 0 ou mais temporários
+	int	_TempBaseAddress;//Possui o endereço de memória base do início dos temporários
 };
 #endif
 

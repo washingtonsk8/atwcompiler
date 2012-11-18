@@ -90,10 +90,10 @@ private:
 	void Command();
 
 	//--PARA EXPRESSÕES--
-	void Exp(InfoBundle* _inf, int& _fAddress);
+	void Exp(InfoBundle* _inf);
 	void R();
-	void EXPS(InfoBundle* _inf, int& _fAddress);
-	void T(InfoBundle* _inf, int& _fAddress);
-	void F(InfoBundle* _inf, int& _fAddress);
+	void EXPS(InfoBundle* _inf);
+	void T(InfoBundle* _inf);
+	void F(InfoBundle* _inf, int& _FAdr);
 };
 #endif
