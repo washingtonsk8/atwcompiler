@@ -10,7 +10,7 @@ DPonto
       P7=(10,-10,-10)
       P8=(10,10,-10)
 DCor
-      AZUL=15,20,20,40,30,30,60
+      AZUL=15,2,12,11,8,3,6
 DFace
       F1=AZUL,P1,P2,P3,P4
       F2=AZUL,P4,P3,P7,P8
@@ -33,7 +33,7 @@ DConst
       V0Y = 2
       V0Z = 0
 DVar
-      inteiro i;
+      inteiro i
 
 { Programa Principal }
 
