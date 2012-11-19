@@ -35,9 +35,9 @@ public:
 	void insertCodeToWriteMac(char* _Code, int _codeIndex = -1, bool _Overlap = true);
 	void fixCode(int _Address, char* _value);
 	string getCode(int _codeIndex = -1);
-	string transformToBin(int _Number);
+	string transformToBin(int _Number){return "";}
 	void flush();
-	void flushBin();
+	void flushBin(){}
 	//---------------------------------------------------------------------------------------------------------------------
 	/*
 	* Funções utilizadas para a escrita do código no arquivo
