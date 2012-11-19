@@ -84,7 +84,7 @@ private:
 	void DColorD();
 	void DLightD();
 	void DFaceD();
-	void ObjD();
+	void DObjD();
 	void DVarD();
 	void DConstD();
 	void Command();
