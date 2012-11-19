@@ -1078,7 +1078,7 @@ void ATWSin::T(Type& _TType, int& _TAdr){
 		}else if(_TOp == OVER){
 			if(_TType == TIPO_INTEIRO && _F1Type == TIPO_INTEIRO)
 			{
-				_TType = TIPO_INTEIRO;
+				_TType = TIPO_REAL;
 				_cg->LOD("A", _TAdr);
 				_cg->CNV("A","A");
 				_cg->LOD("B", _F1Adr);
