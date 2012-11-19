@@ -378,13 +378,16 @@ ATW_BUFF_ELEMENT ATWLex::getToken(){
 		default:
 			_State = DONE;
 			break;
+
 		}//end switch
 	}//end while
 
-	_toReturn.Build(_LineCount, _CurrentToken, _Lexeme.c_str(), TIPO_VAZIO, _SymbolTable->getEnd(_Lexeme.c_str()));//NOVO MEIO DE RETORNAR PARA DIMINUIR ACOPLAMENTO
 	if(_CurrentToken == CONSTANT){
-		_toReturn._Tipo = _constType;/*
-		buildConstValue(&_toReturn._valI, &_toReturn._valF, _toReturn._Lex);*/
-	}
+		 _toReturn.Build(_LineCount, _CurrentToken, _Lexeme.c_str(), TIPO_VAZIO, _SymbolTable->getEnd(_Lexeme.c_str()));//NOVO MEIO DE RETORNAR PARA DIMINUIR ACOPLAMENTO
+		_toReturn._Tipo = _constType;
+		//buildConstValue(&_toReturn._valI, &_toReturn._valF, _toReturn._Lex);*/
+	}else
+		_toReturn.Build(_LineCount, _CurrentToken, _Lexeme.c_str(), _SymbolTable->getType(_Lexeme), _SymbolTable->getEnd(_Lexeme.c_str()));//NOVO MEIO DE RETORNAR PARA DIMINUIR ACOPLAMENTO
+	
 	return _toReturn;
 }

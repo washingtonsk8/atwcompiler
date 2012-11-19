@@ -507,7 +507,7 @@ void ATWSin::Block(){
 //---------------------------------------------------------------------------------------------------------------------
 void ATWSin::Command(){
 	Type _ExpType;
-	int _ExpAdr;
+	int _ExpAdr = 0;
 	ATW_BUFF_ELEMENT _idAux;//(32) - SEMÂNTICO
 
 	switch(_CurrentToken._Token){
