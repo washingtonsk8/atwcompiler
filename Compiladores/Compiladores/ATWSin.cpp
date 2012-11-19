@@ -530,20 +530,20 @@ void ATWSin::Command(){
 		if(_idAux._Tipo == TIPO_INTEIRO)
 		{
 			_Sem->TypeVerify(_PreviousToken, _ExpType, TIPO_INTEIRO);//Se ExpTipo = tipo-inteiro entao...
-			_cg->LOD("A", _ExpType);
+			_cg->LOD("A", _ExpType, "ID = EXP");
 			_cg->STO("A", _idAux._End);
 		}//end if
 		else
 		{
 			if(_ExpType == TIPO_INTEIRO)
 			{
-				_cg->LOD("A", _ExpType);
+				_cg->LOD("A", _ExpType, "ID = EXP");
 				_cg->CNV("A", "A");
 				_cg->STOF("A", _idAux._End);
 			}
 			else//TIPO_REAL
 			{
-				_cg->LODF("A", _ExpType);
+				_cg->LODF("A", _ExpType, "ID = EXP");
 				_cg->STOF("A", _idAux._End);
 			}
 		}//end else
@@ -575,6 +575,7 @@ void ATWSin::Command(){
 		CT(ESCALA);
 		CT(ID);
 
+		_idAux = _PreviousToken;//(57) - COD
 		_Sem->unicidadeNotDeclared(_PreviousToken);//(1) - SEMÂNTICO
 		_Sem->classVerify(_PreviousToken, CLASSE_OBJETO);//(7) - SEMÂNTICO
 
@@ -585,8 +586,20 @@ void ATWSin::Command(){
 		_Sem->DiffTypeVerify(_PreviousToken, _ExpType, TIPO_LOGICO);//(33) - SEMÂNTICO
 
 		//(57) - COD -------------------------------------------------------------------------
-		
+		_cg->LOD("A", _idAux._End, "ESCALA ID EXP");
+		if(_ExpType == TIPO_INTEIRO)
+		{
+			_cg->LOD("B", _ExpAdr);
+			_cg->CNV("B", "B");
+		}//end if
+		else
+		{
+			_cg->LODF("B", _ExpAdr);
+		}//end else
+
+		_cg->ESC("A", "B");
 		//(57) - COD -------------------------------------------------------------------------
+
 		CT(EXP_END);
 		break;
 	case PAUSA:
@@ -595,6 +608,20 @@ void ATWSin::Command(){
 		_memory->ATWResetTemp();//(46) - COD
 		Exp(_ExpType, _ExpAdr);//(33) - SEMÂNTICO
 		_Sem->DiffTypeVerify(_PreviousToken, _ExpType, TIPO_LOGICO);//(33) - SEMÂNTICO
+
+		//(58) - COD -------------------------------------------------------------------------		
+		if(_ExpType == TIPO_INTEIRO)
+		{
+			_cg->LOD("A", _ExpAdr, "PAUSA EXP");
+			_cg->CNV("A", "A");
+		}//end if
+		else
+		{
+			_cg->LOD("A", _ExpAdr, "PAUSA EXP");
+		}//end else
+
+		_cg->TME("A");
+		//(58) - COD -------------------------------------------------------------------------
 		
 		CT(EXP_END);
 		break;
@@ -602,14 +629,26 @@ void ATWSin::Command(){
 		CT(LUZ);
 		CT(ID);
 
+		_idAux = _PreviousToken;//(56) - COD
 		_Sem->unicidadeNotDeclared(_PreviousToken);//(1) - SEMÂNTICO
 		_Sem->classVerify(_PreviousToken, CLASSE_LUZ);//(4) - SEMÂNTICO
+		
+		//(56) - SEMANTICO -------------------------------------------------------------------
+		//(56) - COD -------------------------------------------------------------------------
+		_Sem->DiffTypeVerify(_PreviousToken, _PreviousToken._Tipo, TIPO_REAL);
+		_cg->LOD("A", _idAux._End, "LUZ ID");
+		_cg->LGT("A");
+		//(56) - COD -------------------------------------------------------------------------
+		//(56) - SEMANTICO -------------------------------------------------------------------
 
 		CT(EXP_END);
 		break;
 	case ROTTRANS:
 		CT(ROTTRANS);
 		CT(ID);
+
+		int _Exp1Adr, _Exp2Adr, _Exp3Adr, _Exp4Adr, _Exp5Adr;//(59) - COD
+		_idAux = _PreviousToken;//(59) - COD
 
 		_Sem->unicidadeNotDeclared(_PreviousToken);//(1) - SEMÂNTICO
 		_Sem->classVerify(_PreviousToken, CLASSE_OBJETO);//(7) - SEMÂNTICO
@@ -623,32 +662,43 @@ void ATWSin::Command(){
 		CT(COMMA);
 
 		_memory->ATWResetTemp();//(46) - COD
-		Exp(_ExpType, _ExpAdr);//(33) - SEMÂNTICO
+		Exp(_ExpType, _Exp1Adr);//(33) - SEMÂNTICO
 		_Sem->DiffTypeVerify(_PreviousToken, _ExpType, TIPO_LOGICO);//(33) - SEMÂNTICO
 		
 		CT(COMMA);
 
 		_memory->ATWResetTemp();//(46) - COD
-		Exp(_ExpType, _ExpAdr);//(33) - SEMÂNTICO
+		Exp(_ExpType, _Exp2Adr);//(33) - SEMÂNTICO
 		_Sem->DiffTypeVerify(_PreviousToken, _ExpType, TIPO_LOGICO);//(33) - SEMÂNTICO
 		
 		CT(COMMA);
 
 		_memory->ATWResetTemp();//(46) - COD
-		Exp(_ExpType, _ExpAdr);//(33) - SEMÂNTICO
+		Exp(_ExpType, _Exp3Adr);//(33) - SEMÂNTICO
 		_Sem->DiffTypeVerify(_PreviousToken, _ExpType, TIPO_LOGICO);//(33) - SEMÂNTICO
 		
 		CT(COMMA);
 
 		_memory->ATWResetTemp();//(46) - COD
-		Exp(_ExpType, _ExpAdr);//(33) - SEMÂNTICO
+		Exp(_ExpType, _Exp4Adr);//(33) - SEMÂNTICO
 		_Sem->DiffTypeVerify(_PreviousToken, _ExpType, TIPO_LOGICO);//(33) - SEMÂNTICO
 
 		CT(COMMA);
 
 		_memory->ATWResetTemp();//(46) - COD
-		Exp(_ExpType, _ExpAdr);//(33) - SEMÂNTICO
+		Exp(_ExpType, _Exp5Adr);//(33) - SEMÂNTICO
 		_Sem->DiffTypeVerify(_PreviousToken, _ExpType, TIPO_LOGICO);//(33) - SEMÂNTICO
+
+		//(59) - COD -------------------------------------------------------------------------
+		_cg->LOD("A", _idAux._End, "ROTTRANS");
+		_cg->LODF("A", _ExpAdr);
+		_cg->LODF("B", _Exp1Adr);
+		_cg->LODF("C", _Exp2Adr);
+		_cg->LODF("D", _Exp3Adr);
+		_cg->LODF("E", _Exp4Adr);
+		_cg->LODF("F", _Exp5Adr);
+		_cg->RTR();
+		//(56) - COD -------------------------------------------------------------------------
 
 		CT(EXP_END);
 		break;

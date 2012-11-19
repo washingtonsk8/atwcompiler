@@ -223,5 +223,11 @@
     <None Include="symbols.dat">
       <Filter>Arquivos de Recurso</Filter>
     </None>
+    <None Include="saida.asm">
+      <Filter>Arquivos de Recurso</Filter>
+    </None>
+    <None Include="TesteExp.gl">
+      <Filter>Arquivos de Recurso</Filter>
+    </None>
   </ItemGroup>
 </Project>
