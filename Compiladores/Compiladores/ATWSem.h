@@ -72,6 +72,7 @@ public:
 	void setType(ATW_BUFF_ELEMENT _Token, Type _Tipo){
 		TableElement* _tToken = _SymbolTable->getElement(_Token._Lex);
 		_tToken->_Type = _Tipo;
+		_Token._Tipo = _Tipo;
 	}
 	//-----------------------------------------------------------------------------------------
 	//TIPOS

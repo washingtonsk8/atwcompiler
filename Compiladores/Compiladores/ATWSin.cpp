@@ -114,7 +114,7 @@ void ATWSin::Start(){
 			case DOBJETO:
 				CT(DOBJETO);
 				CT(EXP_END);
-				ObjD();
+				DObjD();
 				break;
 			case DVAR:
 				CT(DVAR);
@@ -381,7 +381,7 @@ void ATWSin::DFaceD(){
 	}while(_CurrentToken._Token == ID);
 }
 //---------------------------------------------------------------------------------------------------------------------
-void ATWSin::ObjD(){
+void ATWSin::DObjD(){
 	do{
 		int _objectCount = 0;
 		int _cAddress    = 0;
@@ -507,7 +507,7 @@ void ATWSin::Block(){
 //---------------------------------------------------------------------------------------------------------------------
 void ATWSin::Command(){
 	Type _ExpType;
-	int _ExpAdr = 0;
+	int _ExpAdr = 0, _Exp1Adr = 0, _Exp2Adr = 0, _Exp3Adr = 0, _Exp4Adr = 0, _Exp5Adr = 0;//(59) - COD
 	ATW_BUFF_ELEMENT _idAux;//(32) - SEMÂNTICO
 
 	switch(_CurrentToken._Token){
@@ -647,7 +647,6 @@ void ATWSin::Command(){
 		CT(ROTTRANS);
 		CT(ID);
 
-		int _Exp1Adr, _Exp2Adr, _Exp3Adr, _Exp4Adr, _Exp5Adr;//(59) - COD
 		_idAux = _PreviousToken;//(59) - COD
 
 		_Sem->unicidadeNotDeclared(_PreviousToken);//(1) - SEMÂNTICO
@@ -743,11 +742,11 @@ void ATWSin::Command(){
 //---------------------------------------------------------------------------------------------------------------------
 void ATWSin::Exp(Type& _ExpType, int& _ExpAdr){
 	Type _ExpSType, _ExpS1Type;
-	int _ExpSAdr, _ExpS1Adr;
+	int _ExpSAdr = 0, _ExpS1Adr = 0;
 
 	EXPS(_ExpSType, _ExpSAdr);//(29) - SEMÂNTICO
 	_ExpType = _ExpSType;
-	_ExpAdr  = _ExpSAdr;
+	_ExpAdr = _ExpSAdr;
 
 	if(_CurrentToken._Token == LT || _CurrentToken._Token == GT || _CurrentToken._Token == LE || 
 		_CurrentToken._Token == GE || _CurrentToken._Token == EQ || _CurrentToken._Token == DIFF){
@@ -839,7 +838,7 @@ void ATWSin::R(Token& _ROp){
 //---------------------------------------------------------------------------------------------------------------------
 void ATWSin::EXPS(Type& _ExpSType, int & _ExpSAdr){
 	Token _ExpSOp = PLUS;
-	int _TAdr, _T1Adr;
+	int _TAdr = 0, _T1Adr = 0;
 	Type _TType, _T1Type;
 
 	if(_CurrentToken._Token == PLUS){
@@ -1004,7 +1003,7 @@ void ATWSin::EXPS(Type& _ExpSType, int & _ExpSAdr){
 }
 //---------------------------------------------------------------------------------------------------------------------
 void ATWSin::T(Type& _TType, int& _TAdr){
-	int _FAdr, _F1Adr;
+	int _FAdr = 0, _F1Adr = 0;
 	Type _FType, _F1Type;
 	 
 	F(_FType, _FAdr);//(18) - SEMÂNTICO
@@ -1144,14 +1143,14 @@ void ATWSin::T(Type& _TType, int& _TAdr){
 void ATWSin::F(Type& _FType, int& _FAdr){//Fend = _FAdr
 	Class _class[2] = {CLASSE_CONST, CLASSE_VAR};//(9) - SEMÂNTICO
 	ATW_BUFF_ELEMENT _tAux = _PreviousToken;//(16) - SEMÂNTICO
-	
+		Type _ExpType;
+		int _ExpAdr = 0, _F1Adr = 0;
+		Type _F1Type;
+
 	switch(_CurrentToken._Token){
 	case LPAREN:
 		CT(LPAREN);
 		
-		Type _ExpType;
-		int _ExpAdr;
-
 		_memory->ATWResetTemp();
 		Exp(_ExpType, _ExpAdr);//(17) - SEMÂNTICO
 		_FType = _ExpType;
@@ -1162,9 +1161,6 @@ void ATWSin::F(Type& _FType, int& _FAdr){//Fend = _FAdr
 	case NAO:
 		CT(NAO);
 		
-		int _F1Adr;
-		Type _F1Type;
-
 		F(_F1Type, _F1Adr);//(16) - SEMÂNTICO
 		_FType = _F1Type;//(16) - SEMÂNTICO
 		_Sem->TypeVerify(_tAux, _F1Type, TIPO_LOGICO);//(16) - SEMÂNTICO
