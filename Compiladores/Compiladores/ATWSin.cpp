@@ -530,20 +530,20 @@ void ATWSin::Command(){
 		if(_idAux._Tipo == TIPO_INTEIRO)
 		{
 			_Sem->TypeVerify(_PreviousToken, _ExpType, TIPO_INTEIRO);//Se ExpTipo = tipo-inteiro entao...
-			_cg->LOD("A", _ExpType, "ID = EXP");
+			_cg->LOD("A", _ExpAdr, "ID = EXP");
 			_cg->STO("A", _idAux._End);
 		}//end if
 		else
 		{
 			if(_ExpType == TIPO_INTEIRO)
 			{
-				_cg->LOD("A", _ExpType, "ID = EXP");
+				_cg->LOD("A", _ExpAdr, "ID = EXP");
 				_cg->CNV("A", "A");
 				_cg->STOF("A", _idAux._End);
 			}
 			else//TIPO_REAL
 			{
-				_cg->LODF("A", _ExpType, "ID = EXP");
+				_cg->LODF("A", _ExpAdr, "ID = EXP");
 				_cg->STOF("A", _idAux._End);
 			}
 		}//end else
@@ -747,7 +747,7 @@ void ATWSin::Exp(Type& _ExpType, int& _ExpAdr){
 
 	EXPS(_ExpSType, _ExpSAdr);//(29) - SEMÂNTICO
 	_ExpType = _ExpSType;
-	_ExpSAdr = _ExpSAdr;
+	_ExpAdr  = _ExpSAdr;
 
 	if(_CurrentToken._Token == LT || _CurrentToken._Token == GT || _CurrentToken._Token == LE || 
 		_CurrentToken._Token == GE || _CurrentToken._Token == EQ || _CurrentToken._Token == DIFF){
