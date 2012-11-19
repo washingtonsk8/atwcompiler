@@ -750,7 +750,7 @@ void ATWSin::Exp(Type& _ExpType, int& _ExpAdr){
 	_ExpAdr = _ExpSAdr;
 
 	if(_CurrentToken._Token == LT || _CurrentToken._Token == GT || _CurrentToken._Token == LE || 
-		_CurrentToken._Token == GE || _CurrentToken._Token == EQ || _CurrentToken._Token == DIFF){
+		_CurrentToken._Token == GE || _CurrentToken._Token == DEQ || _CurrentToken._Token == DIFF){
 			Token _ROp;	
 			R(_ROp);
 
@@ -826,9 +826,9 @@ void ATWSin::R(Token& _ROp){
 		CT(GE);
 		_ROp = GE;//(53) - COD
 		break;
-	case EQ:
-		CT(EQ);
-		_ROp = EQ;//(54) - COD
+	case DEQ:
+		CT(DEQ);
+		_ROp = DEQ;//(54) - COD
 		break;
 	case DIFF:
 		CT(DIFF);
