@@ -134,7 +134,7 @@ void CodeGeneratorModule::flush(){
 int CodeGeneratorModule::ADD(char* _RegD, char* _RegO, char* _Comment)
 {
 	int _InstIndexBase = _InstIndex;
-	insertCodeToWriteMac("ADD #", _InstIndex++);
+	insertCodeToWriteMac("ADD ", _InstIndex++);
 	//insertCodeToWriteBin(1);
 	insertCodeToWriteMac(_RegD, _InstIndex++);
 	//itoa(_Value,_RegD,10);
