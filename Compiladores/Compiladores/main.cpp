@@ -14,6 +14,7 @@
 #include "CHBuffer.h"
 #include "ThreadManager.h"
 #include "CodeGeneratorModule.h"
+#include "ATWLabelManager.h"
 //---------------------------------------------------------------------------------------------------------------------
 #include <iostream>
 #include <iomanip>
@@ -64,6 +65,7 @@ E CADA ERRO TEM O SEU RESPECTIVO CODIGO NO ARQUIVO ERRO_DEF.h*/
 using namespace std;
 using namespace ARS_COLOR_HANDLER;
 using namespace ARS_PRINTER_HELPER;
+using namespace LabelController;
 //---------------------------------------------------------------------------------------------------------------------
 EventsManager*   _eManager;
 ATWSinEvents*   _sExceptionH;
@@ -184,45 +186,55 @@ void FILE_WRITING_T(){
 void CODE_GENERATOR_T(){
 	CodeGeneratorModule _c;
 	_c.initialize("codeGeneratorTest");
-	_c.insertCodeToWriteMac("ADI ");
-	_c.insertCodeToWriteMac("A, ");
-	_c.insertCodeToWriteMac("B\n");
-	_c.insertCodeToWriteMac("LOD A, #10(DS)\n");
-	_c.insertCodeToWriteMac("ADD ", 10, true);
-	_c.insertCodeToWriteMac("A, ", 11, true);
-	_c.insertCodeToWriteMac("#10\n", 12, true);
-	_c.insertCodeToWriteMac("LOD A, #10(DS)\n");
-	_c.insertCodeToWriteMac("LOD B, #12(DS)\n");
-	_c.insertCodeToWriteMac("ADD ", 22, true);
-	_c.insertCodeToWriteMac("A B\n", 23, true);
+	_c.insertCodeToWriteAsm("ADI ");
+	_c.insertCodeToWriteAsm("A, ");
+	_c.insertCodeToWriteAsm("B\n");
+	_c.insertCodeToWriteAsm("LOD A, #10(DS)\n");
+	_c.insertCodeToWriteAsm("ADD ", 10, true);
+	_c.insertCodeToWriteAsm("A, ", 11, true);
+	_c.insertCodeToWriteAsm("#10\n", 12, true);
+	_c.insertCodeToWriteAsm("LOD A, #10(DS)\n");
+	_c.insertCodeToWriteAsm("LOD B, #12(DS)\n");
+	_c.insertCodeToWriteAsm("ADD ", 22, true);
+	_c.insertCodeToWriteAsm("A B\n", 23, true);
 	_c.flush();
-	_c.insertCodeToWriteMac("SBI ");
-	_c.insertCodeToWriteMac("A, ");
-	_c.insertCodeToWriteMac("B\n");
-	_c.insertCodeToWriteMac("LOD A, #10(DS)\n");
-	_c.insertCodeToWriteMac("SUB ", 10, true);
-	_c.insertCodeToWriteMac("A, ", 11, true);
-	_c.insertCodeToWriteMac("#10\n", 12, true);
-	_c.insertCodeToWriteMac("LOD A, #10(DS)\n");
-	_c.insertCodeToWriteMac("LOD B, #12(DS)\n");
-	_c.insertCodeToWriteMac("ADD ", 22, true);
-	_c.insertCodeToWriteMac("A B\n", 23, true);
+	_c.insertCodeToWriteAsm("SBI ");
+	_c.insertCodeToWriteAsm("A, ");
+	_c.insertCodeToWriteAsm("B\n");
+	_c.insertCodeToWriteAsm("LOD A, #10(DS)\n");
+	_c.insertCodeToWriteAsm("SUB ", 10, true);
+	_c.insertCodeToWriteAsm("A, ", 11, true);
+	_c.insertCodeToWriteAsm("#10\n", 12, true);
+	_c.insertCodeToWriteAsm("LOD A, #10(DS)\n");
+	_c.insertCodeToWriteAsm("LOD B, #12(DS)\n");
+	_c.insertCodeToWriteAsm("ADD ", 22, true);
+	_c.insertCodeToWriteAsm("A B\n", 23, true);
 	_c.flush();
-	_c.insertCodeToWriteMac("ADI ");
-	_c.insertCodeToWriteMac("A, ");
-	_c.insertCodeToWriteMac("B\n");
-	_c.insertCodeToWriteMac("LOD A, #10(DS)\n");
-	_c.insertCodeToWriteMac("SUB ", 10, true);
-	_c.insertCodeToWriteMac("A, ", 11, true);
-	_c.insertCodeToWriteMac("#10\n", 12, true);
-	_c.insertCodeToWriteMac("LOD A, #10(DS)\n");
-	_c.insertCodeToWriteMac("LOD B, #12(DS)\n");
-	_c.insertCodeToWriteMac("ADD ", 22, true);
-	_c.insertCodeToWriteMac("A B", 23, true);
+	_c.insertCodeToWriteAsm("ADI ");
+	_c.insertCodeToWriteAsm("A, ");
+	_c.insertCodeToWriteAsm("B\n");
+	_c.insertCodeToWriteAsm("LOD A, #10(DS)\n");
+	_c.insertCodeToWriteAsm("SUB ", 10, true);
+	_c.insertCodeToWriteAsm("A, ", 11, true);
+	_c.insertCodeToWriteAsm("#10\n", 12, true);
+	_c.insertCodeToWriteAsm("LOD A, #10(DS)\n");
+	_c.insertCodeToWriteAsm("LOD B, #12(DS)\n");
+	_c.insertCodeToWriteAsm("ADD ", 22, true);
+	_c.insertCodeToWriteAsm("A B", 23, true);
 	_c.flush();
 	_c.dispose(0, NULL);
 }
 /*CODE GENERATOR MODULE TESTS*/
+//---------------------------------------------------------------------------------------------------------------------
+/*LABEL CONTROLLER MODULE*/
+void LabelControllerTests(){
+	char* rot1 = ATWNovoRot();
+    char* rot2 = ATWNovoRot();
+	char* rot3 = ATWNovoRot();
+
+	printf("%s\n%s\n%s\n", rot1, rot2, rot3);
+}
+/*LABEL CONTROLLER MODULE*/
 //---------------------------------------------------------------------------------------------------------------------
 /*COMPILER MAIN LOGIC*/
 void _RunCompiler(int argc, char* argv[], char* envp[]){
@@ -250,8 +262,11 @@ int main (int argc, char* argv[], char* envp[]){
 	/*CODE GENERATOR TEST*/
 	//CODE_GENERATOR_T();
 
+	/*LABEL GENERATOR MODULE TEST*/
+	LabelControllerTests();
+
 	/*Compiler Running*/
-	_RunCompiler(argc, argv, envp);
+	//_RunCompiler(argc, argv, envp);
 
 	system("pause");
 	return 0;

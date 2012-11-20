@@ -6,10 +6,12 @@
 #include "ARS_PrinterHelper.h"
 #include <Windows.h>
 #include "ATW_Helper.h"
+#include "ATWLabelManager.h"
 //---------------------------------------------------------------------------------------------------------------------
 using namespace ARS_PRINTER_HELPER;
 using namespace MemoryManager;
 using namespace ATW_HELPER;
+using namespace LabelController;
 //---------------------------------------------------------------------------------------------------------------------
 ATWSin::ATWSin(void){
 }
@@ -40,7 +42,7 @@ void ATWSin::CT(Token _Token){
 	_PreviousToken = _CurrentToken;
 	/*REF ANTERIOR PARA POUPAR VARIÁVEIS*/
 	//------------------------------------------------------------
-	
+
 	if(_Parallel ==  PARALLEL)
 		_CurrentToken = _tBuffer->removeElement();
 	else
@@ -76,7 +78,7 @@ void ATWSin::Run(int _Flag, NORMAL_BUNDLE* _nBundleP){
 	}
 
 	_PreviousToken = _CurrentToken;
-	
+
 	Start();
 
 	if(_CurrentToken._Token != ENDFILE){
@@ -180,7 +182,7 @@ void ATWSin::DPontoD(){
 		}
 
 		CT(CONSTANT);
-	
+
 		strcpy_s(_str, _op);
 		strcat_s(_str, _PreviousToken._Lex);
 		_cg->STIF(_str, _memory->ATWMalloc(TIPO_REAL));//37
@@ -213,7 +215,7 @@ void ATWSin::DPontoD(){
 void ATWSin::DLuzD(){
 	do{
 		CT(ID);
-		char _IdLex[255];
+		char _IdLex[255], _str[255];
 		strcpy_s(_IdLex, _PreviousToken._Lex);
 
 		_Sem->unicidadeAlreadyDeclared(_PreviousToken, CLASSE_LUZ);//(2) - SEMÂNTICO
@@ -221,42 +223,54 @@ void ATWSin::DLuzD(){
 		CT(EQ);
 		CT(LPAREN);
 
+		char* _op = "";
 		if(_CurrentToken._Token == PLUS){
 			CT(PLUS);
 		}
 		else if(_CurrentToken._Token == MINUS){
 			CT(MINUS);
+			_op = "-";
 		}
 
 		CT(CONSTANT);
 
-		_cg->STIF(_PreviousToken._Lex, _Sem->updateIDAddress(_IdLex, _memory->ATWMalloc(TIPO_REAL)), _IdLex);//36
+		strcpy_s(_str, _op);
+		strcat_s(_str, _PreviousToken._Lex);
+		_cg->STIF(_str, _Sem->updateIDAddress(_IdLex, _memory->ATWMalloc(TIPO_REAL)), _IdLex);//36
 
 		CT(COMMA);
 
+		_op = "";
 		if(_CurrentToken._Token == PLUS){
 			CT(PLUS);
 		}
 		else if(_CurrentToken._Token == MINUS){
 			CT(MINUS);
+			_op = "-";
 		}
 
 		CT(CONSTANT);
-		
-		_cg->STIF(_PreviousToken._Lex, _memory->ATWMalloc(TIPO_REAL));//37
+
+		strcpy_s(_str, _op);
+		strcat_s(_str, _PreviousToken._Lex);
+		_cg->STIF(_str, _memory->ATWMalloc(TIPO_REAL));//37
 
 		CT(COMMA);
 
+		_op = "";
 		if(_CurrentToken._Token == PLUS){
 			CT(PLUS);
 		}
 		else if(_CurrentToken._Token == MINUS){
 			CT(MINUS);
+			_op = "-";
 		}
 
 		CT(CONSTANT);
 
-		_cg->STIF(_PreviousToken._Lex, _memory->ATWMalloc(TIPO_REAL));//37
+		strcpy_s(_str, _op);
+		strcat_s(_str, _PreviousToken._Lex);
+		_cg->STIF(_str, _memory->ATWMalloc(TIPO_REAL));//37
 
 		CT(RPAREN);
 		CT(EXP_END);
@@ -270,7 +284,7 @@ void ATWSin::DColorD(){
 		char _IdLex[255];
 		strcpy_s(_IdLex, _PreviousToken._Lex);
 		_Sem->unicidadeAlreadyDeclared(_PreviousToken, CLASSE_COR);//(2) - SEMÂNTICO
-		
+
 		CT(EQ);
 		CT(CONSTANT);
 
@@ -405,7 +419,7 @@ void ATWSin::DObjD(){
 		while(_CurrentToken._Token == COMMA){
 			CT(COMMA);
 			CT(ID);
-			
+
 			_Sem->unicidadeNotDeclared(_PreviousToken);//(1) - SEMÂNTICO
 			_Sem->classVerify(_PreviousToken, CLASSE_FACE);//(6) - SEMÂNTICO
 			_cg->STI(ATWgetCStr(_PreviousToken._End), _memory->ATWMalloc(TIPO_INTEIRO));//41
@@ -429,7 +443,7 @@ void ATWSin::DVarD(){
 			CT(REAL);
 			_tipo = TIPO_REAL; //(11) - SEMÂNTICO
 		}
-		
+
 		CT(ID);
 
 		_Sem->unicidadeAlreadyDeclared(_PreviousToken, CLASSE_VAR);//(2) - SEMÂNTICO
@@ -509,11 +523,12 @@ void ATWSin::Command(){
 	Type _ExpType;
 	int _ExpAdr = 0, _Exp1Adr = 0, _Exp2Adr = 0, _Exp3Adr = 0, _Exp4Adr = 0, _Exp5Adr = 0;//(59) - COD
 	ATW_BUFF_ELEMENT _idAux;//(32) - SEMÂNTICO
+	char* _CRotStart, *_CRotEnd, *_CRotFalse;
 
 	switch(_CurrentToken._Token){
 	case ID:
 		CT(ID);
-		
+
 		_idAux = _PreviousToken;//(32) - SEMÂNTICO
 		_Sem->unicidadeNotDeclared(_PreviousToken);//(1) - SEMÂNTICO
 		_Sem->classVerify(_PreviousToken, CLASSE_VAR);//(8) - SEMÂNTICO
@@ -522,7 +537,7 @@ void ATWSin::Command(){
 
 		_memory->ATWResetTemp();//(46) - COD
 		Exp(_ExpType, _ExpAdr);
-		
+
 		//(31) - SEMÂNTICO ------------------------------------------------------------------
 		//(31) - COD ------------------------------------------------------------------------		
 		_Sem->DiffTypeVerify(_PreviousToken, _ExpType, TIPO_LOGICO);//Se ExpTipo != tipo-logico entao...
@@ -555,9 +570,18 @@ void ATWSin::Command(){
 		CT(ENQUANTO);
 
 		_memory->ATWResetTemp();//(46) - COD
-		 Exp(_ExpType, _ExpAdr);//(32) - SEMÂNTICO
+		Exp(_ExpType, _ExpAdr);//(32) - SEMÂNTICO
 		_Sem->TypeVerify(_PreviousToken, _ExpType, TIPO_LOGICO);//(32) - SEMÂNTICO
 
+		//(32) - COD -------------------------------------------------------------------------
+		_CRotStart = ATWNovoRot();
+		_CRotEnd = ATWNovoRot();
+
+		_cg->write(_CRotStart);
+		_cg->LOD("A", _ExpAdr);
+		_cg->BZR("A", _CRotEnd);
+		//(32) - COD -------------------------------------------------------------------------
+		
 		CT(FACA);
 
 		if(_CurrentToken._Token == INICIO)
@@ -570,6 +594,11 @@ void ATWSin::Command(){
 			void* _Param[2] = {(void*)_CurrentToken._LINE,(void*)_CurrentToken._Lex};
 			_eManager->callHandlers(this->getGroupID(), UNEXPECTED_TOKEN, _Param);
 		}
+
+		//(60) - COD -------------------------------------------------------------------------
+		_cg->JMP(_CRotStart);
+		_cg->write(_CRotEnd);
+		//(60) - COD -------------------------------------------------------------------------
 		break;
 	case ESCALA:
 		CT(ESCALA);
@@ -597,7 +626,7 @@ void ATWSin::Command(){
 			_cg->LODF("B", _ExpAdr);
 		}//end else
 
-		_cg->ESC("A", "B");
+		_cg->ESC("A", "B", "FIM ESCALA");
 		//(57) - COD -------------------------------------------------------------------------
 
 		CT(EXP_END);
@@ -620,9 +649,9 @@ void ATWSin::Command(){
 			_cg->LOD("A", _ExpAdr, "PAUSA EXP");
 		}//end else
 
-		_cg->TME("A");
+		_cg->TME("A", "FIM PAUSA");
 		//(58) - COD -------------------------------------------------------------------------
-		
+
 		CT(EXP_END);
 		break;
 	case LUZ:
@@ -632,12 +661,12 @@ void ATWSin::Command(){
 		_idAux = _PreviousToken;//(56) - COD
 		_Sem->unicidadeNotDeclared(_PreviousToken);//(1) - SEMÂNTICO
 		_Sem->classVerify(_PreviousToken, CLASSE_LUZ);//(4) - SEMÂNTICO
-		
+
 		//(56) - SEMANTICO -------------------------------------------------------------------
 		//(56) - COD -------------------------------------------------------------------------
 		_Sem->DiffTypeVerify(_PreviousToken, _PreviousToken._Tipo, TIPO_REAL);
 		_cg->LOD("A", _idAux._End, "LUZ ID");
-		_cg->LGT("A");
+		_cg->LGT("A", "FIM LUZ");
 		//(56) - COD -------------------------------------------------------------------------
 		//(56) - SEMANTICO -------------------------------------------------------------------
 
@@ -663,19 +692,19 @@ void ATWSin::Command(){
 		_memory->ATWResetTemp();//(46) - COD
 		Exp(_ExpType, _Exp1Adr);//(33) - SEMÂNTICO
 		_Sem->DiffTypeVerify(_PreviousToken, _ExpType, TIPO_LOGICO);//(33) - SEMÂNTICO
-		
+
 		CT(COMMA);
 
 		_memory->ATWResetTemp();//(46) - COD
 		Exp(_ExpType, _Exp2Adr);//(33) - SEMÂNTICO
 		_Sem->DiffTypeVerify(_PreviousToken, _ExpType, TIPO_LOGICO);//(33) - SEMÂNTICO
-		
+
 		CT(COMMA);
 
 		_memory->ATWResetTemp();//(46) - COD
 		Exp(_ExpType, _Exp3Adr);//(33) - SEMÂNTICO
 		_Sem->DiffTypeVerify(_PreviousToken, _ExpType, TIPO_LOGICO);//(33) - SEMÂNTICO
-		
+
 		CT(COMMA);
 
 		_memory->ATWResetTemp();//(46) - COD
@@ -696,7 +725,7 @@ void ATWSin::Command(){
 		_cg->LODF("D", _Exp3Adr);
 		_cg->LODF("E", _Exp4Adr);
 		_cg->LODF("F", _Exp5Adr);
-		_cg->RTR();
+		_cg->RTR("FIM ROTTRANS");
 		//(56) - COD -------------------------------------------------------------------------
 
 		CT(EXP_END);
@@ -705,8 +734,18 @@ void ATWSin::Command(){
 		CT(SE);
 
 		_memory->ATWResetTemp();//(46) - COD
-		Exp(_ExpType, _ExpAdr);//(32) - SEMÂNTICO
-		_Sem->TypeVerify(_PreviousToken, _ExpType, TIPO_LOGICO);//(32) - SEMÂNTICO
+		Exp(_ExpType, _ExpAdr);
+
+		//(61) - COD -------------------------------------------------------------------------
+		_CRotFalse = ATWNovoRot();
+		_CRotEnd = ATWNovoRot();
+
+		_Sem->TypeVerify(_PreviousToken, _ExpType, TIPO_LOGICO);//(61) - SEMÂNTICO
+
+		_cg->write(_CRotStart);
+		_cg->LOD("A", _ExpAdr);
+		_cg->BZR("A", _CRotFalse);
+		//(61) - COD -------------------------------------------------------------------------
 
 		CT(ENTAO);
 
@@ -720,7 +759,13 @@ void ATWSin::Command(){
 			_eManager->callHandlers(this->getGroupID(), UNEXPECTED_TOKEN, _Param);
 		}
 
+		//(61) - COD -------------------------------------------------------------------------
+		_cg->JMP(_CRotEnd);
+		_cg->write(_CRotFalse);
+		//(61) - COD -------------------------------------------------------------------------
+
 		if(_CurrentToken._Token == SENAO){
+
 			CT(SENAO);
 
 			if(_CurrentToken._Token == INICIO)
@@ -733,6 +778,9 @@ void ATWSin::Command(){
 				_eManager->callHandlers(this->getGroupID(), UNEXPECTED_TOKEN, _Param);
 			}
 		}
+		//(63) - COD -------------------------------------------------------------------------
+		_cg->write(_CRotFalse);
+		//(63) - COD -------------------------------------------------------------------------
 		break;
 	case EXP_END:
 		CT(EXP_END);
@@ -792,18 +840,70 @@ void ATWSin::Exp(Type& _ExpType, int& _ExpAdr){
 				}
 			}//end else
 
+			char* _ExpRotTrue;
 			if(_ExpType == TIPO_INTEIRO)
 			{
 				_cg->SUB("A","B");
-				//TODO: Ação 28 - Geração de código de Saltos
+				_ExpRotTrue = ATWNovoRot();
+				switch(_ROp)
+				{
+				case LT:
+					_cg->BNG("A", _ExpRotTrue);
+					break;
+				case GT:
+					_cg->BPS("A", _ExpRotTrue);
+					break;
+				case LE:
+					_cg->BNP("A", _ExpRotTrue);
+					break;
+				case GE:
+					_cg->BNN("A", _ExpRotTrue);
+					break;
+				case DEQ:
+					_cg->BZR("A", _ExpRotTrue);
+					break;
+				case DIFF:
+					_cg->BNZ("A", _ExpRotTrue);
+					break;
+				}//end switch
 			}//end if
 			else
 			{
 				_cg->SUBF("A","B");
-				//TODO: Ação 28 - Geração de código de Saltos
+				_ExpRotTrue = ATWNovoRot();
+				switch(_ROp)
+				{
+				case LT:
+					_cg->BNGF("A", _ExpRotTrue);
+					break;
+				case GT:
+					_cg->BPSF("A", _ExpRotTrue);
+					break;
+				case LE:
+					_cg->BNPF("A", _ExpRotTrue);
+					break;
+				case GE:
+					_cg->BNNF("A", _ExpRotTrue);
+					break;
+				case DEQ:
+					_cg->BZRF("A", _ExpRotTrue);
+					break;
+				case DIFF:
+					_cg->BNZF("A", _ExpRotTrue);
+					break;
+				}//end switch
 			}//end else
 			//(28) - COD -----------------------------------------------------------------------------
+			
+
+			char* _ExpRotEnd = ATWNovoRot();
+			_cg->JMP(_ExpRotEnd);
+			_cg->write(_ExpRotTrue);
+			_cg->LDI("A", "1");
+			_cg->write(_ExpRotEnd);
+			_ExpAdr = _memory->ATWNovoTemp(TIPO_INTEIRO);
 			_ExpType = TIPO_LOGICO;
+			_cg->STO("A", _ExpAdr);
 	}
 	_cg->flush();
 }
@@ -897,40 +997,40 @@ void ATWSin::EXPS(Type& _ExpSType, int & _ExpSAdr){
 			if(_ExpSType == TIPO_INTEIRO && _T1Type == TIPO_INTEIRO)
 			{
 				_ExpSType = TIPO_INTEIRO;
-				_cg->LOD("A", _ExpSAdr);
+				_cg->LOD("A", _ExpSAdr, "T + T");
 				_cg->LOD("B", _T1Adr);
 				_cg->ADD("A", "B");
 				_ExpSAdr = _memory->ATWNovoTemp(TIPO_INTEIRO);
-				_cg->STO("A", _ExpSAdr);
+				_cg->STO("A", _ExpSAdr, "FIM");
 			}
 			else if(_ExpSType == TIPO_INTEIRO && _T1Type == TIPO_REAL)
 			{
 				_ExpSType = TIPO_REAL;
-				_cg->LOD("A", _ExpSAdr);
+				_cg->LOD("A", _ExpSAdr, "T + T");
 				_cg->CNV("A", "A");
 				_cg->LODF("B", _T1Adr);
 				_cg->ADDF("A", "B");
 				_ExpSAdr = _memory->ATWNovoTemp(TIPO_REAL);
-				_cg->STOF("A", _ExpSAdr);
+				_cg->STOF("A", _ExpSAdr, "FIM");
 			}
 			else if(_ExpSType == TIPO_REAL && _T1Type == TIPO_INTEIRO)
 			{
 				_ExpSType = TIPO_REAL;
-				_cg->LODF("A", _ExpSAdr);
+				_cg->LODF("A", _ExpSAdr, "T + T");
 				_cg->LOD("B", _T1Adr);
 				_cg->CNV("B", "B");
 				_cg->ADDF("A", "B");
 				_ExpSAdr = _memory->ATWNovoTemp(TIPO_REAL);
-				_cg->STOF("A", _ExpSAdr);
+				_cg->STOF("A", _ExpSAdr, "FIM");
 			}
 			else if(_ExpSType == TIPO_REAL && _T1Type == TIPO_REAL)
 			{
 				_ExpSType = TIPO_REAL;
-				_cg->LODF("A", _ExpSAdr);
+				_cg->LODF("A", _ExpSAdr, "T + T");
 				_cg->LODF("B", _T1Adr);
 				_cg->ADDF("A", "B");
 				_ExpSAdr = _memory->ATWNovoTemp(TIPO_REAL);
-				_cg->STOF("A", _ExpSAdr);
+				_cg->STOF("A", _ExpSAdr, "FIM");
 			}
 			else{
 				void* _Param[1] = {(void*)_PreviousToken._LINE};
@@ -942,40 +1042,40 @@ void ATWSin::EXPS(Type& _ExpSType, int & _ExpSAdr){
 			if(_ExpSType == TIPO_INTEIRO && _T1Type == TIPO_INTEIRO)
 			{
 				_ExpSType = TIPO_INTEIRO;
-				_cg->LOD("A", _ExpSAdr);
+				_cg->LOD("A", _ExpSAdr, "T - T");
 				_cg->LOD("B", _T1Adr);
 				_cg->SUB("A", "B");
 				_ExpSAdr = _memory->ATWNovoTemp(TIPO_INTEIRO);
-				_cg->STO("A", _ExpSAdr);
+				_cg->STO("A", _ExpSAdr, "FIM");
 			}
 			else if(_ExpSType == TIPO_INTEIRO && _T1Type == TIPO_REAL)
 			{
 				_ExpSType = TIPO_REAL;
-				_cg->LOD("A", _ExpSAdr);
+				_cg->LOD("A", _ExpSAdr, "T - T");
 				_cg->CNV("A", "A");
 				_cg->LODF("B", _T1Adr);
 				_cg->SUBF("A", "B");
 				_ExpSAdr = _memory->ATWNovoTemp(TIPO_REAL);
-				_cg->STOF("A", _ExpSAdr);
+				_cg->STOF("A", _ExpSAdr, "FIM");
 			}
 			else if(_ExpSType == TIPO_REAL && _T1Type == TIPO_INTEIRO)
 			{
 				_ExpSType = TIPO_REAL;
-				_cg->LODF("A", _ExpSAdr);
+				_cg->LODF("A", _ExpSAdr, "T - T");
 				_cg->LOD("B", _T1Adr);
 				_cg->CNV("B", "B");
 				_cg->SUBF("A", "B");
 				_ExpSAdr = _memory->ATWNovoTemp(TIPO_REAL);
-				_cg->STOF("A", _ExpSAdr);
+				_cg->STOF("A", _ExpSAdr, "FIM");
 			}
 			else if(_ExpSType == TIPO_REAL && _T1Type == TIPO_REAL)
 			{
 				_ExpSType = TIPO_REAL;
-				_cg->LODF("A", _ExpSAdr);
+				_cg->LODF("A", _ExpSAdr, "T - T");
 				_cg->LODF("B", _T1Adr);
 				_cg->SUBF("A", "B");
 				_ExpSAdr = _memory->ATWNovoTemp(TIPO_REAL);
-				_cg->STOF("A", _ExpSAdr);
+				_cg->STOF("A", _ExpSAdr, "FIM");
 			}
 			else{
 				void* _Param[1] = {(void*)_PreviousToken._LINE};
@@ -987,12 +1087,16 @@ void ATWSin::EXPS(Type& _ExpSType, int & _ExpSAdr){
 			if (_ExpSType == TIPO_LOGICO && _T1Type == TIPO_LOGICO)
 			{
 				_ExpSType = TIPO_LOGICO;
-				_cg->LOD("A", _ExpSAdr);
+				_cg->LOD("A", _ExpSAdr, "T E T");
 				_cg->LOD("B", _T1Adr);
 				_cg->ADD("A", "B");
-				//TODO: Terminar ação 27 de código (Gerar Rótulo faltando)
+				char* _ExpSRot = ATWNovoRot();
+				_cg->BZR("A", _ExpSRot);
+				_cg->LDI("A", "1", "FIM");
+				_cg->write(_ExpSRot);
 			}
-			else{
+			else
+			{
 				void* _Param[1] = {(void*)_PreviousToken._LINE};
 				_eManager->callHandlers(this->getGroupID(), INCOMPATILBE_TYPES, _Param);
 			}
@@ -1006,7 +1110,7 @@ void ATWSin::EXPS(Type& _ExpSType, int & _ExpSAdr){
 void ATWSin::T(Type& _TType, int& _TAdr){
 	int _FAdr = 0, _F1Adr = 0;
 	Type _FType, _F1Type;
-	 
+
 	F(_FType, _FAdr);//(18) - SEMÂNTICO
 	_TType = _FType;//(18) - SEMÂNTICO
 	_TAdr = _FAdr;//(18) - COD
@@ -1036,40 +1140,40 @@ void ATWSin::T(Type& _TType, int& _TAdr){
 			if(_TType == TIPO_INTEIRO && _F1Type == TIPO_INTEIRO)
 			{
 				_TType = TIPO_INTEIRO;
-				_cg->LOD("A", _TAdr);
+				_cg->LOD("A", _TAdr, "F * F");
 				_cg->LOD("B", _F1Adr);
 				_cg->MUL("A", "B");
 				_TAdr = _memory->ATWNovoTemp(TIPO_INTEIRO);
-				_cg->STO("A", _TAdr);
+				_cg->STO("A", _TAdr, "FIM");
 			}
 			else if(_TType == TIPO_INTEIRO && _F1Type == TIPO_REAL)
 			{
 				_TType = TIPO_REAL;
-				_cg->LOD("A", _TAdr);
+				_cg->LOD("A", _TAdr, "F * F");
 				_cg->CNV("A","A");
 				_cg->LODF("B", _F1Adr);
 				_cg->MULF("A", "B");
 				_TAdr = _memory->ATWNovoTemp(TIPO_REAL);
-				_cg->STOF("A", _TAdr);
+				_cg->STOF("A", _TAdr, "FIM");
 			}
 			else if(_TType == TIPO_REAL && _F1Type == TIPO_INTEIRO)
 			{
 				_TType = TIPO_REAL;
-				_cg->LODF("A", _TAdr);
+				_cg->LODF("A", _TAdr, "F * F");
 				_cg->LOD("B", _F1Adr);
 				_cg->CNV("B","B");
 				_cg->MULF("A", "B");
 				_TAdr = _memory->ATWNovoTemp(TIPO_REAL);
-				_cg->STOF("A", _TAdr);
+				_cg->STOF("A", _TAdr, "FIM");
 			}
 			else if(_TType == TIPO_REAL && _F1Type == TIPO_REAL)
 			{
 				_TType = TIPO_REAL;
-				_cg->LODF("A", _TAdr);
+				_cg->LODF("A", _TAdr, "F * F");
 				_cg->LODF("B", _F1Adr);
 				_cg->MULF("A", "B");
 				_TAdr = _memory->ATWNovoTemp(TIPO_REAL);
-				_cg->STOF("A", _TAdr);
+				_cg->STOF("A", _TAdr, "FIM");
 			}
 			else{
 				void* _Param[1] = {(void*)_PreviousToken._LINE};
@@ -1079,42 +1183,42 @@ void ATWSin::T(Type& _TType, int& _TAdr){
 			if(_TType == TIPO_INTEIRO && _F1Type == TIPO_INTEIRO)
 			{
 				_TType = TIPO_REAL;
-				_cg->LOD("A", _TAdr);
+				_cg->LOD("A", _TAdr, "F / F");
 				_cg->CNV("A","A");
 				_cg->LOD("B", _F1Adr);
 				_cg->CNV("B","B");
 				_cg->DIV("A", "B");
 				_TAdr = _memory->ATWNovoTemp(TIPO_REAL);
-				_cg->STOF("A", _TAdr);
+				_cg->STOF("A", _TAdr, "FIM");
 			}
 			else if(_TType == TIPO_INTEIRO && _F1Type == TIPO_REAL)
 			{
 				_TType = TIPO_REAL;
-				_cg->LOD("A", _TAdr);
+				_cg->LOD("A", _TAdr, "F / F");
 				_cg->CNV("A","A");
 				_cg->LODF("B", _F1Adr);
 				_cg->DIV("A", "B");
 				_TAdr = _memory->ATWNovoTemp(TIPO_REAL);
-				_cg->STOF("A", _TAdr);
+				_cg->STOF("A", _TAdr, "FIM");
 			}
 			else if(_TType == TIPO_REAL && _F1Type == TIPO_INTEIRO)
 			{
 				_TType = TIPO_REAL;
-				_cg->LODF("A", _TAdr);
+				_cg->LODF("A", _TAdr, "F / F");
 				_cg->LOD("B", _F1Adr);
 				_cg->CNV("B","B");
 				_cg->DIV("A", "B");
 				_TAdr = _memory->ATWNovoTemp(TIPO_REAL);
-				_cg->STOF("A", _TAdr);
+				_cg->STOF("A", _TAdr, "FIM");
 			}
 			else if(_TType == TIPO_REAL && _F1Type == TIPO_REAL)
 			{
 				_TType = TIPO_REAL;
-				_cg->LODF("A", _TAdr);
+				_cg->LODF("A", _TAdr, "F / F");
 				_cg->LODF("B", _F1Adr);
 				_cg->DIV("A", "B");
 				_TAdr = _memory->ATWNovoTemp(TIPO_REAL);
-				_cg->STOF("A", _TAdr);
+				_cg->STOF("A", _TAdr, "FIM");
 			}
 			else{
 				void* _Param[1] = {(void*)_PreviousToken._LINE};
@@ -1124,11 +1228,11 @@ void ATWSin::T(Type& _TType, int& _TAdr){
 			if (_TType == TIPO_LOGICO && _F1Type == TIPO_LOGICO)
 			{
 				_TType = TIPO_LOGICO;
-				_cg->LOD("A", _TAdr);
+				_cg->LOD("A", _TAdr, "F OU F");
 				_cg->LOD("B", _F1Adr);
 				_cg->MUL("A", "B");
 				_TAdr = _memory->ATWNovoTemp(TIPO_INTEIRO);
-				_cg->STO("A", _TAdr);
+				_cg->STO("A", _TAdr, "FIM");
 			}
 			else{
 				void* _Param[1] = {(void*)_PreviousToken._LINE};
@@ -1144,14 +1248,14 @@ void ATWSin::T(Type& _TType, int& _TAdr){
 void ATWSin::F(Type& _FType, int& _FAdr){//Fend = _FAdr
 	Class _class[2] = {CLASSE_CONST, CLASSE_VAR};//(9) - SEMÂNTICO
 	ATW_BUFF_ELEMENT _tAux = _PreviousToken;//(16) - SEMÂNTICO
-		Type _ExpType;
-		int _ExpAdr = 0, _F1Adr = 0;
-		Type _F1Type;
+	Type _ExpType;
+	int _ExpAdr = 0, _F1Adr = 0;
+	Type _F1Type;
 
 	switch(_CurrentToken._Token){
 	case LPAREN:
 		CT(LPAREN);
-		
+
 		_memory->ATWResetTemp();
 		Exp(_ExpType, _ExpAdr);//(17) - SEMÂNTICO
 		_FType = _ExpType;
@@ -1161,18 +1265,18 @@ void ATWSin::F(Type& _FType, int& _FAdr){//Fend = _FAdr
 		break;
 	case NAO:
 		CT(NAO);
-		
+
 		F(_F1Type, _F1Adr);//(16) - SEMÂNTICO
 		_FType = _F1Type;//(16) - SEMÂNTICO
 		_Sem->TypeVerify(_tAux, _F1Type, TIPO_LOGICO);//(16) - SEMÂNTICO
-		
+
 		//(16) - COD-------------------------------------------------------------------
 		_FAdr = _memory->ATWNovoTemp(_FType);
 
-		_cg->LOD("A",_F1Adr);
+		_cg->LOD("A",_F1Adr, "NAO F");
 		_cg->NEG("A");
 		_cg->ADI("A", "1");
-		_cg->STO("A", _FAdr);
+		_cg->STO("A", _FAdr, "FIM");
 		//(16) - COD-------------------------------------------------------------------
 		break;
 	case ID:
@@ -1191,7 +1295,7 @@ void ATWSin::F(Type& _FType, int& _FAdr){//Fend = _FAdr
 
 		//(15) - COD-------------------------------------------------------------------
 		_FAdr = _memory->ATWNovoTemp(_FType);
-		
+
 		if (_FType == TIPO_INTEIRO)
 			_cg->STI(_PreviousToken._Lex,_FAdr);
 		else
