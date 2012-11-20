@@ -31,33 +31,34 @@ public:
 	void dispose(int _Argc, void** _Argv);
 	void clearWritingBufferFULL();
 	void clearWritingBuffer();
-	void insertCodeToWriteBin(int _Element);
-	void insertCodeToWriteMac(char* _Code, int _codeIndex = -1, bool _Overlap = true);
+	void insertCodeToWriteBin(int _Element, char* _Number =	NULL);
+	void insertCodeToWriteAsm(char* _Code, int _codeIndex = -1, bool _Overlap = true);
 	void fixCode(int _Address, char* _value);
 	string getCode(int _codeIndex = -1);
-	string transformToBin(int _Number){return "";}
+	string binaryVerify(string _Number);
 	void flush();
 	void flushBin(){}
 	//---------------------------------------------------------------------------------------------------------------------
 	/*
 	* Funções utilizadas para a escrita do código no arquivo
 	*/
+	void write(char* _String);
 	int ADD(char* _RegD, char* _RegO, char* _Comment = "");
 	int ADDF(char* _RegD, char* _RegO, char* _Comment = "");
 	int ADI(char* _RegD, char* _Imed, char* _Comment = "");
 	int ADIF(char* _RegD, char* _Imed, char* _Comment = "");
-	int BNG(char* _Reg, int _Desl, char* _Comment = "");
-	int BNGF(char* _Reg, int _Desl, char* _Comment = "");
-	int BNN(char* _Reg, int _Desl, char* _Comment = "");
-	int BNNF(char* _Reg, int _Desl, char* _Comment = "");
-	int BNP(char* _Reg, int _Desl, char* _Comment = "");
-	int BNPF(char* _Reg, int _Desl, char* _Comment = "");
-	int BNZ(char* _Reg, int _Desl, char* _Comment = "");
-	int BNZF(char* _Reg, int _Desl, char* _Comment = "");
-	int BPS(char* _Reg, int _Desl, char* _Comment = "");
-	int BPSF(char* _Reg, int _Desl, char* _Comment = "");
-	int BZR(char* _Reg, int _Desl, char* _Comment = "");
-	int BZRF(char* _Reg, int _Desl, char* _Comment = "");
+	int BNG(char* _Reg, char* _Rot, char* _Comment = "");
+	int BNGF(char* _Reg, char* _Rot, char* _Comment = "");
+	int BNN(char* _Reg, char* _Rot, char* _Comment = "");
+	int BNNF(char* _Reg, char* _Rot, char* _Comment = "");
+	int BNP(char* _Reg, char* _Rot, char* _Comment = "");
+	int BNPF(char* _Reg, char* _Rot, char* _Comment = "");
+	int BNZ(char* _Reg, char* _Rot, char* _Comment = "");
+	int BNZF(char* _Reg, char* _Rot, char* _Comment = "");
+	int BPS(char* _Reg, char* _Rot, char* _Comment = "");
+	int BPSF(char* _Reg, char* _Rot, char* _Comment = "");
+	int BZR(char* _Reg, char* _Rot, char* _Comment = "");
+	int BZRF(char* _Reg, char* _Rot, char* _Comment = "");
 	int CNV(char* _RegD, char* _RegO, char* _Comment = "");
 	int DIV(char* _RegD, char* _RegO, char* _Comment = "");
 	int ESC(char* _Reg1, char* _Reg2, char* _Comment = "");
@@ -88,7 +89,6 @@ private:
 	int _lIIBF;//LAST INSERTED INDEX BEFORE FLUSHING
 	int _hIIBF;//HIGH INSERTED INDEX BEFORE FLUSHING
 	int _InstIndex;//Índice para utilizar o buffer de instruções
-	int _Value;
 	string _wBuffer[MAX_WRITING_BUFFER];
 	string _bBuffer[WORD_SIZE];
 	FileManager* fManager;

@@ -19,7 +19,7 @@ DFace
       F5=AZUL,P5,P1,P4,P8
       F6=AZUL,P7,P3,P2,P6
 DLuz
-      L1=(200,200,200)
+      L1=(200,-200,20)
 DObjeto
       CUBO = F1,F2,F3,F4,F5,F6
 DConst
@@ -29,16 +29,19 @@ DConst
       D0X = -200
       D0Y = 200
       D0Z = 0
-      V0X = 8
+      V0X = -8
       V0Y = 2
       V0Z = 0
 DVar
       inteiro i
 	  real j
+	  real id
 
 { Programa Principal }
 
 Inicio
-   i=1
-   j = 3.5
+   i = 1
+
+   ESCALA cubo, 123+4-(-4)
+
 Fim
