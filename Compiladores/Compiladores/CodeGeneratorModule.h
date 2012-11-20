@@ -43,6 +43,7 @@ public:
 	* Funções utilizadas para a escrita do código no arquivo
 	*/
 	void write(char* _String);
+	void writeRot(char* _String);
 	int ADD(char* _RegD, char* _RegO, char* _Comment = "");
 	int ADDF(char* _RegD, char* _RegO, char* _Comment = "");
 	int ADI(char* _RegD, char* _Imed, char* _Comment = "");
