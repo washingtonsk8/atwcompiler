@@ -40,7 +40,7 @@ DVar
 { Programa Principal }
 
 Inicio
-   enquanto i<15 faca
+   enquanto i<15 faca inicio
    i = i + 1
    fim
-Fim
+ Fim

@@ -263,10 +263,10 @@ int main (int argc, char* argv[], char* envp[]){
 	//CODE_GENERATOR_T();
 
 	/*LABEL GENERATOR MODULE TEST*/
-	LabelControllerTests();
+	//LabelControllerTests();
 
 	/*Compiler Running*/
-	//_RunCompiler(argc, argv, envp);
+	_RunCompiler(argc, argv, envp);
 
 	system("pause");
 	return 0;

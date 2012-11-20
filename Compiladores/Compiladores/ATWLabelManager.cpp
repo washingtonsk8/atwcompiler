@@ -12,7 +12,7 @@ namespace LabelController{
 	//METHODS----------------------------------------------------
 	char* ATWNovoRot(){
 		char _Rot[255];
-		sprintf_s(_Rot, "Rot%i:", _RotCount);
+		sprintf_s(_Rot, "Rot%i", _RotCount);
 
 		//insert into label vector
 		unsigned int _CurrentKey = SDBMHash(_Rot) % MAX_LABELS;	
@@ -39,7 +39,7 @@ namespace LabelController{
 	//---------------------------------------------------------------------------------------------------
 	void ATWRemoveLabel(int _Label){
 		char _Rot[255];
-		sprintf_s(_Rot, "Rot%i:", _Label);
+		sprintf_s(_Rot, "Rot%i", _Label);
 
 		//insert into label vector
 		unsigned int _CurrentKey = SDBMHash(_Rot) % MAX_LABELS;	
