@@ -13,5 +13,6 @@
 #include <cstdlib>
 #include <iostream>
 #include <stdio.h>
+typedef unsigned int Address;
 
 #endif
