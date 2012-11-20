@@ -3,6 +3,7 @@
 //-----------------------------------------------------------------------------------------------------
 #include "GeneralHashFunctions.h"
 #include "ATW_MemoryManager.h"
+#include "ATW_LabelTable.h"
 #include "EventsManager.h"
 #include "Globals.h"
 #include "ERRO_DEF.h"
@@ -20,7 +21,7 @@ using namespace MemoryManager;
 namespace LabelController{
 	//VARIABLES--------------------------------------------------
 	extern EventsManager* _ev;
-	extern int*		      _CurrentPCAdress;
+	extern Address*		  _CurrentPCAdress;
 	extern int            _Labels[MAX_LABELS];
 	extern int            _RotCount;
 	extern queue<int>     _AvailableFreeLabels;

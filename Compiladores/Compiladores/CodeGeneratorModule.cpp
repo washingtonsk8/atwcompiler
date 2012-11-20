@@ -165,7 +165,7 @@ void CodeGeneratorModule::write(char* _String)
 //----------------------------------------------------------------------------------------------------------------------
 void CodeGeneratorModule::writeRot(char* _String)
 {
-	strcat(_String, ":");
+	strcat(_String, ":\n");
 	insertCodeToWriteAsm(_String, _InstIndex++);
 }
 //----------------------------------------------------------------------------------------------------------------------
@@ -648,7 +648,7 @@ int CodeGeneratorModule::LGT(char* _Reg, char* _Comment)
 	return _InstIndexBase;
 }
 //----------------------------------------------------------------------------------------------------------------------
-int CodeGeneratorModule::LOD(char* _RegD, int _Desl, char* _Comment)
+int CodeGeneratorModule::LOD(char* _RegD, Address _Desl, char* _Comment)
 {
 	int _InstIndexBase = _InstIndex;
 	insertCodeToWriteAsm("LOD ", _InstIndex++);
@@ -669,7 +669,7 @@ int CodeGeneratorModule::LOD(char* _RegD, int _Desl, char* _Comment)
 	return _InstIndexBase;
 }
 //----------------------------------------------------------------------------------------------------------------------
-int CodeGeneratorModule::LODF(char* _RegD, int _Desl, char* _Comment)
+int CodeGeneratorModule::LODF(char* _RegD, Address _Desl, char* _Comment)
 {
 	int _InstIndexBase = _InstIndex;
 	insertCodeToWriteAsm("LODF ", _InstIndex++);
@@ -811,7 +811,7 @@ int CodeGeneratorModule::RTR(char* _Comment)
 	return _InstIndexBase;
 }
 //----------------------------------------------------------------------------------------------------------------------
-int CodeGeneratorModule::STI(char* _Imed, int _Desl, char* _Comment){
+int CodeGeneratorModule::STI(char* _Imed, Address _Desl, char* _Comment){
 	int _InstIndexBase = _InstIndex;
 	insertCodeToWriteAsm("STI #", _InstIndex++);
 	//insertCodeToWriteBin(34);
@@ -831,7 +831,7 @@ int CodeGeneratorModule::STI(char* _Imed, int _Desl, char* _Comment){
 	return _InstIndexBase;
 }
 //----------------------------------------------------------------------------------------------------------------------
-int CodeGeneratorModule::STIF(char* _Imed, int _Desl, char* _Comment)
+int CodeGeneratorModule::STIF(char* _Imed, Address _Desl, char* _Comment)
 {
 	int _InstIndexBase = _InstIndex;
 	insertCodeToWriteAsm("STIF #", _InstIndex++);
@@ -856,7 +856,7 @@ int CodeGeneratorModule::STIF(char* _Imed, int _Desl, char* _Comment)
 	return _InstIndexBase;
 }
 //----------------------------------------------------------------------------------------------------------------------
-int CodeGeneratorModule::STO(char* _Reg, int _Desl, char* _Comment)
+int CodeGeneratorModule::STO(char* _Reg, Address _Desl, char* _Comment)
 {
 	int _InstIndexBase = _InstIndex;
 	insertCodeToWriteAsm("STO ", _InstIndex++);
@@ -877,7 +877,7 @@ int CodeGeneratorModule::STO(char* _Reg, int _Desl, char* _Comment)
 	return _InstIndexBase;
 }
 //----------------------------------------------------------------------------------------------------------------------
-int CodeGeneratorModule::STOF(char* _Reg, int _Desl, char* _Comment)
+int CodeGeneratorModule::STOF(char* _Reg, Address _Desl, char* _Comment)
 {
 	int _InstIndexBase = _InstIndex;
 	insertCodeToWriteAsm("STOF ", _InstIndex++);

@@ -45,7 +45,7 @@ typedef struct InfoBundle{
 	void build_element(
 		int _TokenIDP,
 		const char* _LexemeP,
-		unsigned int _EndP = 0x0,
+		Address _EndP = 0x0,
 		Class classeP = CLASSE_VAZIO,
 		Type tipoP = TIPO_VAZIO){
 			_TokenID = _TokenIDP;
@@ -90,10 +90,10 @@ private:
 	void Command();
 
 	//--PARA EXPRESSÕES--
-	void Exp(Type& _ExpType, int& _ExpAdr);
+	void Exp(Type& _ExpType, Address& _ExpAdr);
 	void R(Token& _ROp);
-	void EXPS(Type& _ExpSType, int& _ExpSAdr);
-	void T(Type& _TType, int& _TAdr);
-	void F(Type& _FType, int& _FAdr);
+	void EXPS(Type& _ExpSType, Address& _ExpSAdr);
+	void T(Type& _TType, Address& _TAdr);
+	void F(Type& _FType, Address& _FAdr);
 };
 #endif

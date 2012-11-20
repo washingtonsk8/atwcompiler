@@ -2,6 +2,7 @@
 #define ATW_MEMMANAGER_H
 //--------------------------------------------------------------------------------------------------------
 #include "SymbolTable.h"
+#include "Globals.h"
 //--------------------------------------------------------------------------------------------------------
 #define MEM_BASE_address 0
 #define ZERO             0
@@ -25,7 +26,7 @@ public:
 	//--------------------------------------------------------------------------------------------------------
 	~ATWMemory(void){}
 	//--------------------------------------------------------------------------------------------------------
-	int ATWMalloc(Type _Type){
+	Address ATWMalloc(Type _Type){
 		int _PreviousMemAddress = _LastMemAddress;
 
 		if (_Type == TIPO_REAL)
@@ -37,7 +38,7 @@ public:
 		return _PreviousMemAddress;
 	}
 	//--------------------------------------------------------------------------------------------------------
-	int ATWNovoTemp(Type _Type){
+	Address ATWNovoTemp(Type _Type){
 		int _PreviousTempAddress = _LastTempAddress;
 
 		if (_Type == TIPO_REAL)
@@ -52,11 +53,11 @@ public:
 		_LastTempAddress = _TempBaseAddress;
 	}
 	//--------------------------------------------------------------------------------------------------------
-	int getPC(){
+	Address getPC(){
 		return _PC;
 	}
 	//--------------------------------------------------------------------------------------------------------
-	int incrementPC (int _Value = 1){
+	Address incrementPC (int _Value = 1){
 		return _PC += _Value;
 	}
 	//--------------------------------------------------------------------------------------------------------
@@ -65,12 +66,12 @@ public:
 	}
 	//--------------------------------------------------------------------------------------------------------
 private:
-	int	_PC;//Contador de programa
-	int _TotalMemAllocation;//Possui o total de memória alocado no momento
-	int _MemBaseAddress;//Possui o endereço de memória base do início da memória de dados
-	int	_LastMemAddress;//Possui o primeiro endereço de memória vazio
-	int	_LastTempAddress;//Possui o primeiro endereço de memória vazio após 0 ou mais temporários
-	int	_TempBaseAddress;//Possui o endereço de memória base do início dos temporários
+	Address	_PC;//Contador de programa
+	Address _TotalMemAllocation;//Possui o total de memória alocado no momento
+	Address _MemBaseAddress;//Possui o endereço de memória base do início da memória de dados
+	Address	_LastMemAddress;//Possui o primeiro endereço de memória vazio
+	Address	_LastTempAddress;//Possui o primeiro endereço de memória vazio após 0 ou mais temporários
+	Address	_TempBaseAddress;//Possui o endereço de memória base do início dos temporários
 };
 #endif
 

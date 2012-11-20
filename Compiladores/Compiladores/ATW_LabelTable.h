@@ -10,10 +10,10 @@
 #define MAX_TOTAL_LABELS 100000
 //--------------------------------------------------------------------------------------------------------
 typedef struct LabelElement{
-	int    _PCAddress;
-	char* _Label;
+	Address _PCAddress;
+	char*	_Label;
 
-	bool BuildElement(char* _labelP, int _PCAddressP){
+	bool BuildElement(char* _labelP, Address _PCAddressP){
 		_Label     = _labelP;
 		_PCAddress = _PCAddressP;
 		return true;
@@ -52,7 +52,7 @@ public:
 		}
 	}
 	//--------------------------------------------------------------------------------------------------------
-	void pushLabelAddress(char* _element, unsigned int _PCAddress){
+	void pushLabelAddress(char* _element, Address _PCAddress){
 		unsigned int _hashing = SDBMHash(_element) % MAX_TOTAL_LABELS;
 
 		if(_labelsTable[_hashing] != 0x0)
@@ -64,7 +64,7 @@ public:
 		_labelsTable[_hashing] = _newElement;
 	}
 	//--------------------------------------------------------------------------------------------------------
-	unsigned int getLabelAddress (char* _element){
+	Address getLabelAddress (char* _element){
 		unsigned int _hashing = SDBMHash(_element) % MAX_TOTAL_LABELS;
 
 		if(_labelsTable[_hashing] == 0x0)

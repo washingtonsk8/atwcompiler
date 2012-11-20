@@ -68,8 +68,8 @@ public:
 	int LDI(char* _RegD, char* _Imed, char* _Comment = "");
 	int LDIF(char* _RegD, char* _Imed, char* _Comment = "");
 	int LGT(char* _Reg, char* _Comment = "");
-	int LOD(char* _RegD, int _Desl, char* _Comment = "");
-	int LODF(char* _RegD, int _Desl, char* _Comment = "");
+	int LOD(char* _RegD, Address _Desl, char* _Comment = "");
+	int LODF(char* _RegD, Address _Desl, char* _Comment = "");
 	int MVE(char* _RegD, char* _RegO, char* _Comment = "");
 	int MVEF(char* _RegD, char* _RegO, char* _Comment = "");
 	int MUL(char* _RegD, char* _RegO, char* _Comment = "");
@@ -77,10 +77,10 @@ public:
 	int NEG(char* _Reg, char* _Comment = "");
 	int NEGF(char* _Reg, char* _Comment = "");
 	int RTR(char* _Comment = "");
-	int STI(char* _Imed, int _Desl, char* _Comment = "");
-	int STIF(char* _Imed, int _Desl, char* _Comment = "");
-	int STO(char* _Reg, int _Desl, char* _Comment = "");
-	int STOF(char* _Reg, int _Desl, char* _Comment = "");
+	int STI(char* _Imed, Address  _Desl, char* _Comment = "");
+	int STIF(char* _Imed, Address  _Desl, char* _Comment = "");
+	int STO(char* _Reg, Address  _Desl, char* _Comment = "");
+	int STOF(char* _Reg, Address  _Desl, char* _Comment = "");
 	int SUB(char* _RegD, char* _RegO, char* _Comment = "");
 	int SUBF(char* _RegD, char* _RegO, char* _Comment = "");
 	int TME(char* _Reg, char* _Comment = "");

@@ -341,7 +341,7 @@ void ATWSin::DColorD(){
 void ATWSin::DFaceD(){
 	do{
 		int _pointCount = -1;//40
-		int _cAddress   = 0;//43
+		Address _cAddress   = 0;//43
 
 		CT(ID);
 
@@ -398,7 +398,7 @@ void ATWSin::DFaceD(){
 void ATWSin::DObjD(){
 	do{
 		int _objectCount = 0;
-		int _cAddress    = 0;
+		Address _cAddress    = 0;
 
 		CT(ID);
 		char _IdLex[255];
@@ -521,7 +521,7 @@ void ATWSin::Block(){
 //---------------------------------------------------------------------------------------------------------------------
 void ATWSin::Command(){
 	Type _ExpType;
-	int _ExpAdr = 0, _Exp1Adr = 0, _Exp2Adr = 0, _Exp3Adr = 0, _Exp4Adr = 0, _Exp5Adr = 0;//(59) - COD
+	Address _ExpAdr = 0, _Exp1Adr = 0, _Exp2Adr = 0, _Exp3Adr = 0, _Exp4Adr = 0, _Exp5Adr = 0;//(59) - COD
 	ATW_BUFF_ELEMENT _idAux;//(32) - SEMÂNTICO
 	char* _CRotStart, *_CRotEnd, *_CRotFalse;
 
@@ -788,9 +788,9 @@ void ATWSin::Command(){
 	_cg->flush();
 }
 //---------------------------------------------------------------------------------------------------------------------
-void ATWSin::Exp(Type& _ExpType, int& _ExpAdr){
+void ATWSin::Exp(Type& _ExpType, Address& _ExpAdr){
 	Type _ExpSType, _ExpS1Type;
-	int _ExpSAdr = 0, _ExpS1Adr = 0;
+	Address _ExpSAdr = 0, _ExpS1Adr = 0;
 
 	EXPS(_ExpSType, _ExpSAdr);//(29) - SEMÂNTICO
 	_ExpType = _ExpSType;
@@ -936,9 +936,9 @@ void ATWSin::R(Token& _ROp){
 	}
 }
 //---------------------------------------------------------------------------------------------------------------------
-void ATWSin::EXPS(Type& _ExpSType, int & _ExpSAdr){
+void ATWSin::EXPS(Type& _ExpSType, Address& _ExpSAdr){
 	Token _ExpSOp = PLUS;
-	int _TAdr = 0, _T1Adr = 0;
+	Address _TAdr = 0, _T1Adr = 0;
 	Type _TType, _T1Type;
 
 	if(_CurrentToken._Token == PLUS){
@@ -1106,8 +1106,8 @@ void ATWSin::EXPS(Type& _ExpSType, int & _ExpSAdr){
 	_cg->flush();
 }
 //---------------------------------------------------------------------------------------------------------------------
-void ATWSin::T(Type& _TType, int& _TAdr){
-	int _FAdr = 0, _F1Adr = 0;
+void ATWSin::T(Type& _TType, Address& _TAdr){
+	Address _FAdr = 0, _F1Adr = 0;
 	Type _FType, _F1Type;
 
 	F(_FType, _FAdr);//(18) - SEMÂNTICO
@@ -1244,11 +1244,11 @@ void ATWSin::T(Type& _TType, int& _TAdr){
 	_cg->flush();
 }
 //---------------------------------------------------------------------------------------------------------------------
-void ATWSin::F(Type& _FType, int& _FAdr){//Fend = _FAdr
+void ATWSin::F(Type& _FType, Address& _FAdr){//Fend = _FAdr
 	Class _class[2] = {CLASSE_CONST, CLASSE_VAR};//(9) - SEMÂNTICO
 	ATW_BUFF_ELEMENT _tAux = _PreviousToken;//(16) - SEMÂNTICO
 	Type _ExpType;
-	int _ExpAdr = 0, _F1Adr = 0;
+	Address _ExpAdr = 0, _F1Adr = 0;
 	Type _F1Type;
 
 	switch(_CurrentToken._Token){
