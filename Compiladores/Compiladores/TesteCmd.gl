@@ -32,15 +32,13 @@ DConst
       V0X = -8
       V0Y = 2
       V0Z = 0
-DVar
-      inteiro i
-	  real j
-	  real id
 
 { Programa Principal }
+DVar
+	real i
 
 Inicio
-   se i<15 entao inicio
-   i = i + 1
+	i = 1
+   se i<200 entao inicio
    fim
 Fim

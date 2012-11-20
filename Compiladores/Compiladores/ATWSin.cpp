@@ -579,8 +579,10 @@ void ATWSin::Command(){
 
 		//(32) - COD -------------------------------------------------------------------------
 		_CRotStart = ATWNovoRot();
+		printf("NOVO ROT CRIADO ENQUANTO - %s\n", _CRotStart);
 		_CRotEnd = ATWNovoRot();
-
+		printf("NOVO ROT CRIADO ENQUANTO - %s\n", _CRotEnd);
+		
 		_cg->writeRot(_CRotStart);
 		_cg->LOD("A", _ExpAdr);
 		_cg->BZR("A", _CRotEnd);
@@ -742,7 +744,9 @@ void ATWSin::Command(){
 
 		//(61) - COD -------------------------------------------------------------------------
 		_CRotFalse = ATWNovoRot();
+		printf("NOVO ROT CRIADO - %s\n", _CRotFalse);
 		_CRotEnd = ATWNovoRot();
+		printf("NOVO ROT CRIADO - %s\n", _CRotEnd);
 
 		_Sem->TypeVerify(_PreviousToken, _ExpType, TIPO_LOGICO);//(61) - SEMÂNTICO
 
@@ -762,10 +766,10 @@ void ATWSin::Command(){
 			_eManager->callHandlers(this->getGroupID(), UNEXPECTED_TOKEN, _Param);
 		}
 
-		//(61) - COD -------------------------------------------------------------------------
+		//(62) - COD -------------------------------------------------------------------------
 		_cg->JMP(_CRotEnd);
 		_cg->writeRot(_CRotFalse);
-		//(61) - COD -------------------------------------------------------------------------
+		//(62) - COD -------------------------------------------------------------------------
 
 		if(_CurrentToken._Token == SENAO){
 
@@ -782,7 +786,7 @@ void ATWSin::Command(){
 			}
 		}
 		//(63) - COD -------------------------------------------------------------------------
-		_cg->writeRot(_CRotFalse);
+		_cg->writeRot(_CRotEnd);
 		//(63) - COD -------------------------------------------------------------------------
 		break;
 	case EXP_END:
@@ -848,6 +852,7 @@ void ATWSin::Exp(Type& _ExpType, Address& _ExpAdr){
 			{
 				_cg->SUB("A","B");
 				_ExpRotTrue = ATWNovoRot();
+				printf("NOVO ROT CRIADO - %s\n", _ExpRotTrue);
 				switch(_ROp)
 				{
 				case LT:
@@ -874,6 +879,7 @@ void ATWSin::Exp(Type& _ExpType, Address& _ExpAdr){
 			{
 				_cg->SUBF("A","B");
 				_ExpRotTrue = ATWNovoRot();
+				printf("NOVO ROT CRIADO - %s\n", _ExpRotTrue);
 				switch(_ROp)
 				{
 				case LT:
@@ -900,6 +906,7 @@ void ATWSin::Exp(Type& _ExpType, Address& _ExpAdr){
 			
 
 			char* _ExpRotEnd = ATWNovoRot();
+			printf("NOVO ROT CRIADO - %s\n", _ExpRotEnd);
 			_cg->JMP(_ExpRotEnd);
 			_cg->writeRot(_ExpRotTrue);
 			_cg->LDI("A", "1");
@@ -1094,6 +1101,7 @@ void ATWSin::EXPS(Type& _ExpSType, Address& _ExpSAdr){
 				_cg->LOD("B", _T1Adr);
 				_cg->ADD("A", "B");
 				char* _ExpSRot = ATWNovoRot();
+				printf("NOVO ROT CRIADO - %s\n", _ExpSRot);
 				_cg->BZR("A", _ExpSRot);
 				_cg->LDI("A", "1", "FIM");
 				_cg->writeRot(_ExpSRot);
