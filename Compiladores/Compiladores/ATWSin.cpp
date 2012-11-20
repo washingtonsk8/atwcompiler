@@ -552,7 +552,7 @@ void ATWSin::Command(){
 			_cg->LOD("A", _ExpAdr, "ID = EXP");
 			_cg->STO("A", _idAux._End);
 		}//end if
-		else
+		else if(_idAux._Tipo == TIPO_REAL)
 		{
 			if(_ExpType == TIPO_INTEIRO)
 			{
@@ -566,6 +566,9 @@ void ATWSin::Command(){
 				_cg->STOF("A", _idAux._End);
 			}
 		}//end else
+		else{
+			printf("ERRO FATAL");
+		}
 		//(31) - COD ------------------------------------------------------------------------
 		//(31) - SEMÂNTICO ------------------------------------------------------------------
 		CT(EXP_END);
