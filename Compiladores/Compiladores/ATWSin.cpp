@@ -577,7 +577,7 @@ void ATWSin::Command(){
 		_CRotStart = ATWNovoRot();
 		_CRotEnd = ATWNovoRot();
 
-		_cg->write(_CRotStart);
+		_cg->writeRot(_CRotStart);
 		_cg->LOD("A", _ExpAdr);
 		_cg->BZR("A", _CRotEnd);
 		//(32) - COD -------------------------------------------------------------------------
@@ -597,7 +597,7 @@ void ATWSin::Command(){
 
 		//(60) - COD -------------------------------------------------------------------------
 		_cg->JMP(_CRotStart);
-		_cg->write(_CRotEnd);
+		_cg->writeRot(_CRotEnd);
 		//(60) - COD -------------------------------------------------------------------------
 		break;
 	case ESCALA:
@@ -742,7 +742,6 @@ void ATWSin::Command(){
 
 		_Sem->TypeVerify(_PreviousToken, _ExpType, TIPO_LOGICO);//(61) - SEMÂNTICO
 
-		_cg->write(_CRotStart);
 		_cg->LOD("A", _ExpAdr);
 		_cg->BZR("A", _CRotFalse);
 		//(61) - COD -------------------------------------------------------------------------
@@ -761,7 +760,7 @@ void ATWSin::Command(){
 
 		//(61) - COD -------------------------------------------------------------------------
 		_cg->JMP(_CRotEnd);
-		_cg->write(_CRotFalse);
+		_cg->writeRot(_CRotFalse);
 		//(61) - COD -------------------------------------------------------------------------
 
 		if(_CurrentToken._Token == SENAO){
@@ -779,7 +778,7 @@ void ATWSin::Command(){
 			}
 		}
 		//(63) - COD -------------------------------------------------------------------------
-		_cg->write(_CRotFalse);
+		_cg->writeRot(_CRotFalse);
 		//(63) - COD -------------------------------------------------------------------------
 		break;
 	case EXP_END:
@@ -898,9 +897,9 @@ void ATWSin::Exp(Type& _ExpType, int& _ExpAdr){
 
 			char* _ExpRotEnd = ATWNovoRot();
 			_cg->JMP(_ExpRotEnd);
-			_cg->write(_ExpRotTrue);
+			_cg->writeRot(_ExpRotTrue);
 			_cg->LDI("A", "1");
-			_cg->write(_ExpRotEnd);
+			_cg->writeRot(_ExpRotEnd);
 			_ExpAdr = _memory->ATWNovoTemp(TIPO_INTEIRO);
 			_ExpType = TIPO_LOGICO;
 			_cg->STO("A", _ExpAdr);
@@ -1093,7 +1092,7 @@ void ATWSin::EXPS(Type& _ExpSType, int & _ExpSAdr){
 				char* _ExpSRot = ATWNovoRot();
 				_cg->BZR("A", _ExpSRot);
 				_cg->LDI("A", "1", "FIM");
-				_cg->write(_ExpSRot);
+				_cg->writeRot(_ExpSRot);
 			}
 			else
 			{

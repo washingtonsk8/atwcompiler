@@ -163,6 +163,12 @@ void CodeGeneratorModule::write(char* _String)
 	insertCodeToWriteAsm(_String, _InstIndex++);
 }
 //----------------------------------------------------------------------------------------------------------------------
+void CodeGeneratorModule::writeRot(char* _String)
+{
+	strcat(_String, ":");
+	insertCodeToWriteAsm(_String, _InstIndex++);
+}
+//----------------------------------------------------------------------------------------------------------------------
 int CodeGeneratorModule::ADD(char* _RegD, char* _RegO, char* _Comment)
 {
 	int _InstIndexBase = _InstIndex;
