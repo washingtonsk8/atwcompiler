@@ -524,7 +524,7 @@ void ATWSin::Block(){
 }
 //---------------------------------------------------------------------------------------------------------------------
 void ATWSin::Command(){
-	Type _ExpType;
+	Type _ExpType, _Exp1Type, _Exp2Type, _Exp3Type, _Exp4Type, _Exp5Type;
 	Address _ExpAdr = 0, _Exp1Adr = 0, _Exp2Adr = 0, _Exp3Adr = 0, _Exp4Adr = 0, _Exp5Adr = 0;//(59) - COD
 	ATW_BUFF_ELEMENT _idAux;//(32) - SEMÂNTICO
 	char* _CRotStart, *_CRotEnd, *_CRotFalse;
@@ -693,37 +693,79 @@ void ATWSin::Command(){
 
 		CT(COMMA);
 
-		Exp(_ExpType, _Exp1Adr);//(33) - SEMÂNTICO
-		_Sem->DiffTypeVerify(_PreviousToken, _ExpType, TIPO_LOGICO);//(33) - SEMÂNTICO
+		Exp(_Exp1Type, _Exp1Adr);//(33) - SEMÂNTICO
+		_Sem->DiffTypeVerify(_PreviousToken, _Exp1Type, TIPO_LOGICO);//(33) - SEMÂNTICO
 
 		CT(COMMA);
 
-		Exp(_ExpType, _Exp2Adr);//(33) - SEMÂNTICO
-		_Sem->DiffTypeVerify(_PreviousToken, _ExpType, TIPO_LOGICO);//(33) - SEMÂNTICO
+		Exp(_Exp2Type, _Exp2Adr);//(33) - SEMÂNTICO
+		_Sem->DiffTypeVerify(_PreviousToken, _Exp2Type, TIPO_LOGICO);//(33) - SEMÂNTICO
 
 		CT(COMMA);
 
-		Exp(_ExpType, _Exp3Adr);//(33) - SEMÂNTICO
-		_Sem->DiffTypeVerify(_PreviousToken, _ExpType, TIPO_LOGICO);//(33) - SEMÂNTICO
+		Exp(_Exp3Type, _Exp3Adr);//(33) - SEMÂNTICO
+		_Sem->DiffTypeVerify(_PreviousToken, _Exp3Type, TIPO_LOGICO);//(33) - SEMÂNTICO
 
 		CT(COMMA);
 
-		Exp(_ExpType, _Exp4Adr);//(33) - SEMÂNTICO
-		_Sem->DiffTypeVerify(_PreviousToken, _ExpType, TIPO_LOGICO);//(33) - SEMÂNTICO
+		Exp(_Exp4Type, _Exp4Adr);//(33) - SEMÂNTICO
+		_Sem->DiffTypeVerify(_PreviousToken, _Exp4Type, TIPO_LOGICO);//(33) - SEMÂNTICO
 
 		CT(COMMA);
 
-		Exp(_ExpType, _Exp5Adr);//(33) - SEMÂNTICO
-		_Sem->DiffTypeVerify(_PreviousToken, _ExpType, TIPO_LOGICO);//(33) - SEMÂNTICO
+		Exp(_Exp5Type, _Exp5Adr);//(33) - SEMÂNTICO
+		_Sem->DiffTypeVerify(_PreviousToken, _Exp5Type, TIPO_LOGICO);//(33) - SEMÂNTICO
 
 		//(59) - COD -------------------------------------------------------------------------
 		_cg->LDI("A", ATWgetCStr(_idAux._End), "ROTTRANS");
-		_cg->LODF("A", _ExpAdr);
-		_cg->LODF("B", _Exp1Adr);
-		_cg->LODF("C", _Exp2Adr);
+		if(_ExpType == TIPO_INTEIRO)
+		{
+			_cg->LOD("A", _ExpAdr);
+			_cg->CNV("A", "A");
+		}
+		else
+			_cg->LODF("A", _ExpAdr);
+
+		if(_Exp1Type == TIPO_INTEIRO)
+		{
+			_cg->LOD("B", _Exp1Adr);
+			_cg->CNV("B", "B");
+		}
+		else
+			_cg->LODF("B", _Exp1Adr);
+
+		if(_Exp2Type == TIPO_INTEIRO)
+		{
+			_cg->LOD("C", _ExpAdr);
+			_cg->CNV("C", "C");
+		}
+		else
+			_cg->LODF("C", _Exp2Adr);
+
+		if(_Exp3Type == TIPO_INTEIRO)
+		{
+			_cg->LOD("D", _ExpAdr);
+			_cg->CNV("D", "D");
+		}
+		else
 		_cg->LODF("D", _Exp3Adr);
-		_cg->LODF("E", _Exp4Adr);
+
+		if(_Exp4Type == TIPO_INTEIRO)
+		{
+			_cg->LOD("E", _Exp4Adr);
+			_cg->CNV("E", "E");
+		}
+		else
+			_cg->LODF("E", _Exp4Adr);
+
+		if(_Exp5Type == TIPO_INTEIRO)
+		{
+			_cg->LOD("F", _Exp5Adr);
+			_cg->CNV("F", "F");
+		}
+		else
 		_cg->LODF("F", _Exp5Adr);
+
 		_cg->RTR("FIM ROTTRANS");
 		//(56) - COD -------------------------------------------------------------------------
 
@@ -1254,7 +1296,6 @@ void ATWSin::F(Type& _FType, Address& _FAdr){//Fend = _FAdr
 	case LPAREN:
 		CT(LPAREN);
 
-		_memory->ATWResetTemp();
 		Exp(_ExpType, _ExpAdr);//(17) - SEMÂNTICO
 		_FType = _ExpType;
 		_FAdr = _ExpAdr;//(17) - COD
