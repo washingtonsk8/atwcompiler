@@ -579,9 +579,7 @@ void ATWSin::Command(){
 
 		//(32) - COD -------------------------------------------------------------------------
 		_CRotStart = ATWNovoRot();
-		printf("NOVO ROT CRIADO ENQUANTO - %s\n", _CRotStart);
 		_CRotEnd = ATWNovoRot();
-		printf("NOVO ROT CRIADO ENQUANTO - %s\n", _CRotEnd);
 		
 		_cg->writeRot(_CRotStart);
 		_cg->LOD("A", _ExpAdr);
@@ -695,31 +693,26 @@ void ATWSin::Command(){
 
 		CT(COMMA);
 
-		_memory->ATWResetTemp();//(46) - COD
 		Exp(_ExpType, _Exp1Adr);//(33) - SEMÂNTICO
 		_Sem->DiffTypeVerify(_PreviousToken, _ExpType, TIPO_LOGICO);//(33) - SEMÂNTICO
 
 		CT(COMMA);
 
-		_memory->ATWResetTemp();//(46) - COD
 		Exp(_ExpType, _Exp2Adr);//(33) - SEMÂNTICO
 		_Sem->DiffTypeVerify(_PreviousToken, _ExpType, TIPO_LOGICO);//(33) - SEMÂNTICO
 
 		CT(COMMA);
 
-		_memory->ATWResetTemp();//(46) - COD
 		Exp(_ExpType, _Exp3Adr);//(33) - SEMÂNTICO
 		_Sem->DiffTypeVerify(_PreviousToken, _ExpType, TIPO_LOGICO);//(33) - SEMÂNTICO
 
 		CT(COMMA);
 
-		_memory->ATWResetTemp();//(46) - COD
 		Exp(_ExpType, _Exp4Adr);//(33) - SEMÂNTICO
 		_Sem->DiffTypeVerify(_PreviousToken, _ExpType, TIPO_LOGICO);//(33) - SEMÂNTICO
 
 		CT(COMMA);
 
-		_memory->ATWResetTemp();//(46) - COD
 		Exp(_ExpType, _Exp5Adr);//(33) - SEMÂNTICO
 		_Sem->DiffTypeVerify(_PreviousToken, _ExpType, TIPO_LOGICO);//(33) - SEMÂNTICO
 
@@ -850,7 +843,6 @@ void ATWSin::Exp(Type& _ExpType, Address& _ExpAdr){
 			{
 				_cg->SUB("A","B");
 				_ExpRotTrue = ATWNovoRot();
-				printf("NOVO ROT CRIADO - %s\n", _ExpRotTrue);
 				switch(_ROp)
 				{
 				case LT:
@@ -877,7 +869,6 @@ void ATWSin::Exp(Type& _ExpType, Address& _ExpAdr){
 			{
 				_cg->SUBF("A","B");
 				_ExpRotTrue = ATWNovoRot();
-				printf("NOVO ROT CRIADO - %s\n", _ExpRotTrue);
 				switch(_ROp)
 				{
 				case LT:
@@ -904,7 +895,6 @@ void ATWSin::Exp(Type& _ExpType, Address& _ExpAdr){
 			
 
 			char* _ExpRotEnd = ATWNovoRot();
-			printf("NOVO ROT CRIADO - %s\n", _ExpRotEnd);
 			_cg->JMP(_ExpRotEnd);
 			_cg->writeRot(_ExpRotTrue);
 			_cg->LDI("A", "1");
@@ -1099,7 +1089,6 @@ void ATWSin::EXPS(Type& _ExpSType, Address& _ExpSAdr){
 				_cg->LOD("B", _T1Adr);
 				_cg->ADD("A", "B");
 				char* _ExpSRot = ATWNovoRot();
-				printf("NOVO ROT CRIADO - %s\n", _ExpSRot);
 				_cg->BZR("A", _ExpSRot);
 				_cg->LDI("A", "1", "FIM");
 				_cg->writeRot(_ExpSRot);
