@@ -87,4 +87,29 @@ STI #2, 115(DS) ATW_COMMENT: V0Y
 STI #0, 116(DS) ATW_COMMENT: V0Z
 
 ******************************** Commands Start ********************************
-STI #15, 122(DS)
+STI #1, 119(DS)
+LOD A, 119(DS) ATW_COMMENT: ID = EXP
+CNV A, A
+STOF A, 0(DS)
+STI #200, 119(DS)
+LODF A, 117(DS)
+LODF B, 117(DS)
+SUBF A, B
+BNGF A, Rot0
+JMP Rot1
+
+Rot0:
+LDI A, #1
+
+Rot1:
+STO A, 120(DS)
+LOD A, 120(DS)
+BZR A, Rot2
+JMP Rot3
+
+Rot2:
+
+Rot3:
+
+******************************** Commands Finish *******************************
+HLT

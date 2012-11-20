@@ -3,7 +3,7 @@
 namespace LabelController{
 	//VARIABLES--------------------------------------------------
 	EventsManager* _ev = EventsManager::getInstance();
-	//Address*		   _CurrentPCAdress = (Address*) _memory->getPC();
+//	Address*	   _CurrentPCAdress = (Address*) _memory->getPC();
 	int            _Labels[MAX_LABELS] = {-1};
 	int            _RotCount = 0;
 	queue<int>     _AvailableFreeLabels;	
@@ -31,7 +31,9 @@ namespace LabelController{
 			_Labels[_CurrentKey] = _NewLabel;
 		}
 
-		char _newRot[255];
+		char* _newRot;
+		_newRot = (char*)malloc(sizeof(char)*255);
+		memset(_newRot, 0, sizeof(char)*255);
 		strcpy(_newRot, _Rot);
 
 		return _newRot;

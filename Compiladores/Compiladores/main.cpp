@@ -21,6 +21,10 @@
 #include <Windows.h>
 #include <time.h>
 #include <sys/types.h>
+#include <string>
+#include <stdio.h>
+#include <tchar.h>
+using namespace std;
 //-----------------------------------------------------IMPORTANTE------------------------------------------------------
 
 //---------------------------------------------------------------------------------------------------------------------
@@ -249,6 +253,54 @@ void _RunCompiler(int argc, char* argv[], char* envp[]){
 /*COMPILER MAIN LOGIC*/
 //---------------------------------------------------------------------------------------------------------------------
 /*MAIN LOGIC*/
+BOOL ExecCommand(char* szExe, char* szCmdLine, DWORD &dwProcessId)
+{
+	STARTUPINFO		si;
+	PROCESS_INFORMATION	pi;
+	BOOL			bResult;
+
+	dwProcessId = 0;
+
+	ZeroMemory(&si, sizeof(STARTUPINFO));
+	si.cb = sizeof(STARTUPINFO);	// You need to set the size or it doesn't work
+
+	ZeroMemory(&pi, sizeof(PROCESS_INFORMATION));
+
+	LPTSTR                ProcessName  = _T("C:\\Temp\\Downloads\\576326_GCX\\gcx.exe");
+	LPTSTR                CommandLines = _T("551660_exemplo1.exe");
+
+	bResult = CreateProcess(
+	ProcessName, // pointer to name of executable module
+	CommandLines,  // pointer to command line string
+	NULL,	// pointer to process security attributes
+	NULL,	// pointer to thread security attributes
+	FALSE,	// handle inheritance flag 
+	0,		// creation flags
+	NULL,	// pointer to new environment block
+	NULL,	// pointer to current directory name
+	&si,	// pointer to STARTUPINFO
+	&pi		// pointer to PROCESS_INFORMATION
+	);
+
+	if (bResult)
+	{
+		dwProcessId = pi.dwProcessId;
+
+		// You get back two open handles if the process has been successfull created.
+		// But, in this case, we don't want them so close them so we don't leak handles.
+		CloseHandle(pi.hProcess);
+		CloseHandle(pi.hThread);
+	}
+	else
+	{
+		DWORD dwError = GetLastError();
+		// You can do something with dwError here if you want
+	}
+
+	return bResult;
+}
+//MAIN LOGIC
+//---------------------------------------------------------------------------------------------------------------------
 int main (int argc, char* argv[], char* envp[]){
 	/*T_Manager tests*/
 	//THREAD_CREATION_MANAGER_T();
