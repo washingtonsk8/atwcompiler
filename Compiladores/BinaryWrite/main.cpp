@@ -4,12 +4,14 @@
 #include <bitset>
 using namespace std;
 int main() {
-  unsigned long long dec;
+  unsigned int dec, dec2;
   cout << "Write a number in decimal: ";
   cin >> dec;
-  const size_t number_of_bits = 2 * 8;
-  bitset<number_of_bits> bs(dec);
-  cout << bs << endl;  
+  cin >> dec2;
+  unsigned char _memoryPos [2];
+  _memoryPos [0] = static_cast<unsigned char>(dec);
+  _memoryPos [1] = static_cast<unsigned char>(dec2);
+  cout << _memoryPos[0] << _memoryPos[1] << endl;  
   system("pause");
   return 0;
 }
