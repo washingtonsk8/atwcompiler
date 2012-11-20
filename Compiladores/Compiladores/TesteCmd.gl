@@ -2,5 +2,6 @@ DVar
 	inteiro i
 
 Inicio
-	i = 1
+	enquanto 4>5 faca inicio
+	fim
 Fim

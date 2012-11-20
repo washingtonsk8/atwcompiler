@@ -552,7 +552,7 @@ void ATWSin::Command(){
 			_cg->LOD("A", _ExpAdr, "ID = EXP");
 			_cg->STO("A", _idAux._End);
 		}//end if
-		else if(_idAux._Tipo == TIPO_REAL)
+		else
 		{
 			if(_ExpType == TIPO_INTEIRO)
 			{
@@ -566,9 +566,6 @@ void ATWSin::Command(){
 				_cg->STOF("A", _idAux._End);
 			}
 		}//end else
-		else{
-			printf("ERRO FATAL");
-		}
 		//(31) - COD ------------------------------------------------------------------------
 		//(31) - SEMÂNTICO ------------------------------------------------------------------
 		CT(EXP_END);
@@ -747,9 +744,7 @@ void ATWSin::Command(){
 
 		//(61) - COD -------------------------------------------------------------------------
 		_CRotFalse = ATWNovoRot();
-		printf("NOVO ROT CRIADO - %s\n", _CRotFalse);
 		_CRotEnd = ATWNovoRot();
-		printf("NOVO ROT CRIADO - %s\n", _CRotEnd);
 
 		_Sem->TypeVerify(_PreviousToken, _ExpType, TIPO_LOGICO);//(61) - SEMÂNTICO
 
@@ -824,13 +819,13 @@ void ATWSin::Exp(Type& _ExpType, Address& _ExpAdr){
 				_cg->LOD("A", _ExpAdr);
 				if(_ExpSType == TIPO_INTEIRO)
 				{
-					_cg->LOD("B", _ExpSAdr);
+					_cg->LOD("B", _ExpS1Adr);
 					_ExpType = TIPO_INTEIRO;
 				}
 				else
 				{
 					_cg->CNV("A", "A");
-					_cg->LODF("B", _ExpSAdr);
+					_cg->LODF("B", _ExpS1Adr);
 					_ExpType = TIPO_REAL;
 				}
 			}//end if
@@ -839,13 +834,13 @@ void ATWSin::Exp(Type& _ExpType, Address& _ExpAdr){
 				_cg->LODF("A", _ExpAdr);
 				if(_ExpSType == TIPO_INTEIRO)
 				{
-					_cg->LOD("B", _ExpSAdr);
+					_cg->LOD("B", _ExpS1Adr);
 					_cg->CNV("B", "B");
 					_ExpType = TIPO_REAL;
 				}
 				else
 				{
-					_cg->LODF("B", _ExpSAdr);
+					_cg->LODF("B", _ExpS1Adr);
 					_ExpType = TIPO_REAL;
 				}
 			}//end else
