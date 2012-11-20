@@ -3,6 +3,8 @@ Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Compiladores", "Compiladores\Compiladores.vcxproj", "{FD7C6799-829D-4400-9AE7-2AA40E0E438C}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "BinaryWrite", "BinaryWrite\BinaryWrite.vcxproj", "{1D59B04E-1281-459A-9024-9ED385F0BD4C}"
+EndProject
 Global
 	GlobalSection(SubversionScc) = preSolution
 		Svn-Managed = True
@@ -17,6 +19,10 @@ Global
 		{FD7C6799-829D-4400-9AE7-2AA40E0E438C}.Debug|Win32.Build.0 = Debug|Win32
 		{FD7C6799-829D-4400-9AE7-2AA40E0E438C}.Release|Win32.ActiveCfg = Release|Win32
 		{FD7C6799-829D-4400-9AE7-2AA40E0E438C}.Release|Win32.Build.0 = Release|Win32
+		{1D59B04E-1281-459A-9024-9ED385F0BD4C}.Debug|Win32.ActiveCfg = Debug|Win32
+		{1D59B04E-1281-459A-9024-9ED385F0BD4C}.Debug|Win32.Build.0 = Debug|Win32
+		{1D59B04E-1281-459A-9024-9ED385F0BD4C}.Release|Win32.ActiveCfg = Release|Win32
+		{1D59B04E-1281-459A-9024-9ED385F0BD4C}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
