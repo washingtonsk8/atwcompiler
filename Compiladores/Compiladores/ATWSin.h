@@ -1,6 +1,5 @@
 #ifndef ATWSin_H
 #define ATWSin_H
-
 #include "ProgramComponent.h"
 #include "ATWLex.h"
 #include "IInitializable.h"
@@ -8,7 +7,6 @@
 #include "CHBuffer.h"
 #include "ATWSem.h"
 #include "CodeGeneratorModule.h"
-
 //----------------------------------------------------
 //TODO::COLOCANDO AÇÕES SEMANTICAS E GERAÇÃO DE CÓDIGO
 //----------------------------------------------------
