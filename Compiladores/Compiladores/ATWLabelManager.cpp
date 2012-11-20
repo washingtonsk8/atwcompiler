@@ -31,7 +31,7 @@ namespace LabelController{
 			_Labels[_CurrentKey] = _NewLabel;
 		}
 
-		static char _newRot[255];
+		char _newRot[255];
 		strcpy(_newRot, _Rot);
 
 		return _newRot;

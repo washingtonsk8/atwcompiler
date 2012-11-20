@@ -132,8 +132,12 @@ void ATWSin::Start(){
 				CT(EXP_END);
 				break;
 			case INICIO:
+				_cg->write("\n******************************** Commands Start ********************************\n");
 				_memory->GCXSetBaseTempAddress();//45
 				Block();
+				_cg->write("\n******************************** Commands Finish *******************************\n");
+				_cg->HLT();
+				_cg->flush();
 				return;
 			case ENDFILE:
 				exit (0);//Sucesso!

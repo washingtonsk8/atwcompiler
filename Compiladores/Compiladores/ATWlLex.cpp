@@ -112,6 +112,7 @@ ATW_BUFF_ELEMENT ATWLex::getToken(){
 					_fManager->getNextChar();//Pula o caractere 10				
 					_LineCount ++;
 					_CurrentToken = EXP_END;
+					_Lexeme = "<R>";
 					_State = DONE;
 					break;
 				case 9://TAB
@@ -378,7 +379,6 @@ ATW_BUFF_ELEMENT ATWLex::getToken(){
 		default:
 			_State = DONE;
 			break;
-
 		}//end switch
 	}//end while
 
