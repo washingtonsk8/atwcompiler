@@ -138,6 +138,9 @@
     <ClInclude Include="ATW_GCXSimulator.h">
       <Filter>Arquivos de Cabeçalho</Filter>
     </ClInclude>
+    <ClInclude Include="ATWLabelManager.h">
+      <Filter>Arquivos de Cabeçalho</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -212,6 +215,9 @@
     <ClCompile Include="ATW_GCXSimulator.cpp">
       <Filter>Arquivos de Origem</Filter>
     </ClCompile>
+    <ClCompile Include="ATWLabelManager.cpp">
+      <Filter>Arquivos de Origem</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="teste1.asm">
@@ -227,6 +233,9 @@
       <Filter>Arquivos de Recurso</Filter>
     </None>
     <None Include="TesteExp.gl">
+      <Filter>Arquivos de Recurso</Filter>
+    </None>
+    <None Include="TesteCmd.gl">
       <Filter>Arquivos de Recurso</Filter>
     </None>
   </ItemGroup>
