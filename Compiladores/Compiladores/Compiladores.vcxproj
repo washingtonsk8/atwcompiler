@@ -83,6 +83,7 @@
     <ClInclude Include="ARS_PrinterHelper.h" />
     <ClInclude Include="ATW.h" />
     <ClInclude Include="ATWCodeOptimizer.h" />
+    <ClInclude Include="ATWLabelManager.h" />
     <ClInclude Include="ATWLex.h" />
     <ClInclude Include="ATWLexEvents.h" />
     <ClInclude Include="ATWSem.h" />
@@ -117,6 +118,7 @@
   <ItemGroup>
     <ClCompile Include="ATW.cpp" />
     <ClCompile Include="ATWCodeOptimizer.cpp" />
+    <ClCompile Include="ATWLabelManager.cpp" />
     <ClCompile Include="ATWLexEvents.cpp" />
     <ClCompile Include="ATWlLex.cpp" />
     <ClCompile Include="ATWMemory.cpp" />
@@ -145,6 +147,7 @@
     <None Include="symbols.dat" />
     <None Include="teste1.asm" />
     <None Include="teste1.gl" />
+    <None Include="TesteCmd.gl" />
     <None Include="TesteExp.gl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
