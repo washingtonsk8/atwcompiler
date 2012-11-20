@@ -3,7 +3,7 @@
 namespace LabelController{
 	//VARIABLES--------------------------------------------------
 	EventsManager* _ev = EventsManager::getInstance();
-	Address*		   _CurrentPCAdress = (Address*) _memory->getPC();
+	//Address*		   _CurrentPCAdress = (Address*) _memory->getPC();
 	int            _Labels[MAX_LABELS] = {-1};
 	int            _RotCount = 0;
 	queue<int>     _AvailableFreeLabels;	

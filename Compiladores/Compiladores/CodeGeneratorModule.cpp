@@ -165,8 +165,10 @@ void CodeGeneratorModule::write(char* _String)
 //----------------------------------------------------------------------------------------------------------------------
 void CodeGeneratorModule::writeRot(char* _String)
 {
-	strcat(_String, ":\n");
-	insertCodeToWriteAsm(_String, _InstIndex++);
+	char _Rot[255] = "";
+	strcat(_Rot, _String);
+	strcat(_Rot, ":\n");
+	insertCodeToWriteAsm(_Rot, _InstIndex++);
 }
 //----------------------------------------------------------------------------------------------------------------------
 int CodeGeneratorModule::ADD(char* _RegD, char* _RegO, char* _Comment)
