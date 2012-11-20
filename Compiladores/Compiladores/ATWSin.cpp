@@ -736,7 +736,7 @@ void ATWSin::Command(){
 
 		if(_Exp2Type == TIPO_INTEIRO)
 		{
-			_cg->LOD("C", _ExpAdr);
+			_cg->LOD("C", _Exp2Adr);
 			_cg->CNV("C", "C");
 		}
 		else
@@ -744,7 +744,7 @@ void ATWSin::Command(){
 
 		if(_Exp3Type == TIPO_INTEIRO)
 		{
-			_cg->LOD("D", _ExpAdr);
+			_cg->LOD("D", _Exp3Adr);
 			_cg->CNV("D", "D");
 		}
 		else
