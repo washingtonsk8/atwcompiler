@@ -717,7 +717,7 @@ void ATWSin::Command(){
 		_Sem->DiffTypeVerify(_PreviousToken, _ExpType, TIPO_LOGICO);//(33) - SEMÂNTICO
 
 		//(59) - COD -------------------------------------------------------------------------
-		_cg->LOD("A", _idAux._End, "ROTTRANS");
+		_cg->LDI("A", ATWgetCStr(_idAux._End), "ROTTRANS");
 		_cg->LODF("A", _ExpAdr);
 		_cg->LODF("B", _Exp1Adr);
 		_cg->LODF("C", _Exp2Adr);
