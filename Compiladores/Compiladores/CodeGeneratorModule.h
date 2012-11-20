@@ -37,7 +37,7 @@ public:
 	string getCode(int _codeIndex = -1);
 	string binaryVerify(string _Number);
 	void flush();
-	void flushBin(){}
+	void flushBin();
 	//---------------------------------------------------------------------------------------------------------------------
 	/*
 	* Funções utilizadas para a escrita do código no arquivo
