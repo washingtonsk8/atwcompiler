@@ -343,6 +343,8 @@ ATW_BUFF_ELEMENT ATWLex::getToken(){
 			if (isDigit(_ReadChar)){
 				_Lexeme += _ReadChar;//Concatenação
 				_State = INDOT2;
+				_CurrentToken = CONSTANT;
+				_constType = TIPO_REAL;//CONST CONTROLL
 			}else{
 				_fManager->ungetNextChar();//Devolve o char lido
 				_State = DONE;
@@ -352,6 +354,8 @@ ATW_BUFF_ELEMENT ATWLex::getToken(){
 			if (isDigit(_ReadChar)){
 				_Lexeme += _ReadChar;//Concatenação
 				_State = INDOT3;
+				_CurrentToken = CONSTANT;
+				_constType = TIPO_REAL;//CONST CONTROLL
 			}else{
 				_fManager->ungetNextChar();//Devolve o char lido
 				_State = DONE;
@@ -361,6 +365,8 @@ ATW_BUFF_ELEMENT ATWLex::getToken(){
 			if (isDigit(_ReadChar)){
 				_Lexeme += _ReadChar;//Concatenação
 				_State = INDOT4;
+				_CurrentToken = CONSTANT;
+				_constType = TIPO_REAL;//CONST CONTROLL
 			}else{
 				_fManager->ungetNextChar();//Devolve o char lido
 				_State = DONE;
@@ -383,7 +389,7 @@ ATW_BUFF_ELEMENT ATWLex::getToken(){
 	}//end while
 
 	if(_CurrentToken == CONSTANT){
-		 _toReturn.Build(_LineCount, _CurrentToken, _Lexeme.c_str(), TIPO_VAZIO, _SymbolTable->getEnd(_Lexeme.c_str()));//NOVO MEIO DE RETORNAR PARA DIMINUIR ACOPLAMENTO
+		_toReturn.Build(_LineCount, _CurrentToken, _Lexeme.c_str(), TIPO_VAZIO, _SymbolTable->getEnd(_Lexeme.c_str()));//NOVO MEIO DE RETORNAR PARA DIMINUIR ACOPLAMENTO
 		_toReturn._Tipo = _constType;
 		//buildConstValue(&_toReturn._valI, &_toReturn._valF, _toReturn._Lex);*/
 	}else{
