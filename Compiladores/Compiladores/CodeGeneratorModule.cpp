@@ -187,11 +187,16 @@ void CodeGeneratorModule::insertCodeToWriteBin(int _Element, char* _String){
 			case 'F':
 				*_bitsetRegister = BinaryGen::F;
 				break;
-				case 'R'://Rótulos
+			case 'R'://Rótulos
 					//TODO: Procurar os rótulos aqui trocando pelo valor de endereço na Hash
-					break;
+				printf("Rótulo: %s\n",_String);
+				break;
+			case 'L'://Rótulos
+				printf("Retrocoreção: %s\n",_String);
+					//TODO: Retrocorrigir erro aqui
+				break;
 			default:
-				printf("ERRO!!\n%s",_String);
+				printf("ERRO!!\n%s\n",_String);
 				system("pause");
 				//exit(-1);
 				break;
@@ -370,7 +375,8 @@ int CodeGeneratorModule::ADI(char* _RegD, char* _Imed, char* _Comment)
 //----------------------------------------------------------------------------------------------------------------------
 int CodeGeneratorModule::ADIF(char* _RegD, char* _Imed, char* _Comment)
 {
-	int _InstIndexBase = _InstIndex;
+	int _InstIndexBase[2] = {_InstIndex, _};
+
 	insertCodeToWriteAsm("ADIF ", _InstIndex++);
 	insertCodeToWriteAsm(_RegD, _InstIndex++);
 	insertCodeToWriteAsm(", #", _InstIndex++);
