@@ -198,7 +198,8 @@ void CodeGeneratorModule::insertCodeToWriteBin(int _Element, char* _String){
 				*_bitsetRegister = BinaryGen::F;
 				break;
 			case 'R'://Rótulos
-					//TODO: Procurar os rótulos aqui trocando pelo valor de endereço na Hash
+				//TODO: Procurar os rótulos aqui trocando pelo valor de endereço na Hash
+				*_bitsetRegister = (unsigned int) getLabelAddress(_String);
 				printf("Rótulo: %s\n",_String);
 				break;
 			case 'L'://Rótulos
