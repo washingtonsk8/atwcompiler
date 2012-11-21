@@ -51,7 +51,7 @@ public:
 	void insertCodeToWriteAsm(char* _Code, int _codeIndex = -1, bool _Overlap = true);
 	void fixCode(Address _AddressAsm, Address _AddressBin, char* _value);
 	string getCode(int _codeIndex = -1);
-	string binaryVerify(string _Number);
+	void writeS16(short value);
 	void flush();
 	void flushBin();
 	//---------------------------------------------------------------------------------------------------------------------

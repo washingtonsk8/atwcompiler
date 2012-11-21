@@ -43,7 +43,7 @@ void CodeGeneratorModule::initialize(const char* _icFile){
 	//	GENERIC_WRITE, CREATE_ALWAYS, 
 	//	FILE_ATTRIBUTE_NORMAL );
 	//ASSEMBLY FILE CREATION
-	binaryFile.open("saida.exe");
+	binaryFile.open("saida.exe", ios::out | ios::binary);
 }
 //---------------------------------------------------------------------------------------------------------------------
 void CodeGeneratorModule::initialize(int _Argc, void** _Argv){
@@ -75,7 +75,7 @@ void CodeGeneratorModule::initialize(int _Argc, void** _Argv){
 	//	GENERIC_WRITE, CREATE_ALWAYS, 
 	//	FILE_ATTRIBUTE_NORMAL );
 
-	binaryFile.open("saida.exe");
+	binaryFile.open("saida.exe", ios::out | ios::binary);
 	//ASSEMBLY FILE CREATION
 }
 //---------------------------------------------------------------------------------------------------------------------
@@ -273,31 +273,28 @@ void CodeGeneratorModule::flush(){
 //---------------------------------------------------------------------------------------------------------------------
 void CodeGeneratorModule::flushBin(){
 	list<bitset<16>*>::iterator it = _memoryPositions.begin();
-	char _toWrite[2];// = (char*)malloc(sizeof(char)*2);
-	memset(_toWrite, 0, sizeof(char)*2);
+	short forWriting = 0x00;
 	for(; it != _memoryPositions.end(); it++){
 		bitset<16> _pointer = (*(*it));
-		cout << _pointer << "\n";
-		for(int i = 0; i < 8; i++){
-			_toWrite[0] = _toWrite[0] | (_pointer.at(i) << i);	
-			//(*_toWrite) = (*_toWrite) | (_pointer.at(i) << i);	
-		}
-
-		for(int i = 8; i < 16; i++){
-			_toWrite[1] = _toWrite[1] | (_pointer.at(i) << i - 8);
-			//(*(_toWrite+1)) = (*(_toWrite+1)) | (_pointer.at(i) << i - 8);
-		}
-
-		unsigned char _A = static_cast<unsigned char>(_toWrite[0]);
-		unsigned char _B = static_cast<unsigned char>(_toWrite[1]);
-
-		binaryFile << _A;
-		binaryFile << _B;
-
-	}
+		cout << _pointer << endl;
+		forWriting = static_cast<short>(_pointer.to_ulong());		
+		writeS16(forWriting);
+	}//end for
 	cout << endl;
 	clearBitSetBuffer();
 	_BinIndex = 0;
+}
+//----------------------------------------------------------------------------------------------------------------------
+void CodeGeneratorModule::writeS16(short val)
+{
+  char bytes[2];
+
+  // extract the individual bytes from our value
+  bytes[0] = (val) & 0xFF;  // low byte
+  bytes[1] = (val >> 8) & 0xFF;  // high byte
+
+  // write those bytes to the file
+  binaryFile.write((char*)bytes, 2);
 }
 //----------------------------------------------------------------------------------------------------------------------
 void CodeGeneratorModule::write(char* _String)
