@@ -238,5 +238,8 @@
     <None Include="TesteCmd.gl">
       <Filter>Arquivos de Recurso</Filter>
     </None>
+    <None Include="saida.exe">
+      <Filter>Arquivos de Recurso</Filter>
+    </None>
   </ItemGroup>
 </Project>
