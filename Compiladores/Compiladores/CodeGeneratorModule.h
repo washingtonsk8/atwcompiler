@@ -13,13 +13,15 @@
 #include "Globals.h"
 #include "IInitializable.h"
 #include "IDisposable.h"
-#include "ATW_LabelTable.h"
+#include "ATWLabelManager.h"
 #include "ATW_MemoryManager.h"
 //---------------------------------------------------------------------------------------------------------------------
 #include <fstream>
 //---------------------------------------------------------------------------------------------------------------------
 #define MAX_WRITING_BUFFER 10000
 #define WORD_SIZE		   2
+//---------------------------------------------------------------------------------------------------------------------
+using namespace LabelController;
 //---------------------------------------------------------------------------------------------------------------------
 namespace BinaryGen{
 	typedef enum{
