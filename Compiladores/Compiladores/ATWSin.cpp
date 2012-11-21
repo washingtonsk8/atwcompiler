@@ -172,6 +172,12 @@ void ATWSin::DPontoD(){
 		char _str[255];
 		strcpy_s(_str, _op);
 		strcat_s(_str, _PreviousToken._Lex);
+		
+		if(_PreviousToken._Tipo == TIPO_INTEIRO)
+		{
+			strcat_s(_str, ".0");
+		}
+		
 		_cg->STIF(_str, _Sem->updateIDAddress(_IdLex, _memory->ATWMalloc(TIPO_REAL)), _IdLex);//36
 		memset(_str, 0, sizeof(char)*255);
 
@@ -190,6 +196,12 @@ void ATWSin::DPontoD(){
 
 		strcpy_s(_str, _op);
 		strcat_s(_str, _PreviousToken._Lex);
+
+		if(_PreviousToken._Tipo == TIPO_INTEIRO)
+		{
+			strcat_s(_str, ".0");
+		}
+
 		_cg->STIF(_str, _memory->ATWMalloc(TIPO_REAL));//37
 		memset(_str, 0, sizeof(char)*255);
 
@@ -208,6 +220,12 @@ void ATWSin::DPontoD(){
 
 		strcpy_s(_str, _op);
 		strcat_s(_str, _PreviousToken._Lex);
+
+		if(_PreviousToken._Tipo == TIPO_INTEIRO)
+		{
+			strcat_s(_str, ".0");
+		}
+
 		_cg->STIF(_str, _memory->ATWMalloc(TIPO_REAL));//37
 		memset(_str, 0, sizeof(char)*255);
 
@@ -242,6 +260,12 @@ void ATWSin::DLuzD(){
 
 		strcpy_s(_str, _op);
 		strcat_s(_str, _PreviousToken._Lex);
+
+		if(_PreviousToken._Tipo == TIPO_INTEIRO)
+		{
+			strcat_s(_str, ".0");
+		}
+
 		_cg->STIF(_str, _Sem->updateIDAddress(_IdLex, _memory->ATWMalloc(TIPO_REAL)), _IdLex);//36
 
 		CT(COMMA);
@@ -259,6 +283,12 @@ void ATWSin::DLuzD(){
 
 		strcpy_s(_str, _op);
 		strcat_s(_str, _PreviousToken._Lex);
+		
+		if(_PreviousToken._Tipo == TIPO_INTEIRO)
+		{
+			strcat_s(_str, ".0");
+		}
+
 		_cg->STIF(_str, _memory->ATWMalloc(TIPO_REAL));//37
 
 		CT(COMMA);
@@ -276,6 +306,12 @@ void ATWSin::DLuzD(){
 
 		strcpy_s(_str, _op);
 		strcat_s(_str, _PreviousToken._Lex);
+		
+		if(_PreviousToken._Tipo == TIPO_INTEIRO)
+		{
+			strcat_s(_str, ".0");
+		}
+
 		_cg->STIF(_str, _memory->ATWMalloc(TIPO_REAL));//37
 
 		CT(RPAREN);

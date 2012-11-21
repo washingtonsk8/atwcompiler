@@ -10,7 +10,7 @@ DPonto
       P7=(10,-10,-10)
       P8=(10,10,-10)
 DCor
-      AZUL=15,2,12,11,8,3,6
+      AZUL=15,20,20,40,30,30,60
 DFace
       F1=AZUL,P1,P2,P3,P4
       F2=AZUL,P4,P3,P7,P8
@@ -38,15 +38,43 @@ DVar
 { Programa Principal }
 
 Inicio
-   Luz L1
-   Escala CUBO,ESC
+
+ {  Luz L1}
+   Escala CUBO, ESC
    i=1
 
    Rottrans CUBO,0,0,0,D0X,D0Y,D0Z
+   
+se V0X > v0y entao i=1 
+senao se (V0X > v0y) E V0X entao inicio
+i = 3
+se v0y > 154 entao i = 5
+ senao enquanto i < maxtempo faca inicio
+i = 6
+i = 8
+fim
+fim
+   
    enquanto i<MAXTEMPO faca $
-   inicio
-     Rottrans CUBO,0.1,0.1,0,V0X,V0Y-0.5*G*i*i,V0Z
+inicio
+   
+     Rottrans CUBO,0.1,0.1,0,V0X,V0Y-0.5*G*i*1.1111,V0Z
      i=i+1
      pausa 0.05
+
    fim
-Fim
+
+   enquanto i<MAXTEMPO faca $
+   inicio
+   Rottrans CUBO,0.1,0.1,0,V0X,V0Y-0.5*G*i*i,V0Z
+     i=i+1
+     pausa 0.05
+
+enquanto i<MAXTEMPO faca $
+inicio
+Rottrans CUBO,0.1,0.1,0,V0X,V0Y-0.5*G*i*i,V0Z
+i=i+1
+pausa 0.05
+fim
+fim  
+fim
