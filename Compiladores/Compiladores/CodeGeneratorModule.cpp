@@ -91,101 +91,119 @@ void CodeGeneratorModule::clearWritingBuffer(){
 		_wBuffer[i] = "";
 }
 //---------------------------------------------------------------------------------------------------------------------
-void CodeGeneratorModule::insertCodeToWriteBin(int _Element, char* _Number){
-	if(_Number != NULL){//Se é para gravar imediato
-		char* _pNumber = _Number;
-		string _ValueDecimal = "", _ValueInteger = "";
-		//int    _ValueDecimal = 0, _ValueInteger = 0;
-		bool _isFloat = false;
+void CodeGeneratorModule::insertCodeToWriteBin(int _Element, char* _String){
+	if(_String != NULL)
+	{
+		if(((*_String) >= '0' && (*_String) <= '9') || (*_String) == '-')
+		{//Se é para gravar imediato
+			char* _Number = _String;
+			string _ValueDecimal = "", _ValueInteger = "";
+			//int    _ValueDecimal = 0, _ValueInteger = 0;
+			bool _isFloat = false;
 
-		//Copiar o valor do Number para dois temporarios se necessário
-		while((*_pNumber) != '\0'){
-			if((*_pNumber) == '.'){
-				_isFloat = true;				
-				if ((*_Number) == '-'){//Se o número é negativo, a parte real também deverá ser
-					_ValueDecimal += '-';
+			//Copiar o valor do Number para dois temporarios se necessário
+			while((*_Number) != '\0')
+			{
+				if((*_Number) == '.')
+				{
+					_isFloat = true;				
+					if ((*_String) == '-'){//Se o número é negativo, a parte real também deverá ser
+						_ValueDecimal += '-';
+					}//end if
+					_Number ++;
+				}//end if
+
+				//Concatenando a parte inteira e real
+				if(!_isFloat)
+					_ValueInteger += *_Number;
+				else
+					_ValueDecimal += *_Number;
+
+				_Number++;
+			}//end while
+
+			if(_isFloat)
+			{
+				bool _IsNegative = false;
+				string _ZeroCont = "0";
+
+				if(_ValueDecimal.at(0) == '-')
+					_IsNegative = true;
+
+				if(!_IsNegative){
+					int _Quantity = _ValueDecimal.size(), i;
+					//Completando o número para conter 16 bits completos
+					for(i = _Quantity; i < 3; i++)
+						_ZeroCont.append("0");
+					_ValueDecimal.append(_ZeroCont);
 				}
-				_pNumber ++;
-			}
+				else{
+					int _Quantity = _ValueDecimal.size(), i;
+					//Completando o número para conter 16 bits completos
+					for(i = _Quantity; i < 4; i++)
+						_ZeroCont.append("0");
+					_ValueDecimal.append(_ZeroCont);
+				}//end else
 
-			//Concatenando a parte inteira e real
-			if(!_isFloat)
-				_ValueInteger += *_pNumber;
+				int _valueIntegerI = ATWgetInt(_ValueInteger);
+				int _valueDecimalI = ATWgetInt(_ValueDecimal);
+
+				bitset<16>* _bitsetInteger = new bitset<16>(_valueIntegerI);
+				bitset<16>* _bitsetDecimal = new bitset<16>(_valueDecimalI);
+
+				insertIntoBitSetBuffer(_bitsetInteger);
+				insertIntoBitSetBuffer(_bitsetDecimal);
+
+			}//end if	
 			else
-				_ValueDecimal += *_pNumber;
+			{
+				int _valueIntegerI = ATWgetInt(_ValueInteger);
 
-			_pNumber++;
-		}//end while
-		if(_isFloat){
-			bool _IsNegative = false;
-			string _ZeroCont = "0";
-			
-			if(_ValueDecimal.at(0) == '-')
-				_IsNegative = true;
+				bitset<16>* _bitsetInteger = new bitset<16>(_valueIntegerI);
 
-			if(!_IsNegative){
-				int _Quantity = _ValueDecimal.size(), i;
-				//Completando o número para conter 16 bits completos
-				for(i = _Quantity; i < 3; i++)
-					_ZeroCont.append("0");
-				_ValueDecimal.append(_ZeroCont);
-			}
-			else{
-				int _Quantity = _ValueDecimal.size(), i;
-				//Completando o número para conter 16 bits completos
-				for(i = _Quantity; i < 4; i++)
-					_ZeroCont.append("0");
-				_ValueDecimal.append(_ZeroCont);
-			}
-
-			/*cout << _ValueDecimal << endl; */
-
-			int _valueIntegerI = ATWgetInt(_ValueInteger);
-			int _valueDecimalI = ATWgetInt(_ValueDecimal);
-
-			bitset<16>* _bitsetInteger = new bitset<16>(_valueIntegerI);
-			bitset<16>* _bitsetDecimal = new bitset<16>(_valueDecimalI);
-
-			insertIntoBitSetBuffer(_bitsetInteger);
-			insertIntoBitSetBuffer(_bitsetDecimal);
-
-			//_memoryPosition[0] = _valueIntegerI;
-			//_memoryPosition[1] = _valueDecimalI;
-			//_ValueInteger = ATWgetCStrBin(ATWgetInt(_ValueInteger));
-			//_ValueDecimal = ATWgetCStrBin(ATWgetInt(_ValueDecimal));
-			//_ValueInteger = binaryVerify(_ValueInteger);
-			//_ValueDecimal = binaryVerify(_ValueDecimal);
-			//cout << "Valor gravado inteiro: " << _ValueInteger << endl;			
-			//cout << "Valor gravado decimal: " << _ValueDecimal << endl;
+				insertIntoBitSetBuffer(_bitsetInteger);
+			}//end else
 		}//end if
-		else{
-			int _valueIntegerI = ATWgetInt(_ValueInteger);
-
-			bitset<16>* _bitsetInteger = new bitset<16>(_valueIntegerI);
-
-			insertIntoBitSetBuffer(_bitsetInteger);
-
-			//_memoryPosition[0] = _valueIntegerI;
-			//_ValueInteger = ATWgetCStrBin(ATWgetInt(_ValueInteger));
-			//_ValueInteger = binaryVerify(_ValueInteger);
-			//cout << "Valor gravado: " << _ValueInteger << endl;
+		else
+		{
+			bitset<16>* _bitsetRegister = new bitset<16>();
+			switch((*_String))
+			{
+			case 'A':
+				*_bitsetRegister = BinaryGen::A;
+				break;
+			case 'B':
+				*_bitsetRegister = BinaryGen::B;
+				break;
+			case 'C':
+				*_bitsetRegister = BinaryGen::C;
+				break;
+			case 'D':
+				*_bitsetRegister = BinaryGen::D;
+				break;
+			case 'E':
+				*_bitsetRegister = BinaryGen::E;
+				break;
+			case 'F':
+				*_bitsetRegister = BinaryGen::F;
+				break;
+				case 'R'://Rótulos
+					//TODO: Procurar os rótulos aqui trocando pelo valor de endereço na Hash
+					break;
+			default:
+				printf("ERRO!!\n%s",_String);
+				system("pause");
+				//exit(-1);
+				break;
+			}//end switch
+			insertIntoBitSetBuffer(_bitsetRegister);
 		}//end else
-	}
+	}//end if
 	else{
 		bitset<16>* _bitsetInteger = new bitset<16>(_Element);
 		insertIntoBitSetBuffer(_bitsetInteger);
-	}
+	}//end else
 } 
-//---------------------------------------------------------------------------------------------------------------------
-string CodeGeneratorModule::binaryVerify(string _Number){
-	string _Temp = "0";
-	int _Quantity = _Number.size(), i;
-	//Completando o número para conter 16 bits completos
-	for(i = _Quantity; i < 15; i++)
-		_Temp.append("0");
-	_Temp.append(_Number);
-	return _Temp;
-}
 //---------------------------------------------------------------------------------------------------------------------
 void CodeGeneratorModule::insertCodeToWriteAsm(char* _Code, int _codeIndex, bool _Overlap){
 	if(_codeIndex > MAX_WRITING_BUFFER || _codeIndex < 0)
@@ -257,9 +275,9 @@ void CodeGeneratorModule::flushBin(){
 
 		binaryFile << _A;
 		binaryFile << _B;
-		
+
 	}
-	/*cout << endl;*/
+	cout << endl;
 	clearBitSetBuffer();
 }
 //----------------------------------------------------------------------------------------------------------------------
@@ -295,7 +313,7 @@ int CodeGeneratorModule::ADD(char* _RegD, char* _RegO, char* _Comment)
 	//BlockSize = 4 + 1
 
 	//binary
-	insertCodeToWriteBin(Instruction::ADD);
+	insertCodeToWriteBin(BinaryGen::ADD);
 	insertCodeToWriteBin(NULL,_RegD);
 	insertCodeToWriteBin(NULL,_RegO);
 
@@ -319,7 +337,7 @@ int CodeGeneratorModule::ADDF(char* _RegD, char* _RegO, char* _Comment)
 	insertCodeToWriteAsm("\n", _InstIndex++);
 
 	//BlockSize = 4 + 1
-	insertCodeToWriteBin(Instruction::ADDF);
+	insertCodeToWriteBin(BinaryGen::ADDF);
 	insertCodeToWriteBin(NULL,_RegD);
 	insertCodeToWriteBin(NULL,_RegO);
 
@@ -343,7 +361,7 @@ int CodeGeneratorModule::ADI(char* _RegD, char* _Imed, char* _Comment)
 	insertCodeToWriteAsm("\n", _InstIndex++);
 
 	//BlockSize = 4 + 1
-	insertCodeToWriteBin(Instruction::ADI);
+	insertCodeToWriteBin(BinaryGen::ADI);
 	insertCodeToWriteBin(NULL,_RegD);
 	insertCodeToWriteBin(NULL,_Imed);
 
@@ -367,7 +385,7 @@ int CodeGeneratorModule::ADIF(char* _RegD, char* _Imed, char* _Comment)
 	insertCodeToWriteAsm("\n", _InstIndex++);
 
 	//BlockSize = 4 + 1
-	insertCodeToWriteBin(Instruction::ADIF);
+	insertCodeToWriteBin(BinaryGen::ADIF);
 	insertCodeToWriteBin(NULL,_RegD);
 	insertCodeToWriteBin(NULL,_Imed);
 
@@ -390,7 +408,7 @@ int CodeGeneratorModule::BNG(char* _Reg, char* _Rot, char* _Comment){
 	insertCodeToWriteAsm("\n", _InstIndex++);
 
 	//BlockSize = 5 + 1	
-	insertCodeToWriteBin(Instruction::BNG);
+	insertCodeToWriteBin(BinaryGen::BNG);
 	insertCodeToWriteBin(NULL,_Reg);
 	insertCodeToWriteBin(NULL,_Rot);
 
@@ -414,7 +432,7 @@ int CodeGeneratorModule::BNGF(char* _Reg, char* _Rot, char* _Comment)
 	insertCodeToWriteAsm("\n", _InstIndex++);
 
 	//BlockSize = 5 + 1
-	insertCodeToWriteBin(Instruction::BNGF);
+	insertCodeToWriteBin(BinaryGen::BNGF);
 	insertCodeToWriteBin(NULL,_Reg);
 	insertCodeToWriteBin(NULL,_Rot);
 
@@ -438,7 +456,7 @@ int CodeGeneratorModule::BNN(char* _Reg, char* _Rot, char* _Comment)
 	insertCodeToWriteAsm("\n", _InstIndex++);
 
 	//BlockSize = 5 + 1
-	insertCodeToWriteBin(Instruction::BNN);
+	insertCodeToWriteBin(BinaryGen::BNN);
 	insertCodeToWriteBin(NULL,_Reg);
 	insertCodeToWriteBin(NULL,_Rot);
 
@@ -462,7 +480,7 @@ int CodeGeneratorModule::BNNF(char* _Reg, char* _Rot, char* _Comment)
 	insertCodeToWriteAsm("\n", _InstIndex++);
 
 	//BlockSize = 5 + 1
-	insertCodeToWriteBin(Instruction::BNNF);
+	insertCodeToWriteBin(BinaryGen::BNNF);
 	insertCodeToWriteBin(NULL,_Reg);
 	insertCodeToWriteBin(NULL,_Rot);
 
@@ -486,7 +504,7 @@ int CodeGeneratorModule::BNP(char* _Reg, char* _Rot, char* _Comment)
 	insertCodeToWriteAsm("\n", _InstIndex++);
 
 	//BlockSize = 5 + 1
-	insertCodeToWriteBin(Instruction::BNP);
+	insertCodeToWriteBin(BinaryGen::BNP);
 	insertCodeToWriteBin(NULL,_Reg);
 	insertCodeToWriteBin(NULL,_Rot);
 
@@ -510,7 +528,7 @@ int CodeGeneratorModule::BNPF(char* _Reg, char* _Rot, char* _Comment)
 	insertCodeToWriteAsm("\n", _InstIndex++);
 
 	//BlockSize = 5 + 1
-	insertCodeToWriteBin(Instruction::BNPF);
+	insertCodeToWriteBin(BinaryGen::BNPF);
 	insertCodeToWriteBin(NULL,_Reg);
 	insertCodeToWriteBin(NULL,_Rot);
 
@@ -534,7 +552,7 @@ int CodeGeneratorModule::BNZ(char* _Reg, char* _Rot, char* _Comment)
 	insertCodeToWriteAsm("\n", _InstIndex++);
 
 	//BlockSize = 5 + 1
-	insertCodeToWriteBin(Instruction::BNZ);
+	insertCodeToWriteBin(BinaryGen::BNZ);
 	insertCodeToWriteBin(NULL,_Reg);
 	insertCodeToWriteBin(NULL,_Rot);
 
@@ -558,7 +576,7 @@ int CodeGeneratorModule::BNZF(char* _Reg, char* _Rot, char* _Comment)
 	insertCodeToWriteAsm("\n", _InstIndex++);
 
 	//BlockSize = 5 + 1
-	insertCodeToWriteBin(Instruction::BNZF);
+	insertCodeToWriteBin(BinaryGen::BNZF);
 	insertCodeToWriteBin(NULL,_Reg);
 	insertCodeToWriteBin(NULL,_Rot);
 
@@ -582,7 +600,7 @@ int CodeGeneratorModule::BPS(char* _Reg, char* _Rot, char* _Comment)
 	insertCodeToWriteAsm("\n", _InstIndex++);
 
 	//BlockSize = 5 + 1
-	insertCodeToWriteBin(Instruction::BPS);
+	insertCodeToWriteBin(BinaryGen::BPS);
 	insertCodeToWriteBin(NULL,_Reg);
 	insertCodeToWriteBin(NULL,_Rot);
 
@@ -606,7 +624,7 @@ int CodeGeneratorModule::BPSF(char* _Reg, char* _Rot, char* _Comment)
 	insertCodeToWriteAsm("\n", _InstIndex++);
 
 	//BlockSize = 5 + 1
-	insertCodeToWriteBin(Instruction::BPSF);
+	insertCodeToWriteBin(BinaryGen::BPSF);
 	insertCodeToWriteBin(NULL,_Reg);
 	insertCodeToWriteBin(NULL,_Rot);
 
@@ -630,7 +648,7 @@ int CodeGeneratorModule::BZR(char* _Reg, char* _Rot, char* _Comment)
 	insertCodeToWriteAsm("\n", _InstIndex++);
 
 	//BlockSize = 5 + 1
-	insertCodeToWriteBin(Instruction::BZR);
+	insertCodeToWriteBin(BinaryGen::BZR);
 	insertCodeToWriteBin(NULL,_Reg);
 	insertCodeToWriteBin(NULL,_Rot);
 
@@ -654,7 +672,7 @@ int CodeGeneratorModule::BZRF(char* _Reg, char* _Rot, char* _Comment)
 	insertCodeToWriteAsm("\n", _InstIndex++);
 
 	//BlockSize = 5 + 1
-	insertCodeToWriteBin(Instruction::BZRF);
+	insertCodeToWriteBin(BinaryGen::BZRF);
 	insertCodeToWriteBin(NULL,_Reg);
 	insertCodeToWriteBin(NULL,_Rot);
 
@@ -678,7 +696,7 @@ int CodeGeneratorModule::CNV(char* _RegD, char* _RegO, char* _Comment)
 	insertCodeToWriteAsm("\n", _InstIndex++);
 
 	//BlockSize = 4 + 1
-	insertCodeToWriteBin(Instruction::CNV);
+	insertCodeToWriteBin(BinaryGen::CNV);
 	insertCodeToWriteBin(NULL,_RegD);
 	insertCodeToWriteBin(NULL,_RegO);
 
@@ -702,7 +720,7 @@ int CodeGeneratorModule::DIV(char* _RegD, char* _RegO, char* _Comment)
 	insertCodeToWriteAsm("\n", _InstIndex++);
 
 	//BlockSize = 4 + 1
-	insertCodeToWriteBin(Instruction::DIV);
+	insertCodeToWriteBin(BinaryGen::DIV);
 	insertCodeToWriteBin(NULL,_RegD);
 	insertCodeToWriteBin(NULL,_RegO);
 
@@ -726,7 +744,7 @@ int CodeGeneratorModule::ESC(char* _Reg1, char* _Reg2, char* _Comment)
 	insertCodeToWriteAsm("\n", _InstIndex++);
 
 	//BlockSize = 4 + 1
-	insertCodeToWriteBin(Instruction::ESC);
+	insertCodeToWriteBin(BinaryGen::ESC);
 	insertCodeToWriteBin(NULL,_Reg1);
 	insertCodeToWriteBin(NULL,_Reg2);
 
@@ -747,7 +765,7 @@ int CodeGeneratorModule::HLT(char* _Comment)
 	insertCodeToWriteAsm("\n", _InstIndex++);
 
 	//BlockSize = 1 + 1
-	insertCodeToWriteBin(Instruction::HLT);
+	insertCodeToWriteBin(BinaryGen::HLT);
 
 	return _InstIndexBase;
 }
@@ -770,7 +788,7 @@ int CodeGeneratorModule::JMP(char* _Label, char* _Comment)//TODO:Label necessita
 	insertCodeToWriteAsm("\n", _InstIndex++);
 
 	//BlockSize = 3 + 1	
-	insertCodeToWriteBin(Instruction::JMP);
+	insertCodeToWriteBin(BinaryGen::JMP);
 	insertCodeToWriteBin(NULL,_Label);
 
 	return _InstIndexBase;
@@ -793,7 +811,7 @@ int CodeGeneratorModule::LDI(char* _RegD, char* _Imed, char* _Comment)
 	insertCodeToWriteAsm("\n", _InstIndex++);
 
 	//BlockSize = 4 + 1
-	insertCodeToWriteBin(Instruction::LDI);
+	insertCodeToWriteBin(BinaryGen::LDI);
 	insertCodeToWriteBin(NULL,_RegD);
 	insertCodeToWriteBin(NULL,_Imed);
 
@@ -817,7 +835,7 @@ int CodeGeneratorModule::LDIF(char* _RegD, char* _Imed, char* _Comment)
 	insertCodeToWriteAsm("\n", _InstIndex++);
 
 	//BlockSize = 4 + 1	
-	insertCodeToWriteBin(Instruction::LDIF);
+	insertCodeToWriteBin(BinaryGen::LDIF);
 	insertCodeToWriteBin(NULL,_RegD);
 	insertCodeToWriteBin(NULL,_Imed);
 
@@ -839,7 +857,7 @@ int CodeGeneratorModule::LGT(char* _Reg, char* _Comment)
 	insertCodeToWriteAsm("\n", _InstIndex++);
 
 	//BlockSize = 2 + 1
-	insertCodeToWriteBin(Instruction::LGT);
+	insertCodeToWriteBin(BinaryGen::LGT);
 	insertCodeToWriteBin(NULL,_Reg);
 
 	return _InstIndexBase;
@@ -864,8 +882,9 @@ int CodeGeneratorModule::LOD(char* _RegD, Address _Desl, char* _Comment)
 	insertCodeToWriteAsm("\n", _InstIndex++);
 
 	//BlockSize = 5 + 1
-	insertCodeToWriteBin(Instruction::LOD);
+	insertCodeToWriteBin(BinaryGen::LOD);
 	insertCodeToWriteBin(NULL,_RegD);
+	insertCodeToWriteBin(_Desl);
 
 	return _InstIndexBase;
 }
@@ -888,8 +907,9 @@ int CodeGeneratorModule::LODF(char* _RegD, Address _Desl, char* _Comment)
 	insertCodeToWriteAsm("\n", _InstIndex++);
 
 	//BlockSize = 5 + 1
-	insertCodeToWriteBin(Instruction::LODF);
+	insertCodeToWriteBin(BinaryGen::LODF);
 	insertCodeToWriteBin(NULL,_RegD);
+	insertCodeToWriteBin(_Desl);
 
 	return _InstIndexBase;
 }
@@ -911,7 +931,7 @@ int CodeGeneratorModule::MVE(char* _RegD, char* _RegO, char* _Comment)
 	insertCodeToWriteAsm("\n", _InstIndex++);
 
 	//BlockSize = 4 + 1
-	insertCodeToWriteBin(Instruction::MVE);
+	insertCodeToWriteBin(BinaryGen::MVE);
 	insertCodeToWriteBin(NULL,_RegD);
 	insertCodeToWriteBin(NULL,_RegO);
 
@@ -935,7 +955,7 @@ int CodeGeneratorModule::MVEF(char* _RegD, char* _RegO, char* _Comment)
 	insertCodeToWriteAsm("\n", _InstIndex++);
 
 	//BlockSize = 4 + 1	
-	insertCodeToWriteBin(Instruction::MVEF);
+	insertCodeToWriteBin(BinaryGen::MVEF);
 	insertCodeToWriteBin(NULL,_RegD);
 	insertCodeToWriteBin(NULL,_RegO);
 
@@ -959,7 +979,7 @@ int CodeGeneratorModule::MUL(char* _RegD, char* _RegO, char* _Comment)
 	insertCodeToWriteAsm("\n", _InstIndex++);
 
 	//BlockSize = 4 + 1	
-	insertCodeToWriteBin(Instruction::MUL);
+	insertCodeToWriteBin(BinaryGen::MUL);
 	insertCodeToWriteBin(NULL,_RegD);
 	insertCodeToWriteBin(NULL,_RegO);
 
@@ -983,7 +1003,7 @@ int CodeGeneratorModule::MULF(char* _RegD, char* _RegO, char* _Comment)
 	insertCodeToWriteAsm("\n", _InstIndex++);
 
 	//BlockSize = 4 + 1
-	insertCodeToWriteBin(Instruction::MULF);
+	insertCodeToWriteBin(BinaryGen::MULF);
 	insertCodeToWriteBin(NULL,_RegD);
 	insertCodeToWriteBin(NULL,_RegO);
 
@@ -1005,7 +1025,7 @@ int CodeGeneratorModule::NEG(char* _Reg, char* _Comment)
 	insertCodeToWriteAsm("\n", _InstIndex++);
 
 	//BlockSize = 2 + 1	
-	insertCodeToWriteBin(Instruction::NEG);
+	insertCodeToWriteBin(BinaryGen::NEG);
 	insertCodeToWriteBin(NULL,_Reg);
 
 	return _InstIndexBase;
@@ -1026,7 +1046,7 @@ int CodeGeneratorModule::NEGF(char* _Reg, char* _Comment)
 	insertCodeToWriteAsm("\n", _InstIndex++);
 
 	//BlockSize = 2 + 1	
-	insertCodeToWriteBin(Instruction::NEGF);
+	insertCodeToWriteBin(BinaryGen::NEGF);
 	insertCodeToWriteBin(NULL,_Reg);
 
 	return _InstIndexBase;
@@ -1046,7 +1066,7 @@ int CodeGeneratorModule::RTR(char* _Comment)
 	insertCodeToWriteAsm("\n", _InstIndex++);
 
 	//BlockSize =
-	insertCodeToWriteBin(Instruction::RTR);
+	insertCodeToWriteBin(BinaryGen::RTR);
 
 	return _InstIndexBase;
 }
@@ -1067,9 +1087,9 @@ int CodeGeneratorModule::STI(char* _Imed, Address _Desl, char* _Comment){
 	}
 
 	insertCodeToWriteAsm("\n", _InstIndex++);
-	
+
 	//BlockSize = 5 + 1
-	insertCodeToWriteBin(Instruction::STI);
+	insertCodeToWriteBin(BinaryGen::STI);
 	insertCodeToWriteBin(NULL, _Imed);
 	insertCodeToWriteBin(_Desl);
 
@@ -1090,11 +1110,11 @@ int CodeGeneratorModule::STIF(char* _Imed, Address _Desl, char* _Comment)
 		sprintf_s(_sPrint, " ATW_COMMENT: %s", _Comment);
 		insertCodeToWriteAsm(_sPrint, _InstIndex++);
 	}
-	
+
 	insertCodeToWriteAsm("\n", _InstIndex++);
 
 	//BlockSize = 5 + 1
-	insertCodeToWriteBin(Instruction::STIF);
+	insertCodeToWriteBin(BinaryGen::STIF);
 	insertCodeToWriteBin(NULL,_Imed);
 	insertCodeToWriteBin(_Desl);
 
@@ -1110,7 +1130,7 @@ int CodeGeneratorModule::STO(char* _Reg, Address _Desl, char* _Comment)
 	insertCodeToWriteAsm(ATWgetCStr(_Desl), _InstIndex++);
 
 	insertCodeToWriteAsm("(DS)", _InstIndex++);
-	
+
 	if(strcmp(_Comment, "") != 0){
 		char _sPrint[255];
 		sprintf_s(_sPrint, " ATW_COMMENT: %s", _Comment);
@@ -1120,8 +1140,9 @@ int CodeGeneratorModule::STO(char* _Reg, Address _Desl, char* _Comment)
 	insertCodeToWriteAsm("\n", _InstIndex++);
 
 	//BlockSize = 5 + 1
-	insertCodeToWriteBin(Instruction::STO);
+	insertCodeToWriteBin(BinaryGen::STO);
 	insertCodeToWriteBin(NULL,_Reg);
+	insertCodeToWriteBin(_Desl);
 
 	return _InstIndexBase;
 }
@@ -1144,8 +1165,9 @@ int CodeGeneratorModule::STOF(char* _Reg, Address _Desl, char* _Comment)
 	insertCodeToWriteAsm("\n", _InstIndex++);
 
 	//BlockSize = 5 + 1
-	insertCodeToWriteBin(Instruction::STOF);
+	insertCodeToWriteBin(BinaryGen::STOF);
 	insertCodeToWriteBin(NULL,_Reg);
+	insertCodeToWriteBin(_Desl);
 
 	return _InstIndexBase;
 }
@@ -1157,7 +1179,7 @@ int CodeGeneratorModule::SUB(char* _RegD, char* _RegO, char* _Comment)
 	insertCodeToWriteAsm(_RegD, _InstIndex++);
 	insertCodeToWriteAsm(", ", _InstIndex++);
 	insertCodeToWriteAsm(_RegO, _InstIndex++);
-	
+
 	if(strcmp(_Comment, "") != 0){
 		char _sPrint[255];
 		sprintf_s(_sPrint, " ATW_COMMENT: %s", _Comment);
@@ -1167,7 +1189,7 @@ int CodeGeneratorModule::SUB(char* _RegD, char* _RegO, char* _Comment)
 	insertCodeToWriteAsm("\n", _InstIndex++);
 
 	//BlockSize = 4 + 1
-	insertCodeToWriteBin(Instruction::SUB);
+	insertCodeToWriteBin(BinaryGen::SUB);
 	insertCodeToWriteBin(NULL,_RegD);
 	insertCodeToWriteBin(NULL,_RegO);
 
@@ -1191,7 +1213,7 @@ int CodeGeneratorModule::SUBF(char* _RegD, char* _RegO, char* _Comment)
 	insertCodeToWriteAsm("\n", _InstIndex++);
 
 	//BlockSize = 4 + 1
-	insertCodeToWriteBin(Instruction::SUBF);
+	insertCodeToWriteBin(BinaryGen::SUBF);
 	insertCodeToWriteBin(NULL,_RegD);
 	insertCodeToWriteBin(NULL,_RegO);
 
@@ -1203,7 +1225,7 @@ int CodeGeneratorModule::TME(char* _Reg, char* _Comment)
 	int _InstIndexBase = _InstIndex;
 	insertCodeToWriteAsm("TME ", _InstIndex++);
 	insertCodeToWriteAsm(_Reg, _InstIndex++);
-	
+
 	if(strcmp(_Comment, "") != 0){
 		char _sPrint[255];
 		sprintf_s(_sPrint, " ATW_COMMENT: %s", _Comment);
@@ -1213,7 +1235,7 @@ int CodeGeneratorModule::TME(char* _Reg, char* _Comment)
 	insertCodeToWriteAsm("\n", _InstIndex++);
 
 	//BlockSize = 2 + 1
-	insertCodeToWriteBin(Instruction::TME);
+	insertCodeToWriteBin(BinaryGen::TME);
 	insertCodeToWriteBin(NULL,_Reg);
 
 	return _InstIndexBase;
