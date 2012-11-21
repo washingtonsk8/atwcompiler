@@ -13,8 +13,8 @@ void CodeGeneratorModule::fixCode(Address _AddressAsm, Address _AddressBin, char
 
 	for(int i = 0; it != _memoryPositions.end() && i < _AddressBin; it++, i++);
 	
-	bitset<16> _pointer = (*(*it));
-	_pointer = ATWgetInt(_value);
+	bitset<16>* _pointer = (*it);
+	(*_pointer) = ATWgetInt(_value);
 }
 //---------------------------------------------------------------------------------------------------------------------
 void CodeGeneratorModule::initialize(const char* _icFile){
@@ -277,7 +277,7 @@ void CodeGeneratorModule::flushBin(){
 	memset(_toWrite, 0, sizeof(char)*2);
 	for(; it != _memoryPositions.end(); it++){
 		bitset<16> _pointer = (*(*it));
-		cout << _pointer << "|";
+		cout << _pointer << "\n";
 		for(int i = 0; i < 8; i++){
 			_toWrite[0] = _toWrite[0] | (_pointer.at(i) << i);	
 			//(*_toWrite) = (*_toWrite) | (_pointer.at(i) << i);	

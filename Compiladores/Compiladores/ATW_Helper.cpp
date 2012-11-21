@@ -3,21 +3,24 @@
 namespace ATW_HELPER{
 	//---------------------------------------------------------------------------------------------------------------------
 	const char* ATWgetCCStr(int _val){
-		static char _conversion[255];
-		_itoa_s(_val, _conversion, 10);
+		char* _conversion = (char*)malloc(sizeof(char)*255);
+		memset(_conversion, 0, sizeof(char));
+		_itoa(_val, _conversion, 10);
 		string _return = _conversion;
 		return _return.c_str();
 	}
 	//---------------------------------------------------------------------------------------------------------------------
 	char* ATWgetCStr(int _val){
-		static char _conversion[255];
-		_itoa_s(_val, _conversion, 10);
+		char* _conversion = (char*)malloc(sizeof(char)*255);
+		memset(_conversion, 0, sizeof(char));
+		_itoa(_val, _conversion, 10);
 		return _conversion;
 	}
 	//---------------------------------------------------------------------------------------------------------------------
 	char* ATWgetCStrBin(int _val){
-		static char _conversion[255];
-		_itoa_s(_val, _conversion, 2);
+		char* _conversion = (char*)malloc(sizeof(char)*255);
+		memset(_conversion, 0, sizeof(char));
+		_itoa(_val, _conversion, 2);
 		return _conversion;
 	}
 	//---------------------------------------------------------------------------------------------------------------------
