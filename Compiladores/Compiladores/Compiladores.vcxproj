@@ -144,6 +144,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="saida.asm" />
+    <None Include="saida.exe" />
     <None Include="symbols.dat" />
     <None Include="teste1.asm" />
     <None Include="teste1.gl" />

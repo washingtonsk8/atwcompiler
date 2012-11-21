@@ -1,9 +1,23 @@
 DVar
 	inteiro i
+DPonto
+      P1=(-10,10,10)
+      P2=(-10,-10,10)
+      P3=(10,-10,10)
+      P4=(10,10,10)
+DCor
+     AZUL=15,2,12,11,8,3,6
+DFace
+      F1=AZUL,P1,P2,P3,P4
+DLuz
+      L1=(200,200,200)
+DObjeto
+      CUBO = F1
 
 Inicio
 	i = 0
-	enquanto i<10 faca inicio
-	i = i + 1
-	fim
+	Luz l1
+
+	pausa 10
+	
 Fim
