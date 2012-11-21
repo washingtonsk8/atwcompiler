@@ -1,13 +1,14 @@
 { Exemplo de programa-fonte da linguagem "GL" }
+DPonto
+	p1 = (0,1,2)
+	p2 = (1,1,1)
+	p3 = (2,3,4)
 
-DVar
-      inteiro i
-
+Dcor
+	merda = 2,2,2,2,2,2,2
+DFAce
+	F = merda, p1,p2,p3
+	
 Inicio
-	enquanto i<10 faca $
-   inicio
-     i=i+1
-     pausa 0.05
-   fim
-
+	
 Fim

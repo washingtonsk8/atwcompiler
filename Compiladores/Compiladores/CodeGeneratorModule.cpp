@@ -199,7 +199,7 @@ void CodeGeneratorModule::insertCodeToWriteBin(int _Element, char* _String){
 				break;
 			case 'R'://Rótulos
 				//TODO: Procurar os rótulos aqui trocando pelo valor de endereço na Hash
-				*_bitsetRegister = (unsigned int) getLabelAddress(_String);
+				*_bitsetRegister = (int)getLabelAddress(_String);
 				printf("Rótulo: %s\n",_String);
 				break;
 			case 'L'://Rótulos
@@ -307,6 +307,12 @@ void CodeGeneratorModule::write(char* _String)
 //----------------------------------------------------------------------------------------------------------------------
 void CodeGeneratorModule::writeRot(char* _String)
 {
+	//ADDRESS
+	Address _PCAddress = *_CurrentPCAdress;
+	unsigned int _CurrentKey = SDBMHash(_String) % MAX_LABELS;	
+	_Labels[_CurrentKey] = _PCAddress;
+	//ADDRESS
+
 	char _Rot[255] = "\n";
 	strcat(_Rot, _String);
 	strcat(_Rot, ":\n");

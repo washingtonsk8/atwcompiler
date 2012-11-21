@@ -1,34 +1,26 @@
+STIF #0.0, 0(DS) ATW_COMMENT: P1
+STIF #1.0, 2(DS)
+STIF #2.0, 4(DS)
+STIF #1.0, 6(DS) ATW_COMMENT: P2
+STIF #1.0, 8(DS)
+STIF #1.0, 10(DS)
+STIF #2.0, 12(DS) ATW_COMMENT: P3
+STIF #3.0, 14(DS)
+STIF #4.0, 16(DS)
+STI #2, 18(DS) ATW_COMMENT: MERDA
+STI #2, 19(DS)
+STI #2, 20(DS)
+STI #2, 21(DS)
+STI #2, 22(DS)
+STI #2, 23(DS)
+STI #2, 24(DS)
+STI #3, 25(DS) ATW_COMMENT: F
+STI #18, 26(DS)
+STI #0, 27(DS)
+STI #6, 28(DS)
+STI #12, 29(DS)
 
 ******************************** Commands Start ********************************
-STI #10, 1(DS)
-LOD A, 0(DS)
-LOD B, 1(DS)
-SUB A, B
-BNG A, Rot0
-JMP Rot1
-
-Rot0:
-LDI A, #1
-
-Rot1:
-STO A, 2(DS)
-
-Rot2:
-LOD A, 2(DS)
-BZR A, Rot3
-STI #1, 1(DS)
-LOD A, 0(DS) ATW_COMMENT: T + T
-LOD B, 1(DS)
-ADD A, B
-STO A, 2(DS) ATW_COMMENT: FIM
-LOD A, 2(DS) ATW_COMMENT: ID = EXP
-STO A, 0(DS)
-STIF #0.05, 1(DS)
-LOD A, 1(DS) ATW_COMMENT: PAUSA EXP
-TME A ATW_COMMENT: FIM PAUSA
-JMP Rot2
-
-Rot3:
 
 ******************************** Commands Finish *******************************
 HLT
