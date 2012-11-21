@@ -117,6 +117,28 @@ void CodeGeneratorModule::insertCodeToWriteBin(int _Element, char* _Number){
 			_pNumber++;
 		}//end while
 		if(_isFloat){
+			bool _IsNegative = false;
+			string _ZeroCont = "0";
+			
+			if(_ValueDecimal.at(0) == '-')
+				_IsNegative = true;
+
+			if(!_IsNegative){
+				int _Quantity = _ValueDecimal.size(), i;
+				//Completando o número para conter 16 bits completos
+				for(i = _Quantity; i < 3; i++)
+					_ZeroCont.append("0");
+				_ValueDecimal.append(_ZeroCont);
+			}
+			else{
+				int _Quantity = _ValueDecimal.size(), i;
+				//Completando o número para conter 16 bits completos
+				for(i = _Quantity; i < 4; i++)
+					_ZeroCont.append("0");
+				_ValueDecimal.append(_ZeroCont);
+			}
+
+			cout << _ValueDecimal << endl; 
 
 			int _valueIntegerI = ATWgetInt(_ValueInteger);
 			int _valueDecimalI = ATWgetInt(_ValueDecimal);
@@ -219,7 +241,7 @@ void CodeGeneratorModule::flushBin(){
 	memset(_toWrite, 0, sizeof(char)*2);
 	for(; it != _memoryPositions.end(); it++){
 		bitset<16> _pointer = (*(*it));
-		cout << _pointer << "|";
+		//cout << _pointer << "|";
 		for(int i = 0; i < 8; i++){
 			_toWrite[0] = _toWrite[0] | (_pointer.at(i) << i);	
 			//(*_toWrite) = (*_toWrite) | (_pointer.at(i) << i);	
