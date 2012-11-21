@@ -28,6 +28,7 @@ namespace LabelController{
 	//VARIABLES--------------------------------------------------
 
 	//METHODS----------------------------------------------------
+	extern Address        getLabelAddress();
 	extern char*          ATWNovoRot();
 	extern void           ATWRemoveLabel(int _Label);
 	//METHODS----------------------------------------------------
