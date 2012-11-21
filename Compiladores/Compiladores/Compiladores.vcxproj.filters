@@ -250,5 +250,11 @@
     <None Include="exemplo2.exe">
       <Filter>Arquivos de Recurso</Filter>
     </None>
+    <None Include="exemplo2.asm">
+      <Filter>Arquivos de Recurso</Filter>
+    </None>
+    <None Include="exemplo2.gl">
+      <Filter>Arquivos de Recurso</Filter>
+    </None>
   </ItemGroup>
 </Project>

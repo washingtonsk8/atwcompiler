@@ -35,10 +35,10 @@ Inicio
    Escala CUBO,ESC
    i=1
 
-   Rottrans CUBO,0,0,0,1,1,0
+   Rottrans CUBO,0,0,0,0,0,0
    enquanto i<MAXTEMPO faca $
    inicio
-     rottrans CUBO,5*i,0.1,0,0,0,0 
+     rottrans CUBO,0.01*i,0.1,0,0,0,0 
      i=i+1
      pausa 0.05
    fim
