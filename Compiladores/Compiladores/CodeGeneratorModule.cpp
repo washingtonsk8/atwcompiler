@@ -7,8 +7,14 @@ CodeGeneratorModule::CodeGeneratorModule(void){}
 //---------------------------------------------------------------------------------------------------------------------
 CodeGeneratorModule::~CodeGeneratorModule(void){}
 //---------------------------------------------------------------------------------------------------------------------
-void CodeGeneratorModule::fixCode(int _Address, char* _value){
-	_wBuffer[_Address] = _value;
+void CodeGeneratorModule::fixCode(Address _AddressAsm, Address _AddressBin, char* _value){
+	_wBuffer[_AddressAsm] = _value;
+	list<bitset<16>*>::iterator it = _memoryPositions.begin();
+
+	for(int i = 0; it != _memoryPositions.end() && i < _AddressBin; it++, i++);
+	
+	bitset<16> _pointer = (*(*it));
+	_pointer = ATWgetInt(_value);
 }
 //---------------------------------------------------------------------------------------------------------------------
 void CodeGeneratorModule::initialize(const char* _icFile){
@@ -21,6 +27,7 @@ void CodeGeneratorModule::initialize(const char* _icFile){
 	fManager = new FileManager();
 	fManager->initialize(0, NULL);
 	fManager->openFile(_icFile, GENERIC_WRITE, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL);
+	_Memory = ATWMemory::getInstance();
 
 	//binaryFile = new FileManager();
 	//binaryFile->initialize(0, NULL);
@@ -49,10 +56,12 @@ void CodeGeneratorModule::initialize(int _Argc, void** _Argv){
 	_hIIBF = 0;
 	_currentI = 0;
 	_InstIndex = 0;
+	_BinIndex = 0;
 
 	fManager = new FileManager();
 	fManager->initialize(0, NULL);
 	fManager->openFile((char*)_Argv[0], GENERIC_WRITE, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL);
+	_Memory = ATWMemory::getInstance();
 
 	//ASSEMBLY FILE CREATION
 	//pog
@@ -153,7 +162,7 @@ void CodeGeneratorModule::insertCodeToWriteBin(int _Element, char* _String){
 
 				insertIntoBitSetBuffer(_bitsetInteger);
 				insertIntoBitSetBuffer(_bitsetDecimal);
-
+				_BinIndex+=2;
 			}//end if	
 			else
 			{
@@ -162,6 +171,7 @@ void CodeGeneratorModule::insertCodeToWriteBin(int _Element, char* _String){
 				bitset<16>* _bitsetInteger = new bitset<16>(_valueIntegerI);
 
 				insertIntoBitSetBuffer(_bitsetInteger);
+				_BinIndex++;
 			}//end else
 		}//end if
 		else
@@ -192,7 +202,7 @@ void CodeGeneratorModule::insertCodeToWriteBin(int _Element, char* _String){
 				printf("Rótulo: %s\n",_String);
 				break;
 			case 'L'://Rótulos
-				printf("Retrocoreção: %s\n",_String);
+				printf("Retrocorreção: %s\n",_String);
 					//TODO: Retrocorrigir erro aqui
 				break;
 			default:
@@ -202,11 +212,13 @@ void CodeGeneratorModule::insertCodeToWriteBin(int _Element, char* _String){
 				break;
 			}//end switch
 			insertIntoBitSetBuffer(_bitsetRegister);
+			_BinIndex++;
 		}//end else
 	}//end if
 	else{
 		bitset<16>* _bitsetInteger = new bitset<16>(_Element);
 		insertIntoBitSetBuffer(_bitsetInteger);
+		_BinIndex++;
 	}//end else
 } 
 //---------------------------------------------------------------------------------------------------------------------
@@ -264,7 +276,7 @@ void CodeGeneratorModule::flushBin(){
 	memset(_toWrite, 0, sizeof(char)*2);
 	for(; it != _memoryPositions.end(); it++){
 		bitset<16> _pointer = (*(*it));
-		//cout << _pointer << "|";
+		cout << _pointer << "|";
 		for(int i = 0; i < 8; i++){
 			_toWrite[0] = _toWrite[0] | (_pointer.at(i) << i);	
 			//(*_toWrite) = (*_toWrite) | (_pointer.at(i) << i);	
@@ -275,8 +287,8 @@ void CodeGeneratorModule::flushBin(){
 			//(*(_toWrite+1)) = (*(_toWrite+1)) | (_pointer.at(i) << i - 8);
 		}
 
-		unsigned char _A = static_cast<unsigned char>(_toWrite[1]);
-		unsigned char _B = static_cast<unsigned char>(_toWrite[0]);
+		unsigned char _A = static_cast<unsigned char>(_toWrite[0]);
+		unsigned char _B = static_cast<unsigned char>(_toWrite[1]);
 
 		binaryFile << _A;
 		binaryFile << _B;
@@ -284,6 +296,7 @@ void CodeGeneratorModule::flushBin(){
 	}
 	cout << endl;
 	clearBitSetBuffer();
+	_BinIndex = 0;
 }
 //----------------------------------------------------------------------------------------------------------------------
 void CodeGeneratorModule::write(char* _String)
@@ -299,9 +312,9 @@ void CodeGeneratorModule::writeRot(char* _String)
 	insertCodeToWriteAsm(_Rot, _InstIndex++);
 }
 //----------------------------------------------------------------------------------------------------------------------
-int CodeGeneratorModule::ADD(char* _RegD, char* _RegO, char* _Comment)
+Address* CodeGeneratorModule::ADD(char* _RegD, char* _RegO, char* _Comment)
 {
-	int _InstIndexBase = _InstIndex;
+	Address* _InstIndexBase = (Address*) malloc (sizeof(Address)*2); memset(_InstIndexBase, 0, sizeof(Address)*2); _InstIndexBase[0] = _InstIndex; _InstIndexBase[1] = _BinIndex;
 	insertCodeToWriteAsm("ADD ", _InstIndex++);
 	insertCodeToWriteAsm(_RegD, _InstIndex++);	
 	insertCodeToWriteAsm(", ", _InstIndex++);
@@ -322,12 +335,12 @@ int CodeGeneratorModule::ADD(char* _RegD, char* _RegO, char* _Comment)
 	insertCodeToWriteBin(NULL,_RegD);
 	insertCodeToWriteBin(NULL,_RegO);
 
-	return _InstIndexBase;
+	_Memory->incrementPC(); return _InstIndexBase;
 }
 //----------------------------------------------------------------------------------------------------------------------
-int CodeGeneratorModule::ADDF(char* _RegD, char* _RegO, char* _Comment)
+Address* CodeGeneratorModule::ADDF(char* _RegD, char* _RegO, char* _Comment)
 {
-	int _InstIndexBase = _InstIndex;	
+	Address* _InstIndexBase = (Address*) malloc (sizeof(Address)*2); memset(_InstIndexBase, 0, sizeof(Address)*2); _InstIndexBase[0] = _InstIndex; _InstIndexBase[1] = _BinIndex;	
 	insertCodeToWriteAsm("ADDF ", _InstIndex++);
 	insertCodeToWriteAsm(_RegD, _InstIndex++);
 	insertCodeToWriteAsm(", ", _InstIndex++);
@@ -346,12 +359,12 @@ int CodeGeneratorModule::ADDF(char* _RegD, char* _RegO, char* _Comment)
 	insertCodeToWriteBin(NULL,_RegD);
 	insertCodeToWriteBin(NULL,_RegO);
 
-	return _InstIndexBase;
+	_Memory->incrementPC(); return _InstIndexBase;
 }
 //----------------------------------------------------------------------------------------------------------------------
-int CodeGeneratorModule::ADI(char* _RegD, char* _Imed, char* _Comment)
+Address* CodeGeneratorModule::ADI(char* _RegD, char* _Imed, char* _Comment)
 {
-	int _InstIndexBase = _InstIndex;
+	Address* _InstIndexBase = (Address*) malloc (sizeof(Address)*2); memset(_InstIndexBase, 0, sizeof(Address)*2); _InstIndexBase[0] = _InstIndex; _InstIndexBase[1] = _BinIndex;
 	insertCodeToWriteAsm("ADI ", _InstIndex++);
 	insertCodeToWriteAsm(_RegD, _InstIndex++);
 	insertCodeToWriteAsm(", #", _InstIndex++);
@@ -370,12 +383,12 @@ int CodeGeneratorModule::ADI(char* _RegD, char* _Imed, char* _Comment)
 	insertCodeToWriteBin(NULL,_RegD);
 	insertCodeToWriteBin(NULL,_Imed);
 
-	return _InstIndexBase;
+	_Memory->incrementPC(); return _InstIndexBase;
 }
 //----------------------------------------------------------------------------------------------------------------------
-int CodeGeneratorModule::ADIF(char* _RegD, char* _Imed, char* _Comment)
+Address* CodeGeneratorModule::ADIF(char* _RegD, char* _Imed, char* _Comment)
 {
-	int _InstIndexBase[2] = {_InstIndex, _};
+	Address* _InstIndexBase = (Address*) malloc (sizeof(Address)*2); memset(_InstIndexBase, 0, sizeof(Address)*2); _InstIndexBase[0] = _InstIndex; _InstIndexBase[1] = _BinIndex;
 
 	insertCodeToWriteAsm("ADIF ", _InstIndex++);
 	insertCodeToWriteAsm(_RegD, _InstIndex++);
@@ -395,11 +408,11 @@ int CodeGeneratorModule::ADIF(char* _RegD, char* _Imed, char* _Comment)
 	insertCodeToWriteBin(NULL,_RegD);
 	insertCodeToWriteBin(NULL,_Imed);
 
-	return _InstIndexBase;
+	_Memory->incrementPC(); return _InstIndexBase;
 }
 //----------------------------------------------------------------------------------------------------------------------
-int CodeGeneratorModule::BNG(char* _Reg, char* _Rot, char* _Comment){
-	int _InstIndexBase = _InstIndex;
+Address* CodeGeneratorModule::BNG(char* _Reg, char* _Rot, char* _Comment){
+	Address* _InstIndexBase = (Address*) malloc (sizeof(Address)*2); memset(_InstIndexBase, 0, sizeof(Address)*2); _InstIndexBase[0] = _InstIndex; _InstIndexBase[1] = _BinIndex;
 	insertCodeToWriteAsm("BNG ", _InstIndex++);
 	insertCodeToWriteAsm(_Reg, _InstIndex++);
 	insertCodeToWriteAsm(", ", _InstIndex++);
@@ -418,12 +431,12 @@ int CodeGeneratorModule::BNG(char* _Reg, char* _Rot, char* _Comment){
 	insertCodeToWriteBin(NULL,_Reg);
 	insertCodeToWriteBin(NULL,_Rot);
 
-	return _InstIndexBase;
+	_Memory->incrementPC(); return _InstIndexBase;
 }
 //----------------------------------------------------------------------------------------------------------------------
-int CodeGeneratorModule::BNGF(char* _Reg, char* _Rot, char* _Comment)
+Address* CodeGeneratorModule::BNGF(char* _Reg, char* _Rot, char* _Comment)
 {
-	int _InstIndexBase = _InstIndex;
+	Address* _InstIndexBase = (Address*) malloc (sizeof(Address)*2); memset(_InstIndexBase, 0, sizeof(Address)*2); _InstIndexBase[0] = _InstIndex; _InstIndexBase[1] = _BinIndex;
 	insertCodeToWriteAsm("BNGF ", _InstIndex++);
 	insertCodeToWriteAsm(_Reg, _InstIndex++);
 	insertCodeToWriteAsm(", ", _InstIndex++);
@@ -442,12 +455,12 @@ int CodeGeneratorModule::BNGF(char* _Reg, char* _Rot, char* _Comment)
 	insertCodeToWriteBin(NULL,_Reg);
 	insertCodeToWriteBin(NULL,_Rot);
 
-	return _InstIndexBase;
+	_Memory->incrementPC(); return _InstIndexBase;
 }
 //----------------------------------------------------------------------------------------------------------------------
-int CodeGeneratorModule::BNN(char* _Reg, char* _Rot, char* _Comment)
+Address* CodeGeneratorModule::BNN(char* _Reg, char* _Rot, char* _Comment)
 {
-	int _InstIndexBase = _InstIndex;
+	Address* _InstIndexBase = (Address*) malloc (sizeof(Address)*2); memset(_InstIndexBase, 0, sizeof(Address)*2); _InstIndexBase[0] = _InstIndex; _InstIndexBase[1] = _BinIndex;
 	insertCodeToWriteAsm("BNN ", _InstIndex++);
 	insertCodeToWriteAsm(_Reg, _InstIndex++);
 	insertCodeToWriteAsm(", ", _InstIndex++);
@@ -466,12 +479,12 @@ int CodeGeneratorModule::BNN(char* _Reg, char* _Rot, char* _Comment)
 	insertCodeToWriteBin(NULL,_Reg);
 	insertCodeToWriteBin(NULL,_Rot);
 
-	return _InstIndexBase;
+	_Memory->incrementPC(); return _InstIndexBase;
 }
 //----------------------------------------------------------------------------------------------------------------------
-int CodeGeneratorModule::BNNF(char* _Reg, char* _Rot, char* _Comment)
+Address* CodeGeneratorModule::BNNF(char* _Reg, char* _Rot, char* _Comment)
 {
-	int _InstIndexBase = _InstIndex;
+	Address* _InstIndexBase = (Address*) malloc (sizeof(Address)*2); memset(_InstIndexBase, 0, sizeof(Address)*2); _InstIndexBase[0] = _InstIndex; _InstIndexBase[1] = _BinIndex;
 	insertCodeToWriteAsm("BNNF ", _InstIndex++);
 	insertCodeToWriteAsm(_Reg, _InstIndex++);
 	insertCodeToWriteAsm(", ", _InstIndex++);
@@ -490,12 +503,12 @@ int CodeGeneratorModule::BNNF(char* _Reg, char* _Rot, char* _Comment)
 	insertCodeToWriteBin(NULL,_Reg);
 	insertCodeToWriteBin(NULL,_Rot);
 
-	return _InstIndexBase;
+	_Memory->incrementPC(); return _InstIndexBase;
 }
 //----------------------------------------------------------------------------------------------------------------------
-int CodeGeneratorModule::BNP(char* _Reg, char* _Rot, char* _Comment)
+Address* CodeGeneratorModule::BNP(char* _Reg, char* _Rot, char* _Comment)
 {
-	int _InstIndexBase = _InstIndex;
+	Address* _InstIndexBase = (Address*) malloc (sizeof(Address)*2); memset(_InstIndexBase, 0, sizeof(Address)*2); _InstIndexBase[0] = _InstIndex; _InstIndexBase[1] = _BinIndex;
 	insertCodeToWriteAsm("BNP ", _InstIndex++);
 	insertCodeToWriteAsm(_Reg, _InstIndex++);
 	insertCodeToWriteAsm(", ", _InstIndex++);
@@ -514,12 +527,12 @@ int CodeGeneratorModule::BNP(char* _Reg, char* _Rot, char* _Comment)
 	insertCodeToWriteBin(NULL,_Reg);
 	insertCodeToWriteBin(NULL,_Rot);
 
-	return _InstIndexBase;
+	_Memory->incrementPC(); return _InstIndexBase;
 }
 //----------------------------------------------------------------------------------------------------------------------
-int CodeGeneratorModule::BNPF(char* _Reg, char* _Rot, char* _Comment)
+Address* CodeGeneratorModule::BNPF(char* _Reg, char* _Rot, char* _Comment)
 {
-	int _InstIndexBase = _InstIndex;
+	Address* _InstIndexBase = (Address*) malloc (sizeof(Address)*2); memset(_InstIndexBase, 0, sizeof(Address)*2); _InstIndexBase[0] = _InstIndex; _InstIndexBase[1] = _BinIndex;
 	insertCodeToWriteAsm("BNPF ", _InstIndex++);
 	insertCodeToWriteAsm(_Reg, _InstIndex++);
 	insertCodeToWriteAsm(", ", _InstIndex++);
@@ -538,12 +551,12 @@ int CodeGeneratorModule::BNPF(char* _Reg, char* _Rot, char* _Comment)
 	insertCodeToWriteBin(NULL,_Reg);
 	insertCodeToWriteBin(NULL,_Rot);
 
-	return _InstIndexBase;
+	_Memory->incrementPC(); return _InstIndexBase;
 }
 //----------------------------------------------------------------------------------------------------------------------
-int CodeGeneratorModule::BNZ(char* _Reg, char* _Rot, char* _Comment)
+Address* CodeGeneratorModule::BNZ(char* _Reg, char* _Rot, char* _Comment)
 {
-	int _InstIndexBase = _InstIndex;
+	Address* _InstIndexBase = (Address*) malloc (sizeof(Address)*2); memset(_InstIndexBase, 0, sizeof(Address)*2); _InstIndexBase[0] = _InstIndex; _InstIndexBase[1] = _BinIndex;
 	insertCodeToWriteAsm("BNZ ", _InstIndex++);
 	insertCodeToWriteAsm(_Reg, _InstIndex++);
 	insertCodeToWriteAsm(", ", _InstIndex++);
@@ -562,12 +575,12 @@ int CodeGeneratorModule::BNZ(char* _Reg, char* _Rot, char* _Comment)
 	insertCodeToWriteBin(NULL,_Reg);
 	insertCodeToWriteBin(NULL,_Rot);
 
-	return _InstIndexBase;
+	_Memory->incrementPC(); return _InstIndexBase;
 }
 //----------------------------------------------------------------------------------------------------------------------
-int CodeGeneratorModule::BNZF(char* _Reg, char* _Rot, char* _Comment)
+Address* CodeGeneratorModule::BNZF(char* _Reg, char* _Rot, char* _Comment)
 {
-	int _InstIndexBase = _InstIndex;
+	Address* _InstIndexBase = (Address*) malloc (sizeof(Address)*2); memset(_InstIndexBase, 0, sizeof(Address)*2); _InstIndexBase[0] = _InstIndex; _InstIndexBase[1] = _BinIndex;
 	insertCodeToWriteAsm("BNZF ", _InstIndex++);
 	insertCodeToWriteAsm(_Reg, _InstIndex++);
 	insertCodeToWriteAsm(", ", _InstIndex++);
@@ -586,12 +599,12 @@ int CodeGeneratorModule::BNZF(char* _Reg, char* _Rot, char* _Comment)
 	insertCodeToWriteBin(NULL,_Reg);
 	insertCodeToWriteBin(NULL,_Rot);
 
-	return _InstIndexBase;
+	_Memory->incrementPC(); return _InstIndexBase;
 }
 //----------------------------------------------------------------------------------------------------------------------
-int CodeGeneratorModule::BPS(char* _Reg, char* _Rot, char* _Comment)
+Address* CodeGeneratorModule::BPS(char* _Reg, char* _Rot, char* _Comment)
 {
-	int _InstIndexBase = _InstIndex;
+	Address* _InstIndexBase = (Address*) malloc (sizeof(Address)*2); memset(_InstIndexBase, 0, sizeof(Address)*2); _InstIndexBase[0] = _InstIndex; _InstIndexBase[1] = _BinIndex;
 	insertCodeToWriteAsm("BPS ", _InstIndex++);
 	insertCodeToWriteAsm(_Reg, _InstIndex++);
 	insertCodeToWriteAsm(", ", _InstIndex++);
@@ -610,12 +623,12 @@ int CodeGeneratorModule::BPS(char* _Reg, char* _Rot, char* _Comment)
 	insertCodeToWriteBin(NULL,_Reg);
 	insertCodeToWriteBin(NULL,_Rot);
 
-	return _InstIndexBase;
+	_Memory->incrementPC(); return _InstIndexBase;
 }
 //----------------------------------------------------------------------------------------------------------------------
-int CodeGeneratorModule::BPSF(char* _Reg, char* _Rot, char* _Comment)
+Address* CodeGeneratorModule::BPSF(char* _Reg, char* _Rot, char* _Comment)
 {
-	int _InstIndexBase = _InstIndex;
+	Address* _InstIndexBase = (Address*) malloc (sizeof(Address)*2); memset(_InstIndexBase, 0, sizeof(Address)*2); _InstIndexBase[0] = _InstIndex; _InstIndexBase[1] = _BinIndex;
 	insertCodeToWriteAsm("BPSF", _InstIndex++);
 	insertCodeToWriteAsm(_Reg, _InstIndex++);
 	insertCodeToWriteAsm(", ", _InstIndex++);
@@ -634,12 +647,12 @@ int CodeGeneratorModule::BPSF(char* _Reg, char* _Rot, char* _Comment)
 	insertCodeToWriteBin(NULL,_Reg);
 	insertCodeToWriteBin(NULL,_Rot);
 
-	return _InstIndexBase;
+	_Memory->incrementPC(); return _InstIndexBase;
 }
 //----------------------------------------------------------------------------------------------------------------------
-int CodeGeneratorModule::BZR(char* _Reg, char* _Rot, char* _Comment)
+Address* CodeGeneratorModule::BZR(char* _Reg, char* _Rot, char* _Comment)
 {
-	int _InstIndexBase = _InstIndex;
+	Address* _InstIndexBase = (Address*) malloc (sizeof(Address)*2); memset(_InstIndexBase, 0, sizeof(Address)*2); _InstIndexBase[0] = _InstIndex; _InstIndexBase[1] = _BinIndex;
 	insertCodeToWriteAsm("BZR ", _InstIndex++);
 	insertCodeToWriteAsm(_Reg, _InstIndex++);
 	insertCodeToWriteAsm(", ", _InstIndex++);
@@ -658,12 +671,12 @@ int CodeGeneratorModule::BZR(char* _Reg, char* _Rot, char* _Comment)
 	insertCodeToWriteBin(NULL,_Reg);
 	insertCodeToWriteBin(NULL,_Rot);
 
-	return _InstIndexBase;
+	_Memory->incrementPC(); return _InstIndexBase;
 }
 //----------------------------------------------------------------------------------------------------------------------
-int CodeGeneratorModule::BZRF(char* _Reg, char* _Rot, char* _Comment)
+Address* CodeGeneratorModule::BZRF(char* _Reg, char* _Rot, char* _Comment)
 {
-	int _InstIndexBase = _InstIndex;
+	Address* _InstIndexBase = (Address*) malloc (sizeof(Address)*2); memset(_InstIndexBase, 0, sizeof(Address)*2); _InstIndexBase[0] = _InstIndex; _InstIndexBase[1] = _BinIndex;
 	insertCodeToWriteAsm("BZRF ", _InstIndex++);
 	insertCodeToWriteAsm(_Reg, _InstIndex++);
 	insertCodeToWriteAsm(", ", _InstIndex++);
@@ -682,12 +695,12 @@ int CodeGeneratorModule::BZRF(char* _Reg, char* _Rot, char* _Comment)
 	insertCodeToWriteBin(NULL,_Reg);
 	insertCodeToWriteBin(NULL,_Rot);
 
-	return _InstIndexBase;
+	_Memory->incrementPC(); return _InstIndexBase;
 }
 //----------------------------------------------------------------------------------------------------------------------
-int CodeGeneratorModule::CNV(char* _RegD, char* _RegO, char* _Comment)
+Address* CodeGeneratorModule::CNV(char* _RegD, char* _RegO, char* _Comment)
 {
-	int _InstIndexBase = _InstIndex;
+	Address* _InstIndexBase = (Address*) malloc (sizeof(Address)*2); memset(_InstIndexBase, 0, sizeof(Address)*2); _InstIndexBase[0] = _InstIndex; _InstIndexBase[1] = _BinIndex;
 	insertCodeToWriteAsm("CNV ", _InstIndex++);
 	insertCodeToWriteAsm(_RegD, _InstIndex++);
 	insertCodeToWriteAsm(", ", _InstIndex++);
@@ -706,12 +719,12 @@ int CodeGeneratorModule::CNV(char* _RegD, char* _RegO, char* _Comment)
 	insertCodeToWriteBin(NULL,_RegD);
 	insertCodeToWriteBin(NULL,_RegO);
 
-	return _InstIndexBase;
+	_Memory->incrementPC(); return _InstIndexBase;
 }
 //----------------------------------------------------------------------------------------------------------------------
-int CodeGeneratorModule::DIV(char* _RegD, char* _RegO, char* _Comment)
+Address* CodeGeneratorModule::DIV(char* _RegD, char* _RegO, char* _Comment)
 {
-	int _InstIndexBase = _InstIndex;
+	Address* _InstIndexBase = (Address*) malloc (sizeof(Address)*2); memset(_InstIndexBase, 0, sizeof(Address)*2); _InstIndexBase[0] = _InstIndex; _InstIndexBase[1] = _BinIndex;
 	insertCodeToWriteAsm("DIV ", _InstIndex++);
 	insertCodeToWriteAsm(_RegD, _InstIndex++);
 	insertCodeToWriteAsm(", ", _InstIndex++);
@@ -730,12 +743,12 @@ int CodeGeneratorModule::DIV(char* _RegD, char* _RegO, char* _Comment)
 	insertCodeToWriteBin(NULL,_RegD);
 	insertCodeToWriteBin(NULL,_RegO);
 
-	return _InstIndexBase;
+	_Memory->incrementPC(); return _InstIndexBase;
 }
 //----------------------------------------------------------------------------------------------------------------------
-int CodeGeneratorModule::ESC(char* _Reg1, char* _Reg2, char* _Comment)
+Address* CodeGeneratorModule::ESC(char* _Reg1, char* _Reg2, char* _Comment)
 {
-	int _InstIndexBase = _InstIndex;
+	Address* _InstIndexBase = (Address*) malloc (sizeof(Address)*2); memset(_InstIndexBase, 0, sizeof(Address)*2); _InstIndexBase[0] = _InstIndex; _InstIndexBase[1] = _BinIndex;
 	insertCodeToWriteAsm("ESC ", _InstIndex++);
 	insertCodeToWriteAsm(_Reg1, _InstIndex++);
 	insertCodeToWriteAsm(", ", _InstIndex++);
@@ -754,12 +767,12 @@ int CodeGeneratorModule::ESC(char* _Reg1, char* _Reg2, char* _Comment)
 	insertCodeToWriteBin(NULL,_Reg1);
 	insertCodeToWriteBin(NULL,_Reg2);
 
-	return _InstIndexBase;
+	_Memory->incrementPC(); return _InstIndexBase;
 }
 //----------------------------------------------------------------------------------------------------------------------
-int CodeGeneratorModule::HLT(char* _Comment)
+Address* CodeGeneratorModule::HLT(char* _Comment)
 {
-	int _InstIndexBase = _InstIndex;
+	Address* _InstIndexBase = (Address*) malloc (sizeof(Address)*2); memset(_InstIndexBase, 0, sizeof(Address)*2); _InstIndexBase[0] = _InstIndex; _InstIndexBase[1] = _BinIndex;
 	insertCodeToWriteAsm("HLT", _InstIndex++);
 
 	if(strcmp(_Comment, "") != 0){
@@ -773,12 +786,12 @@ int CodeGeneratorModule::HLT(char* _Comment)
 	//BlockSize = 1 + 1
 	insertCodeToWriteBin(BinaryGen::HLT);
 
-	return _InstIndexBase;
+	_Memory->incrementPC(); return _InstIndexBase;
 }
 //----------------------------------------------------------------------------------------------------------------------
-int CodeGeneratorModule::JMP(char* _Label, char* _Comment)//TODO:Label necessita conversão para o inteiro correspondente
+Address* CodeGeneratorModule::JMP(char* _Label, char* _Comment)//TODO:Label necessita conversão para o inteiro correspondente
 {
-	int _InstIndexBase = _InstIndex;
+	Address* _InstIndexBase = (Address*) malloc (sizeof(Address)*2); memset(_InstIndexBase, 0, sizeof(Address)*2); _InstIndexBase[0] = _InstIndex; _InstIndexBase[1] = _BinIndex;
 	insertCodeToWriteAsm("JMP ", _InstIndex++);
 	//insertCodeToWriteBin(21);
 	insertCodeToWriteAsm(_Label, _InstIndex++);
@@ -797,12 +810,12 @@ int CodeGeneratorModule::JMP(char* _Label, char* _Comment)//TODO:Label necessita
 	insertCodeToWriteBin(BinaryGen::JMP);
 	insertCodeToWriteBin(NULL,_Label);
 
-	return _InstIndexBase;
+	_Memory->incrementPC(); return _InstIndexBase;
 }
 //----------------------------------------------------------------------------------------------------------------------
-int CodeGeneratorModule::LDI(char* _RegD, char* _Imed, char* _Comment)
+Address* CodeGeneratorModule::LDI(char* _RegD, char* _Imed, char* _Comment)
 {
-	int _InstIndexBase = _InstIndex;
+	Address* _InstIndexBase = (Address*) malloc (sizeof(Address)*2); memset(_InstIndexBase, 0, sizeof(Address)*2); _InstIndexBase[0] = _InstIndex; _InstIndexBase[1] = _BinIndex;
 	insertCodeToWriteAsm("LDI ", _InstIndex++);
 	insertCodeToWriteAsm(_RegD, _InstIndex++);	
 	insertCodeToWriteAsm(", #", _InstIndex++);
@@ -821,12 +834,12 @@ int CodeGeneratorModule::LDI(char* _RegD, char* _Imed, char* _Comment)
 	insertCodeToWriteBin(NULL,_RegD);
 	insertCodeToWriteBin(NULL,_Imed);
 
-	return _InstIndexBase;
+	_Memory->incrementPC(); return _InstIndexBase;
 }
 //----------------------------------------------------------------------------------------------------------------------
-int CodeGeneratorModule::LDIF(char* _RegD, char* _Imed, char* _Comment)
+Address* CodeGeneratorModule::LDIF(char* _RegD, char* _Imed, char* _Comment)
 {
-	int _InstIndexBase = _InstIndex;
+	Address* _InstIndexBase = (Address*) malloc (sizeof(Address)*2); memset(_InstIndexBase, 0, sizeof(Address)*2); _InstIndexBase[0] = _InstIndex; _InstIndexBase[1] = _BinIndex;
 	insertCodeToWriteAsm("LDIF ", _InstIndex++);
 	insertCodeToWriteAsm(_RegD, _InstIndex++);
 	insertCodeToWriteAsm(", #", _InstIndex++);
@@ -845,12 +858,12 @@ int CodeGeneratorModule::LDIF(char* _RegD, char* _Imed, char* _Comment)
 	insertCodeToWriteBin(NULL,_RegD);
 	insertCodeToWriteBin(NULL,_Imed);
 
-	return _InstIndexBase;
+	_Memory->incrementPC(); return _InstIndexBase;
 }
 //----------------------------------------------------------------------------------------------------------------------
-int CodeGeneratorModule::LGT(char* _Reg, char* _Comment)
+Address* CodeGeneratorModule::LGT(char* _Reg, char* _Comment)
 {
-	int _InstIndexBase = _InstIndex;
+	Address* _InstIndexBase = (Address*) malloc (sizeof(Address)*2); memset(_InstIndexBase, 0, sizeof(Address)*2); _InstIndexBase[0] = _InstIndex; _InstIndexBase[1] = _BinIndex;
 	insertCodeToWriteAsm("LGT ", _InstIndex++);
 	insertCodeToWriteAsm(_Reg, _InstIndex++);
 
@@ -866,12 +879,12 @@ int CodeGeneratorModule::LGT(char* _Reg, char* _Comment)
 	insertCodeToWriteBin(BinaryGen::LGT);
 	insertCodeToWriteBin(NULL,_Reg);
 
-	return _InstIndexBase;
+	_Memory->incrementPC(); return _InstIndexBase;
 }
 //----------------------------------------------------------------------------------------------------------------------
-int CodeGeneratorModule::LOD(char* _RegD, Address _Desl, char* _Comment)
+Address* CodeGeneratorModule::LOD(char* _RegD, Address _Desl, char* _Comment)
 {
-	int _InstIndexBase = _InstIndex;
+	Address* _InstIndexBase = (Address*) malloc (sizeof(Address)*2); memset(_InstIndexBase, 0, sizeof(Address)*2); _InstIndexBase[0] = _InstIndex; _InstIndexBase[1] = _BinIndex;
 	insertCodeToWriteAsm("LOD ", _InstIndex++);
 	insertCodeToWriteAsm(_RegD, _InstIndex++);	
 	insertCodeToWriteAsm(", ", _InstIndex++);
@@ -892,12 +905,12 @@ int CodeGeneratorModule::LOD(char* _RegD, Address _Desl, char* _Comment)
 	insertCodeToWriteBin(NULL,_RegD);
 	insertCodeToWriteBin(_Desl);
 
-	return _InstIndexBase;
+	_Memory->incrementPC(); return _InstIndexBase;
 }
 //----------------------------------------------------------------------------------------------------------------------
-int CodeGeneratorModule::LODF(char* _RegD, Address _Desl, char* _Comment)
+Address* CodeGeneratorModule::LODF(char* _RegD, Address _Desl, char* _Comment)
 {
-	int _InstIndexBase = _InstIndex;
+	Address* _InstIndexBase = (Address*) malloc (sizeof(Address)*2); memset(_InstIndexBase, 0, sizeof(Address)*2); _InstIndexBase[0] = _InstIndex; _InstIndexBase[1] = _BinIndex;
 	insertCodeToWriteAsm("LODF ", _InstIndex++);
 	insertCodeToWriteAsm(_RegD, _InstIndex++);	
 	insertCodeToWriteAsm(", ", _InstIndex++);
@@ -917,12 +930,12 @@ int CodeGeneratorModule::LODF(char* _RegD, Address _Desl, char* _Comment)
 	insertCodeToWriteBin(NULL,_RegD);
 	insertCodeToWriteBin(_Desl);
 
-	return _InstIndexBase;
+	_Memory->incrementPC(); return _InstIndexBase;
 }
 //----------------------------------------------------------------------------------------------------------------------
-int CodeGeneratorModule::MVE(char* _RegD, char* _RegO, char* _Comment)
+Address* CodeGeneratorModule::MVE(char* _RegD, char* _RegO, char* _Comment)
 {
-	int _InstIndexBase = _InstIndex;
+	Address* _InstIndexBase = (Address*) malloc (sizeof(Address)*2); memset(_InstIndexBase, 0, sizeof(Address)*2); _InstIndexBase[0] = _InstIndex; _InstIndexBase[1] = _BinIndex;
 	insertCodeToWriteAsm("MVE ", _InstIndex++);
 	insertCodeToWriteAsm(_RegD, _InstIndex++);
 	insertCodeToWriteAsm(", ", _InstIndex++);
@@ -941,12 +954,12 @@ int CodeGeneratorModule::MVE(char* _RegD, char* _RegO, char* _Comment)
 	insertCodeToWriteBin(NULL,_RegD);
 	insertCodeToWriteBin(NULL,_RegO);
 
-	return _InstIndexBase;
+	_Memory->incrementPC(); return _InstIndexBase;
 }
 //----------------------------------------------------------------------------------------------------------------------
-int CodeGeneratorModule::MVEF(char* _RegD, char* _RegO, char* _Comment)
+Address* CodeGeneratorModule::MVEF(char* _RegD, char* _RegO, char* _Comment)
 {
-	int _InstIndexBase = _InstIndex;
+	Address* _InstIndexBase = (Address*) malloc (sizeof(Address)*2); memset(_InstIndexBase, 0, sizeof(Address)*2); _InstIndexBase[0] = _InstIndex; _InstIndexBase[1] = _BinIndex;
 	insertCodeToWriteAsm("MVEF ", _InstIndex++);
 	insertCodeToWriteAsm(_RegD, _InstIndex++);
 	insertCodeToWriteAsm(", ", _InstIndex++);
@@ -965,12 +978,12 @@ int CodeGeneratorModule::MVEF(char* _RegD, char* _RegO, char* _Comment)
 	insertCodeToWriteBin(NULL,_RegD);
 	insertCodeToWriteBin(NULL,_RegO);
 
-	return _InstIndexBase;
+	_Memory->incrementPC(); return _InstIndexBase;
 }
 //----------------------------------------------------------------------------------------------------------------------
-int CodeGeneratorModule::MUL(char* _RegD, char* _RegO, char* _Comment)
+Address* CodeGeneratorModule::MUL(char* _RegD, char* _RegO, char* _Comment)
 {
-	int _InstIndexBase = _InstIndex;
+	Address* _InstIndexBase = (Address*) malloc (sizeof(Address)*2); memset(_InstIndexBase, 0, sizeof(Address)*2); _InstIndexBase[0] = _InstIndex; _InstIndexBase[1] = _BinIndex;
 	insertCodeToWriteAsm("MUL ", _InstIndex++);
 	insertCodeToWriteAsm(_RegD, _InstIndex++);
 	insertCodeToWriteAsm(", ", _InstIndex++);
@@ -989,12 +1002,12 @@ int CodeGeneratorModule::MUL(char* _RegD, char* _RegO, char* _Comment)
 	insertCodeToWriteBin(NULL,_RegD);
 	insertCodeToWriteBin(NULL,_RegO);
 
-	return _InstIndexBase;
+	_Memory->incrementPC(); return _InstIndexBase;
 }
 //----------------------------------------------------------------------------------------------------------------------
-int CodeGeneratorModule::MULF(char* _RegD, char* _RegO, char* _Comment)
+Address* CodeGeneratorModule::MULF(char* _RegD, char* _RegO, char* _Comment)
 {
-	int _InstIndexBase = _InstIndex;
+	Address* _InstIndexBase = (Address*) malloc (sizeof(Address)*2); memset(_InstIndexBase, 0, sizeof(Address)*2); _InstIndexBase[0] = _InstIndex; _InstIndexBase[1] = _BinIndex;
 	insertCodeToWriteAsm("MULF ", _InstIndex++);
 	insertCodeToWriteAsm(_RegD, _InstIndex++);
 	insertCodeToWriteAsm(", ", _InstIndex++);
@@ -1013,12 +1026,12 @@ int CodeGeneratorModule::MULF(char* _RegD, char* _RegO, char* _Comment)
 	insertCodeToWriteBin(NULL,_RegD);
 	insertCodeToWriteBin(NULL,_RegO);
 
-	return _InstIndexBase;
+	_Memory->incrementPC(); return _InstIndexBase;
 }
 //----------------------------------------------------------------------------------------------------------------------
-int CodeGeneratorModule::NEG(char* _Reg, char* _Comment)
+Address* CodeGeneratorModule::NEG(char* _Reg, char* _Comment)
 {
-	int _InstIndexBase = _InstIndex;
+	Address* _InstIndexBase = (Address*) malloc (sizeof(Address)*2); memset(_InstIndexBase, 0, sizeof(Address)*2); _InstIndexBase[0] = _InstIndex; _InstIndexBase[1] = _BinIndex;
 	insertCodeToWriteAsm("NEG ", _InstIndex++);
 	insertCodeToWriteAsm(_Reg, _InstIndex++);	
 
@@ -1034,12 +1047,12 @@ int CodeGeneratorModule::NEG(char* _Reg, char* _Comment)
 	insertCodeToWriteBin(BinaryGen::NEG);
 	insertCodeToWriteBin(NULL,_Reg);
 
-	return _InstIndexBase;
+	_Memory->incrementPC(); return _InstIndexBase;
 }
 //----------------------------------------------------------------------------------------------------------------------
-int CodeGeneratorModule::NEGF(char* _Reg, char* _Comment)
+Address* CodeGeneratorModule::NEGF(char* _Reg, char* _Comment)
 {
-	int _InstIndexBase = _InstIndex;
+	Address* _InstIndexBase = (Address*) malloc (sizeof(Address)*2); memset(_InstIndexBase, 0, sizeof(Address)*2); _InstIndexBase[0] = _InstIndex; _InstIndexBase[1] = _BinIndex;
 	insertCodeToWriteAsm("NEGF ", _InstIndex++);
 	insertCodeToWriteAsm(_Reg, _InstIndex++);	
 
@@ -1055,12 +1068,12 @@ int CodeGeneratorModule::NEGF(char* _Reg, char* _Comment)
 	insertCodeToWriteBin(BinaryGen::NEGF);
 	insertCodeToWriteBin(NULL,_Reg);
 
-	return _InstIndexBase;
+	_Memory->incrementPC(); return _InstIndexBase;
 }
 //----------------------------------------------------------------------------------------------------------------------
-int CodeGeneratorModule::RTR(char* _Comment)
+Address* CodeGeneratorModule::RTR(char* _Comment)
 {
-	int _InstIndexBase = _InstIndex;
+	Address* _InstIndexBase = (Address*) malloc (sizeof(Address)*2); memset(_InstIndexBase, 0, sizeof(Address)*2); _InstIndexBase[0] = _InstIndex; _InstIndexBase[1] = _BinIndex;
 	insertCodeToWriteAsm("RTR", _InstIndex++);
 
 	if(strcmp(_Comment, "") != 0){
@@ -1074,12 +1087,12 @@ int CodeGeneratorModule::RTR(char* _Comment)
 	//BlockSize =
 	insertCodeToWriteBin(BinaryGen::RTR);
 
-	return _InstIndexBase;
+	_Memory->incrementPC(); return _InstIndexBase;
 }
 //----------------------------------------------------------------------------------------------------------------------
-int CodeGeneratorModule::STI(char* _Imed, Address _Desl, char* _Comment){
-	int _InstIndexBase = _InstIndex;
-
+Address* CodeGeneratorModule::STI(char* _Imed, Address _Desl, char* _Comment){
+	Address* _InstIndexBase = (Address*) malloc (sizeof(Address)*2); memset(_InstIndexBase, 0, sizeof(Address)*2); _InstIndexBase[0] = _InstIndex; _InstIndexBase[1] = _BinIndex;
+	
 	insertCodeToWriteAsm("STI #", _InstIndex++);
 	insertCodeToWriteAsm(_Imed, _InstIndex++);
 	insertCodeToWriteAsm(", ", _InstIndex++);
@@ -1099,12 +1112,12 @@ int CodeGeneratorModule::STI(char* _Imed, Address _Desl, char* _Comment){
 	insertCodeToWriteBin(NULL, _Imed);
 	insertCodeToWriteBin(_Desl);
 
-	return _InstIndexBase;
+	_Memory->incrementPC(); return _InstIndexBase;
 }
 //----------------------------------------------------------------------------------------------------------------------
-int CodeGeneratorModule::STIF(char* _Imed, Address _Desl, char* _Comment)
+Address* CodeGeneratorModule::STIF(char* _Imed, Address _Desl, char* _Comment)
 {
-	int _InstIndexBase = _InstIndex;
+	Address* _InstIndexBase = (Address*) malloc (sizeof(Address)*2); memset(_InstIndexBase, 0, sizeof(Address)*2); _InstIndexBase[0] = _InstIndex; _InstIndexBase[1] = _BinIndex;
 	insertCodeToWriteAsm("STIF #", _InstIndex++);
 	insertCodeToWriteAsm(_Imed, _InstIndex++);
 	insertCodeToWriteAsm(", ", _InstIndex++);
@@ -1124,12 +1137,12 @@ int CodeGeneratorModule::STIF(char* _Imed, Address _Desl, char* _Comment)
 	insertCodeToWriteBin(NULL,_Imed);
 	insertCodeToWriteBin(_Desl);
 
-	return _InstIndexBase;
+	_Memory->incrementPC(); return _InstIndexBase;
 }
 //----------------------------------------------------------------------------------------------------------------------
-int CodeGeneratorModule::STO(char* _Reg, Address _Desl, char* _Comment)
+Address* CodeGeneratorModule::STO(char* _Reg, Address _Desl, char* _Comment)
 {
-	int _InstIndexBase = _InstIndex;
+	Address* _InstIndexBase = (Address*) malloc (sizeof(Address)*2); memset(_InstIndexBase, 0, sizeof(Address)*2); _InstIndexBase[0] = _InstIndex; _InstIndexBase[1] = _BinIndex;
 	insertCodeToWriteAsm("STO ", _InstIndex++);
 	insertCodeToWriteAsm(_Reg, _InstIndex++);
 	insertCodeToWriteAsm(", ", _InstIndex++);
@@ -1150,12 +1163,12 @@ int CodeGeneratorModule::STO(char* _Reg, Address _Desl, char* _Comment)
 	insertCodeToWriteBin(NULL,_Reg);
 	insertCodeToWriteBin(_Desl);
 
-	return _InstIndexBase;
+	_Memory->incrementPC(); return _InstIndexBase;
 }
 //----------------------------------------------------------------------------------------------------------------------
-int CodeGeneratorModule::STOF(char* _Reg, Address _Desl, char* _Comment)
+Address* CodeGeneratorModule::STOF(char* _Reg, Address _Desl, char* _Comment)
 {
-	int _InstIndexBase = _InstIndex;
+	Address* _InstIndexBase = (Address*) malloc (sizeof(Address)*2); memset(_InstIndexBase, 0, sizeof(Address)*2); _InstIndexBase[0] = _InstIndex; _InstIndexBase[1] = _BinIndex;
 	insertCodeToWriteAsm("STOF ", _InstIndex++);
 	insertCodeToWriteAsm(_Reg, _InstIndex++);
 	insertCodeToWriteAsm(", ", _InstIndex++);
@@ -1175,12 +1188,12 @@ int CodeGeneratorModule::STOF(char* _Reg, Address _Desl, char* _Comment)
 	insertCodeToWriteBin(NULL,_Reg);
 	insertCodeToWriteBin(_Desl);
 
-	return _InstIndexBase;
+	_Memory->incrementPC(); return _InstIndexBase;
 }
 //----------------------------------------------------------------------------------------------------------------------
-int CodeGeneratorModule::SUB(char* _RegD, char* _RegO, char* _Comment)
+Address* CodeGeneratorModule::SUB(char* _RegD, char* _RegO, char* _Comment)
 {
-	int _InstIndexBase = _InstIndex;
+	Address* _InstIndexBase = (Address*) malloc (sizeof(Address)*2); memset(_InstIndexBase, 0, sizeof(Address)*2); _InstIndexBase[0] = _InstIndex; _InstIndexBase[1] = _BinIndex;
 	insertCodeToWriteAsm("SUB ", _InstIndex++);
 	insertCodeToWriteAsm(_RegD, _InstIndex++);
 	insertCodeToWriteAsm(", ", _InstIndex++);
@@ -1199,12 +1212,12 @@ int CodeGeneratorModule::SUB(char* _RegD, char* _RegO, char* _Comment)
 	insertCodeToWriteBin(NULL,_RegD);
 	insertCodeToWriteBin(NULL,_RegO);
 
-	return _InstIndexBase;
+	_Memory->incrementPC(); return _InstIndexBase;
 }
 //----------------------------------------------------------------------------------------------------------------------
-int CodeGeneratorModule::SUBF(char* _RegD, char* _RegO, char* _Comment)
+Address* CodeGeneratorModule::SUBF(char* _RegD, char* _RegO, char* _Comment)
 {
-	int _InstIndexBase = _InstIndex;
+	Address* _InstIndexBase = (Address*) malloc (sizeof(Address)*2); memset(_InstIndexBase, 0, sizeof(Address)*2); _InstIndexBase[0] = _InstIndex; _InstIndexBase[1] = _BinIndex;
 	insertCodeToWriteAsm("SUBF ", _InstIndex++);
 	insertCodeToWriteAsm(_RegD, _InstIndex++);
 	insertCodeToWriteAsm(", ", _InstIndex++);
@@ -1223,12 +1236,12 @@ int CodeGeneratorModule::SUBF(char* _RegD, char* _RegO, char* _Comment)
 	insertCodeToWriteBin(NULL,_RegD);
 	insertCodeToWriteBin(NULL,_RegO);
 
-	return _InstIndexBase;
+	_Memory->incrementPC(); return _InstIndexBase;
 }
 //----------------------------------------------------------------------------------------------------------------------
-int CodeGeneratorModule::TME(char* _Reg, char* _Comment)
+Address* CodeGeneratorModule::TME(char* _Reg, char* _Comment)
 {
-	int _InstIndexBase = _InstIndex;
+	Address* _InstIndexBase = (Address*) malloc (sizeof(Address)*2); memset(_InstIndexBase, 0, sizeof(Address)*2); _InstIndexBase[0] = _InstIndex; _InstIndexBase[1] = _BinIndex;
 	insertCodeToWriteAsm("TME ", _InstIndex++);
 	insertCodeToWriteAsm(_Reg, _InstIndex++);
 
@@ -1244,6 +1257,6 @@ int CodeGeneratorModule::TME(char* _Reg, char* _Comment)
 	insertCodeToWriteBin(BinaryGen::TME);
 	insertCodeToWriteBin(NULL,_Reg);
 
-	return _InstIndexBase;
+	_Memory->incrementPC(); return _InstIndexBase;
 }
 //----------------------------------------------------------------------------------------------------------------------

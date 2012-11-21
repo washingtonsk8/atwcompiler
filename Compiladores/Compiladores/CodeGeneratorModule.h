@@ -14,6 +14,7 @@
 #include "IInitializable.h"
 #include "IDisposable.h"
 #include "ATW_LabelTable.h"
+#include "ATW_MemoryManager.h"
 //---------------------------------------------------------------------------------------------------------------------
 #include <fstream>
 //---------------------------------------------------------------------------------------------------------------------
@@ -46,7 +47,7 @@ public:
 	void clearWritingBuffer();
 	void insertCodeToWriteBin(int _Element, char* _Number =	NULL);
 	void insertCodeToWriteAsm(char* _Code, int _codeIndex = -1, bool _Overlap = true);
-	void fixCode(int _Address, char* _value);
+	void fixCode(Address _AddressAsm, Address _AddressBin, char* _value);
 	string getCode(int _codeIndex = -1);
 	string binaryVerify(string _Number);
 	void flush();
@@ -57,46 +58,46 @@ public:
 	*/
 	void write(char* _String);
 	void writeRot(char* _String);
-	int ADD(char* _RegD, char* _RegO, char* _Comment = "");
-	int ADDF(char* _RegD, char* _RegO, char* _Comment = "");
-	int ADI(char* _RegD, char* _Imed, char* _Comment = "");
-	int ADIF(char* _RegD, char* _Imed, char* _Comment = "");
-	int BNG(char* _Reg, char* _Rot, char* _Comment = "");
-	int BNGF(char* _Reg, char* _Rot, char* _Comment = "");
-	int BNN(char* _Reg, char* _Rot, char* _Comment = "");
-	int BNNF(char* _Reg, char* _Rot, char* _Comment = "");
-	int BNP(char* _Reg, char* _Rot, char* _Comment = "");
-	int BNPF(char* _Reg, char* _Rot, char* _Comment = "");
-	int BNZ(char* _Reg, char* _Rot, char* _Comment = "");
-	int BNZF(char* _Reg, char* _Rot, char* _Comment = "");
-	int BPS(char* _Reg, char* _Rot, char* _Comment = "");
-	int BPSF(char* _Reg, char* _Rot, char* _Comment = "");
-	int BZR(char* _Reg, char* _Rot, char* _Comment = "");
-	int BZRF(char* _Reg, char* _Rot, char* _Comment = "");
-	int CNV(char* _RegD, char* _RegO, char* _Comment = "");
-	int DIV(char* _RegD, char* _RegO, char* _Comment = "");
-	int ESC(char* _Reg1, char* _Reg2, char* _Comment = "");
-	int HLT(char* _Comment = "");
-	int JMP(char* _Label, char* _Comment = "");//TODO:Label necessita conversão para o inteiro correspondente
-	int LDI(char* _RegD, char* _Imed, char* _Comment = "");
-	int LDIF(char* _RegD, char* _Imed, char* _Comment = "");
-	int LGT(char* _Reg, char* _Comment = "");
-	int LOD(char* _RegD, Address _Desl, char* _Comment = "");
-	int LODF(char* _RegD, Address _Desl, char* _Comment = "");
-	int MVE(char* _RegD, char* _RegO, char* _Comment = "");
-	int MVEF(char* _RegD, char* _RegO, char* _Comment = "");
-	int MUL(char* _RegD, char* _RegO, char* _Comment = "");
-	int MULF(char* _RegD, char* _RegO, char* _Comment = "");
-	int NEG(char* _Reg, char* _Comment = "");
-	int NEGF(char* _Reg, char* _Comment = "");
-	int RTR(char* _Comment = "");
-	int STI(char* _Imed, Address  _Desl, char* _Comment = "");
-	int STIF(char* _Imed, Address  _Desl, char* _Comment = "");
-	int STO(char* _Reg, Address  _Desl, char* _Comment = "");
-	int STOF(char* _Reg, Address  _Desl, char* _Comment = "");
-	int SUB(char* _RegD, char* _RegO, char* _Comment = "");
-	int SUBF(char* _RegD, char* _RegO, char* _Comment = "");
-	int TME(char* _Reg, char* _Comment = "");
+	Address* ADD(char* _RegD, char* _RegO, char* _Comment = "");
+	Address* ADDF(char* _RegD, char* _RegO, char* _Comment = "");
+	Address* ADI(char* _RegD, char* _Imed, char* _Comment = "");
+	Address* ADIF(char* _RegD, char* _Imed, char* _Comment = "");
+	Address* BNG(char* _Reg, char* _Rot, char* _Comment = "");
+	Address* BNGF(char* _Reg, char* _Rot, char* _Comment = "");
+	Address* BNN(char* _Reg, char* _Rot, char* _Comment = "");
+	Address* BNNF(char* _Reg, char* _Rot, char* _Comment = "");
+	Address* BNP(char* _Reg, char* _Rot, char* _Comment = "");
+	Address* BNPF(char* _Reg, char* _Rot, char* _Comment = "");
+	Address* BNZ(char* _Reg, char* _Rot, char* _Comment = "");
+	Address* BNZF(char* _Reg, char* _Rot, char* _Comment = "");
+	Address* BPS(char* _Reg, char* _Rot, char* _Comment = "");
+	Address* BPSF(char* _Reg, char* _Rot, char* _Comment = "");
+	Address* BZR(char* _Reg, char* _Rot, char* _Comment = "");
+	Address* BZRF(char* _Reg, char* _Rot, char* _Comment = "");
+	Address* CNV(char* _RegD, char* _RegO, char* _Comment = "");
+	Address* DIV(char* _RegD, char* _RegO, char* _Comment = "");
+	Address* ESC(char* _Reg1, char* _Reg2, char* _Comment = "");
+	Address* HLT(char* _Comment = "");
+	Address* JMP(char* _Label, char* _Comment = "");//TODO:Label necessita conversão para o Address*eiro correspondente
+	Address* LDI(char* _RegD, char* _Imed, char* _Comment = "");
+	Address* LDIF(char* _RegD, char* _Imed, char* _Comment = "");
+	Address* LGT(char* _Reg, char* _Comment = "");
+	Address* LOD(char* _RegD, Address _Desl, char* _Comment = "");
+	Address* LODF(char* _RegD, Address _Desl, char* _Comment = "");
+	Address* MVE(char* _RegD, char* _RegO, char* _Comment = "");
+	Address* MVEF(char* _RegD, char* _RegO, char* _Comment = "");
+	Address* MUL(char* _RegD, char* _RegO, char* _Comment = "");
+	Address* MULF(char* _RegD, char* _RegO, char* _Comment = "");
+	Address* NEG(char* _Reg, char* _Comment = "");
+	Address* NEGF(char* _Reg, char* _Comment = "");
+	Address* RTR(char* _Comment = "");
+	Address* STI(char* _Imed, Address _Desl, char* _Comment = "");
+	Address* STIF(char* _Imed, Address _Desl, char* _Comment = "");
+	Address* STO(char* _Reg, Address _Desl, char* _Comment = "");
+	Address* STOF(char* _Reg, Address _Desl, char* _Comment = "");
+	Address* SUB(char* _RegD, char* _RegO, char* _Comment = "");
+	Address* SUBF(char* _RegD, char* _RegO, char* _Comment = "");
+	Address* TME(char* _Reg, char* _Comment = "");
 	//---------------------------------------------------------------------------------------------------------------------
 	void clearBitSetBuffer(){
 		list <bitset<16>*>::iterator it = _memoryPositions.begin();
@@ -124,13 +125,14 @@ private:
 	int _lIIBF;//LAST INSERTED INDEX BEFORE FLUSHING
 	int _hIIBF;//HIGH INSERTED INDEX BEFORE FLUSHING
 	int _InstIndex;//Índice para utilizar o buffer de instruções
+	int _BinIndex;//Índice para utilizar o buffer de binários
 	string      _wBuffer[MAX_WRITING_BUFFER];
 	string      _bBuffer[WORD_SIZE];
 	list        <bitset<16>*> _memoryPositions;
 	FileManager* fManager;
 	ofstream     binaryFile;
-
-
+	ATWMemory*	_Memory;
+	
 	//FileManager* binaryFile;
 	
 };
