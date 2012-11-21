@@ -27,6 +27,12 @@ STIF #1.0, 37(DS)
 STI #25, 39(DS)
 
 ******************************** Commands Start ********************************
+LOD A, 30(DS) ATW_COMMENT: LUZ ID
+LGT A ATW_COMMENT: FIM LUZ
+STIF #2.5, 40(DS)
+LOD A, 36(DS) ATW_COMMENT: ESCALA ID EXP
+LODF B, 40(DS)
+ESC A, B ATW_COMMENT: FIM ESCALA
 
 ******************************** Commands Finish *******************************
 HLT

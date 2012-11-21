@@ -219,6 +219,7 @@ void CodeGeneratorModule::flushBin(){
 	memset(_toWrite, 0, sizeof(char)*2);
 	for(; it != _memoryPositions.end(); it++){
 		bitset<16> _pointer = (*(*it));
+		cout << _pointer << "|";
 		for(int i = 0; i < 8; i++){
 			_toWrite[0] = _toWrite[0] | (_pointer.at(i) << i);	
 			//(*_toWrite) = (*_toWrite) | (_pointer.at(i) << i);	
@@ -234,7 +235,9 @@ void CodeGeneratorModule::flushBin(){
 
 		binaryFile << _A;
 		binaryFile << _B;
+		
 	}
+	cout << endl;
 	clearBitSetBuffer();
 }
 //----------------------------------------------------------------------------------------------------------------------
