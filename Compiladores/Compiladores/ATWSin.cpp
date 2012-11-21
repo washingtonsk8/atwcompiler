@@ -384,7 +384,7 @@ void ATWSin::DColorD(){
 void ATWSin::DFaceD(){
 	do{
 		int _pointCount = -1;//40
-		Address _cAddress   = 0;//43
+		Address* _cAddress = 0;//43
 
 		CT(ID);
 
@@ -433,7 +433,7 @@ void ATWSin::DFaceD(){
 			_pointCount++;
 		}
 		CT(EXP_END);
-		_cg->fixCode(_cAddress+1, ATWgetCStr(_pointCount));//42
+		_cg->fixCode(_cAddress[0]+1, _cAddress[1]+1, ATWgetCStr(_pointCount));//42
 		_cg->flush();
 		_cg->flushBin();
 	}while(_CurrentToken._Token == ID);
@@ -442,7 +442,7 @@ void ATWSin::DFaceD(){
 void ATWSin::DObjD(){
 	do{
 		int _objectCount = 0;
-		Address _cAddress    = 0;
+		Address* _cAddress    = 0;
 
 		CT(ID);
 		char _IdLex[255];
@@ -470,7 +470,7 @@ void ATWSin::DObjD(){
 			_objectCount++;
 		}
 		CT(EXP_END);
-		_cg->fixCode(_cAddress+1, ATWgetCStr(_objectCount));//44
+		_cg->fixCode(_cAddress[0]+1, _cAddress[1]+1, ATWgetCStr(_objectCount));//44
 		_cg->flush();
 		_cg->flushBin();
 	}while(_CurrentToken._Token == ID);
