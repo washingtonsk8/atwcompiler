@@ -138,6 +138,7 @@ void ATWSin::Start(){
 				_cg->write("\n******************************** Commands Finish *******************************\n");
 				_cg->HLT();
 				_cg->flush();
+				_cg->flushBin();
 				return;
 			case ENDFILE:
 				exit (0);//Sucesso!
@@ -213,6 +214,7 @@ void ATWSin::DPontoD(){
 		CT(RPAREN);
 		CT(EXP_END);
 		_cg->flush();
+		_cg->flushBin();
 	}while(_CurrentToken._Token == ID);
 }
 //---------------------------------------------------------------------------------------------------------------------
@@ -279,6 +281,7 @@ void ATWSin::DLuzD(){
 		CT(RPAREN);
 		CT(EXP_END);
 		_cg->flush();
+		_cg->flushBin();
 	}while(_CurrentToken._Token == ID);
 }
 //---------------------------------------------------------------------------------------------------------------------
@@ -396,6 +399,7 @@ void ATWSin::DFaceD(){
 		CT(EXP_END);
 		_cg->fixCode(_cAddress+1, ATWgetCStr(_pointCount));//42
 		_cg->flush();
+		_cg->flushBin();
 	}while(_CurrentToken._Token == ID);
 }
 //---------------------------------------------------------------------------------------------------------------------
@@ -432,6 +436,7 @@ void ATWSin::DObjD(){
 		CT(EXP_END);
 		_cg->fixCode(_cAddress+1, ATWgetCStr(_objectCount));//44
 		_cg->flush();
+		_cg->flushBin();
 	}while(_CurrentToken._Token == ID);
 }
 //---------------------------------------------------------------------------------------------------------------------
@@ -503,6 +508,7 @@ void ATWSin::DConstD(){
 
 		CT(EXP_END);
 		_cg->flush();
+		_cg->flushBin();
 	}
 }
 //---------------------------------------------------------------------------------------------------------------------
@@ -827,6 +833,7 @@ void ATWSin::Command(){
 		break;
 	}
 	_cg->flush();
+	_cg->flushBin();
 }
 //---------------------------------------------------------------------------------------------------------------------
 void ATWSin::Exp(Type& _ExpType, Address& _ExpAdr){
@@ -946,6 +953,7 @@ void ATWSin::Exp(Type& _ExpType, Address& _ExpAdr){
 			_cg->STO("A", _ExpAdr);
 	}
 	_cg->flush();
+	_cg->flushBin();
 }
 //---------------------------------------------------------------------------------------------------------------------
 void ATWSin::R(Token& _ROp){
@@ -1145,6 +1153,7 @@ void ATWSin::EXPS(Type& _ExpSType, Address& _ExpSAdr){
 		//(27) - SEMÂNTICO --------------------------------------------------------------------------------
 	}//end while
 	_cg->flush();
+	_cg->flushBin();
 }
 //---------------------------------------------------------------------------------------------------------------------
 void ATWSin::T(Type& _TType, Address& _TAdr){
@@ -1283,6 +1292,7 @@ void ATWSin::T(Type& _TType, Address& _TAdr){
 		//(22) - SEMÂNTICO --------------------------------------------------------------------------------
 	}
 	_cg->flush();
+	_cg->flushBin();
 }
 //---------------------------------------------------------------------------------------------------------------------
 void ATWSin::F(Type& _FType, Address& _FAdr){//Fend = _FAdr
@@ -1347,4 +1357,5 @@ void ATWSin::F(Type& _FType, Address& _FAdr){//Fend = _FAdr
 		break;
 	}
 	_cg->flush();
+	_cg->flushBin();
 }

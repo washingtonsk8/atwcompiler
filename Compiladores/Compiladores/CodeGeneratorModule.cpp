@@ -21,6 +21,22 @@ void CodeGeneratorModule::initialize(const char* _icFile){
 	fManager = new FileManager();
 	fManager->initialize(0, NULL);
 	fManager->openFile(_icFile, GENERIC_WRITE, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL);
+
+	//binaryFile = new FileManager();
+	//binaryFile->initialize(0, NULL);
+
+	//ASSEMBLY FILE CREATION
+	//pog
+	//string fileNameWithExtension = "saida";
+	//fileNameWithExtension += ".exe";
+	//pog
+
+	//binaryFile->openFile(
+	//	fileNameWithExtension.c_str(), 
+	//	GENERIC_WRITE, CREATE_ALWAYS, 
+	//	FILE_ATTRIBUTE_NORMAL );
+	//ASSEMBLY FILE CREATION
+	binaryFile.open("saida.exe", ios::out | ios::binary);
 }
 //---------------------------------------------------------------------------------------------------------------------
 void CodeGeneratorModule::initialize(int _Argc, void** _Argv){
@@ -37,12 +53,32 @@ void CodeGeneratorModule::initialize(int _Argc, void** _Argv){
 	fManager = new FileManager();
 	fManager->initialize(0, NULL);
 	fManager->openFile((char*)_Argv[0], GENERIC_WRITE, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL);
+
+	//ASSEMBLY FILE CREATION
+	//pog
+	//char _print[255];
+	//string fileNameWithExtension = "saida";
+	//fileNameWithExtension += ".exe";
+	//pog
+
+	//binaryFile->openFile(
+	//	fileNameWithExtension.c_str(), 
+	//	GENERIC_WRITE, CREATE_ALWAYS, 
+	//	FILE_ATTRIBUTE_NORMAL );
+	
+	binaryFile.open("saida.exe", ios::out | ios::binary);
+	//ASSEMBLY FILE CREATION
 }
 //---------------------------------------------------------------------------------------------------------------------
 void CodeGeneratorModule::dispose(int _Argc, void** _Argv){
 	fManager->dispose(0, NULL);
 	delete fManager;
 	fManager = 0x0;
+
+	binaryFile.close();
+	//binaryFile->dispose(0, NULL);
+    //delete binaryFile;
+	//binaryFile = 0x0;
 }
 //---------------------------------------------------------------------------------------------------------------------
 void CodeGeneratorModule::clearWritingBufferFULL(){
@@ -58,6 +94,7 @@ void CodeGeneratorModule::clearWritingBuffer(){
 void CodeGeneratorModule::insertCodeToWriteBin(int _Element, char* _Number){
 	if(_Number != NULL){//Se é para gravar imediato
 		string _ValueDecimal = "", _ValueInteger = "";
+		//int    _ValueDecimal = 0, _ValueInteger = 0;
 		bool _isFloat = false;
 
 		//Copiar o valor do Number para dois temporarios se necessário
@@ -76,19 +113,39 @@ void CodeGeneratorModule::insertCodeToWriteBin(int _Element, char* _Number){
 			_Number++;
 		}//end while
 		if(_isFloat){
-			_ValueInteger = ATWgetCStrBin(ATWgetInt(_ValueInteger));
-			_ValueDecimal = ATWgetCStrBin(ATWgetInt(_ValueDecimal));
-			_ValueInteger = binaryVerify(_ValueInteger);
-			_ValueDecimal = binaryVerify(_ValueDecimal);
-			_bBuffer[0] = _ValueInteger;
-			_bBuffer[1] = _ValueDecimal;
+			int _valueIntegerI = ATWgetInt(_ValueInteger);
+			int _valueDecimalI = ATWgetInt(_ValueDecimal);
+
+			bitset<16>* _bitsetInteger = new bitset<16>();
+			bitset<16>* _bitsetDecimal = new bitset<16>();
+			
+			(*_bitsetInteger) = _valueIntegerI;
+			(*_bitsetDecimal) = _valueDecimalI;
+
+			insertIntoBitSetBuffer(_bitsetInteger);
+			insertIntoBitSetBuffer(_bitsetDecimal);
+
+			//_memoryPosition[0] = _valueIntegerI;
+			//_memoryPosition[1] = _valueDecimalI;
+			//_ValueInteger = ATWgetCStrBin(ATWgetInt(_ValueInteger));
+			//_ValueDecimal = ATWgetCStrBin(ATWgetInt(_ValueDecimal));
+			//_ValueInteger = binaryVerify(_ValueInteger);
+			//_ValueDecimal = binaryVerify(_ValueDecimal);
 			//cout << "Valor gravado inteiro: " << _ValueInteger << endl;			
 			//cout << "Valor gravado decimal: " << _ValueDecimal << endl;
 		}//end if
 		else{
-			_ValueInteger = ATWgetCStrBin(ATWgetInt(_ValueInteger));
-			_ValueInteger = binaryVerify(_ValueInteger);
-			_bBuffer[0] = _ValueInteger;
+			int _valueIntegerI = ATWgetInt(_ValueInteger);
+
+			bitset<16>* _bitsetInteger = new bitset<16>();
+
+			(*_bitsetInteger) = _valueIntegerI;
+
+			insertIntoBitSetBuffer(_bitsetInteger);
+
+			//_memoryPosition[0] = _valueIntegerI;
+			//_ValueInteger = ATWgetCStrBin(ATWgetInt(_ValueInteger));
+			//_ValueInteger = binaryVerify(_ValueInteger);
 			//cout << "Valor gravado: " << _ValueInteger << endl;
 		}//end else
 	}
@@ -159,12 +216,23 @@ void CodeGeneratorModule::flush(){
 }
 //---------------------------------------------------------------------------------------------------------------------
 void CodeGeneratorModule::flushBin(){
-	for(int i = 0; i <= _hIIBF; i++){
-		if(_wBuffer[i] != ""){
-			fManager->writeInFile(_wBuffer[i].c_str());
-			_wBuffer[i] = "";
+	list<bitset<16>*>::iterator it = _memoryPositions.begin();
+	char* _toWrite = (char*)malloc(sizeof(char)*2);
+	
+	for(; it != _memoryPositions.end(); it++){
+		bitset<16> _pointer = (*(*it));
+		for(int i = 0; i < 8; i++){
+			(*_toWrite) = (*_toWrite) | (_pointer.at(i) << i);	
+		}
+
+		for(int i = 8; i < 16; i++){
+			(*(_toWrite+1)) = (*(_toWrite+1)) | (_pointer.at(i) << i - 8);
 		}
 	}
+
+	binaryFile.write(_toWrite, 2);
+
+	clearBitSetBuffer();
 }
 //----------------------------------------------------------------------------------------------------------------------
 void CodeGeneratorModule::write(char* _String)
@@ -197,8 +265,7 @@ int CodeGeneratorModule::ADD(char* _RegD, char* _RegO, char* _Comment)
 	insertCodeToWriteBin(1);
 	insertCodeToWriteBin(-23,_RegD);
 	insertCodeToWriteBin(-23,_RegO);
-	flushBin(); 
-
+	
 	return _InstIndexBase;
 }
 //----------------------------------------------------------------------------------------------------------------------
