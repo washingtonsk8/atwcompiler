@@ -22,7 +22,7 @@ namespace LabelController{
 	//VARIABLES--------------------------------------------------
 	extern EventsManager* _ev;
 	extern Address*		  _CurrentPCAdress;
-	extern int            _Labels[MAX_LABELS];
+	extern Address        _Labels[MAX_LABELS];
 	extern int            _RotCount;
 	extern queue<int>     _AvailableFreeLabels;
 	//VARIABLES--------------------------------------------------
