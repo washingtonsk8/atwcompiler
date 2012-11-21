@@ -36,7 +36,7 @@ void CodeGeneratorModule::initialize(const char* _icFile){
 	//	GENERIC_WRITE, CREATE_ALWAYS, 
 	//	FILE_ATTRIBUTE_NORMAL );
 	//ASSEMBLY FILE CREATION
-	binaryFile.open("saida.exe", ios::out | ios::binary);
+	binaryFile.open("saida.exe");
 }
 //---------------------------------------------------------------------------------------------------------------------
 void CodeGeneratorModule::initialize(int _Argc, void** _Argv){
@@ -66,7 +66,7 @@ void CodeGeneratorModule::initialize(int _Argc, void** _Argv){
 	//	GENERIC_WRITE, CREATE_ALWAYS, 
 	//	FILE_ATTRIBUTE_NORMAL );
 	
-	binaryFile.open("saida.exe", ios::out | ios::binary);
+	binaryFile.open("saida.exe");
 	//ASSEMBLY FILE CREATION
 }
 //---------------------------------------------------------------------------------------------------------------------
@@ -217,21 +217,26 @@ void CodeGeneratorModule::flush(){
 //---------------------------------------------------------------------------------------------------------------------
 void CodeGeneratorModule::flushBin(){
 	list<bitset<16>*>::iterator it = _memoryPositions.begin();
-	char* _toWrite = (char*)malloc(sizeof(char)*2);
-	
+	char _toWrite[2];// = (char*)malloc(sizeof(char)*2);
+	memset(_toWrite, 0, sizeof(char)*2);
 	for(; it != _memoryPositions.end(); it++){
 		bitset<16> _pointer = (*(*it));
 		for(int i = 0; i < 8; i++){
-			(*_toWrite) = (*_toWrite) | (_pointer.at(i) << i);	
+			_toWrite[0] = _toWrite[0] | (_pointer.at(i) << i);	
+			//(*_toWrite) = (*_toWrite) | (_pointer.at(i) << i);	
 		}
 
 		for(int i = 8; i < 16; i++){
-			(*(_toWrite+1)) = (*(_toWrite+1)) | (_pointer.at(i) << i - 8);
+			_toWrite[1] = _toWrite[1] | (_pointer.at(i) << i - 8);
+			//(*(_toWrite+1)) = (*(_toWrite+1)) | (_pointer.at(i) << i - 8);
 		}
+		
+		unsigned char _A = static_cast<unsigned char>(_toWrite[1]);
+		unsigned char _B = static_cast<unsigned char>(_toWrite[0]);
+
+		binaryFile << _A;
+		binaryFile << _B;
 	}
-
-	binaryFile.write(_toWrite, 2);
-
 	clearBitSetBuffer();
 }
 //----------------------------------------------------------------------------------------------------------------------
