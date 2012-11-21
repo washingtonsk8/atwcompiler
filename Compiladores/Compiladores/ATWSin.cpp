@@ -338,7 +338,7 @@ void ATWSin::DColorD(){
 		CT(CONSTANT);
 
 		_Sem->TypeVerify(_PreviousToken, _PreviousToken._Tipo, TIPO_INTEIRO);//(34) - SEMÂNTICO
-		_Sem->ValRestriction(_PreviousToken, 15, VR_GREATER);//(35) - SEMÂNTICO
+		_Sem->ValRestriction(_PreviousToken, 64, VR_GREATER);//(35) - SEMÂNTICO
 		_cg->STI(_PreviousToken._Lex, _memory->ATWMalloc(TIPO_INTEIRO));//39
 
 
@@ -346,35 +346,35 @@ void ATWSin::DColorD(){
 		CT(CONSTANT);
 
 		_Sem->TypeVerify(_PreviousToken, _PreviousToken._Tipo, TIPO_INTEIRO);//(34) - SEMÂNTICO
-		_Sem->ValRestriction(_PreviousToken, 15, VR_GREATER);//(35) - SEMÂNTICO
+		_Sem->ValRestriction(_PreviousToken, 64, VR_GREATER);//(35) - SEMÂNTICO
 		_cg->STI(_PreviousToken._Lex, _memory->ATWMalloc(TIPO_INTEIRO));//39
 
 		CT(COMMA);
 		CT(CONSTANT);
 
 		_Sem->TypeVerify(_PreviousToken, _PreviousToken._Tipo, TIPO_INTEIRO);//(34) - SEMÂNTICO
-		_Sem->ValRestriction(_PreviousToken, 15, VR_GREATER);//(35) - SEMÂNTICO
+		_Sem->ValRestriction(_PreviousToken, 64, VR_GREATER);//(35) - SEMÂNTICO
 		_cg->STI(_PreviousToken._Lex, _memory->ATWMalloc(TIPO_INTEIRO));//39
 
 		CT(COMMA);
 		CT(CONSTANT);
 
 		_Sem->TypeVerify(_PreviousToken, _PreviousToken._Tipo, TIPO_INTEIRO);//(34) - SEMÂNTICO
-		_Sem->ValRestriction(_PreviousToken, 15, VR_GREATER);//(35) - SEMÂNTICO
+		_Sem->ValRestriction(_PreviousToken, 64, VR_GREATER);//(35) - SEMÂNTICO
 		_cg->STI(_PreviousToken._Lex, _memory->ATWMalloc(TIPO_INTEIRO));//39
 
 		CT(COMMA);
 		CT(CONSTANT);
 
 		_Sem->TypeVerify(_PreviousToken, _PreviousToken._Tipo, TIPO_INTEIRO);//(34) - SEMÂNTICO
-		_Sem->ValRestriction(_PreviousToken, 15, VR_GREATER);//(35) - SEMÂNTICO
+		_Sem->ValRestriction(_PreviousToken, 64, VR_GREATER);//(35) - SEMÂNTICO
 		_cg->STI(_PreviousToken._Lex, _memory->ATWMalloc(TIPO_INTEIRO));//39
 
 		CT(COMMA);
 		CT(CONSTANT);
 
 		_Sem->TypeVerify(_PreviousToken, _PreviousToken._Tipo, TIPO_INTEIRO);//(34) - SEMÂNTICO
-		_Sem->ValRestriction(_PreviousToken, 15, VR_GREATER);//(35) - SEMÂNTICO
+		_Sem->ValRestriction(_PreviousToken, 64, VR_GREATER);//(35) - SEMÂNTICO
 		_cg->STI(_PreviousToken._Lex, _memory->ATWMalloc(TIPO_INTEIRO));//39
 
 		CT(EXP_END);
@@ -615,15 +615,16 @@ void ATWSin::Command(){
 	case ENQUANTO:
 		CT(ENQUANTO);
 
-		_memory->ATWResetTemp();//(46) - COD
-		Exp(_ExpType, _ExpAdr);//(32) - SEMÂNTICO
-		_Sem->TypeVerify(_PreviousToken, _ExpType, TIPO_LOGICO);//(32) - SEMÂNTICO
-
 		//(32) - COD -------------------------------------------------------------------------
 		_CRotStart = ATWNovoRot();
 		_CRotEnd = ATWNovoRot();
 		
 		_cg->writeRot(_CRotStart);
+
+		_memory->ATWResetTemp();//(46) - COD
+		Exp(_ExpType, _ExpAdr);//(32) - SEMÂNTICO
+		_Sem->TypeVerify(_PreviousToken, _ExpType, TIPO_LOGICO);//(32) - SEMÂNTICO
+
 		_cg->LOD("A", _ExpAdr);
 		_cg->BZR("A", _CRotEnd);
 		//(32) - COD -------------------------------------------------------------------------
@@ -661,7 +662,7 @@ void ATWSin::Command(){
 		_Sem->DiffTypeVerify(_PreviousToken, _ExpType, TIPO_LOGICO);//(33) - SEMÂNTICO
 
 		//(57) - COD -------------------------------------------------------------------------
-		_cg->LOD("A", _idAux._End, "ESCALA ID EXP");
+		_cg->LDI("A", ATWgetCStr(_idAux._End), "ESCALA ID EXP");
 		if(_ExpType == TIPO_INTEIRO)
 		{
 			_cg->LOD("B", _ExpAdr);
@@ -692,7 +693,7 @@ void ATWSin::Command(){
 		}//end if
 		else
 		{
-			_cg->LOD("A", _ExpAdr, "PAUSA EXP");
+			_cg->LODF("A", _ExpAdr, "PAUSA EXP");
 		}//end else
 
 		_cg->TME("A", "FIM PAUSA");
@@ -711,7 +712,7 @@ void ATWSin::Command(){
 		//(56) - SEMANTICO -------------------------------------------------------------------
 		//(56) - COD -------------------------------------------------------------------------
 		_Sem->DiffTypeVerify(_PreviousToken, _PreviousToken._Tipo, TIPO_REAL);
-		_cg->LOD("A", _idAux._End, "LUZ ID");
+		_cg->LDI("A", ATWgetCStr(_idAux._End), "LUZ ID");
 		_cg->LGT("A", "FIM LUZ");
 		//(56) - COD -------------------------------------------------------------------------
 		//(56) - SEMANTICO -------------------------------------------------------------------
@@ -759,14 +760,13 @@ void ATWSin::Command(){
 		_Sem->DiffTypeVerify(_PreviousToken, _Exp5Type, TIPO_LOGICO);//(33) - SEMÂNTICO
 
 		//(59) - COD -------------------------------------------------------------------------
-		_cg->LDI("A", ATWgetCStr(_idAux._End), "ROTTRANS");
 		if(_ExpType == TIPO_INTEIRO)
 		{
-			_cg->LOD("A", _ExpAdr);
+			_cg->LOD("A", _ExpAdr, "ROTTRANS");
 			_cg->CNV("A", "A");
 		}
 		else
-			_cg->LODF("A", _ExpAdr);
+			_cg->LODF("A", _ExpAdr, "ROTTRANS");
 
 		if(_Exp1Type == TIPO_INTEIRO)
 		{
@@ -807,6 +807,8 @@ void ATWSin::Command(){
 		}
 		else
 		_cg->LODF("F", _Exp5Adr);
+
+		_cg->LDI("A", ATWgetCStr(_idAux._End));
 
 		_cg->RTR("FIM ROTTRANS");
 		//(56) - COD -------------------------------------------------------------------------
@@ -886,7 +888,6 @@ void ATWSin::Exp(Type& _ExpType, Address& _ExpAdr){
 			R(_ROp);
 
 			_Sem->DiffTypeVerify(_PreviousToken, _ExpType, TIPO_LOGICO);//(30) - SEMÂNTICO
-
 			EXPS(_ExpS1Type, _ExpS1Adr);
 
 			_Sem->DiffTypeVerify(_PreviousToken, _ExpS1Type, TIPO_LOGICO);//(28) - SEMÂNTICO
@@ -978,6 +979,7 @@ void ATWSin::Exp(Type& _ExpType, Address& _ExpAdr){
 			}//end else
 			//(28) - COD -----------------------------------------------------------------------------
 			
+			_cg->LDI("A", "0");
 
 			char* _ExpRotEnd = ATWNovoRot();
 			_cg->JMP(_ExpRotEnd);
