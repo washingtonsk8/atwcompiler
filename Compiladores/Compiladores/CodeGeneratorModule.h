@@ -3,12 +3,19 @@
 //---------------------------------------------------------------------------------------------------------------------
 #include <stdio.h>
 #include <stdlib.h>
+#include <queue>
+#include <list>
+#include <bitset>
+#include <iterator>
+//---------------------------------------------------------------------------------------------------------------------
 #include "FileManager.h"
 #include "ERRO_DEF.h"
 #include "Globals.h"
 #include "IInitializable.h"
 #include "IDisposable.h"
 #include "ATW_LabelTable.h"
+//---------------------------------------------------------------------------------------------------------------------
+#include <fstream>
 //---------------------------------------------------------------------------------------------------------------------
 #define MAX_WRITING_BUFFER 10000
 #define WORD_SIZE		   2
@@ -85,14 +92,39 @@ public:
 	int SUBF(char* _RegD, char* _RegO, char* _Comment = "");
 	int TME(char* _Reg, char* _Comment = "");
 	//---------------------------------------------------------------------------------------------------------------------
+	void clearBitSetBuffer(){
+		list <bitset<16>*>::iterator it = _memoryPositions.begin();
+		for(; it != _memoryPositions.end(); it++){
+			if((*it) != 0x0){
+				delete (*it);
+				(*it) = 0x0;
+			}
+		}
+
+		_memoryPositions.clear();
+	}
+	//---------------------------------------------------------------------------------------------------------------------
+	void insertIntoBitSetBuffer(bitset<16>* _element = 0x0){
+		if(_element == 0x0)
+			return;
+
+		//printf("DEBUG: insert into bitset vector\n");
+
+		_memoryPositions.push_back(_element);
+	}
+	//---------------------------------------------------------------------------------------------------------------------
 private:
 	int _currentI;//QUEUE BEHAVIOR
 	int _lIIBF;//LAST INSERTED INDEX BEFORE FLUSHING
 	int _hIIBF;//HIGH INSERTED INDEX BEFORE FLUSHING
 	int _InstIndex;//Índice para utilizar o buffer de instruções
-	string _wBuffer[MAX_WRITING_BUFFER];
-	string _bBuffer[WORD_SIZE];
+	string      _wBuffer[MAX_WRITING_BUFFER];
+	string      _bBuffer[WORD_SIZE];
+	list        <bitset<16>*> _memoryPositions;
 	FileManager* fManager;
+	ofstream     binaryFile;
+	//FileManager* binaryFile;
+	
 };
 #endif
 
