@@ -138,7 +138,7 @@ void CodeGeneratorModule::insertCodeToWriteBin(int _Element, char* _Number){
 				_ValueDecimal.append(_ZeroCont);
 			}
 
-			cout << _ValueDecimal << endl; 
+			/*cout << _ValueDecimal << endl; */
 
 			int _valueIntegerI = ATWgetInt(_ValueInteger);
 			int _valueDecimalI = ATWgetInt(_ValueDecimal);
@@ -259,7 +259,7 @@ void CodeGeneratorModule::flushBin(){
 		binaryFile << _B;
 		
 	}
-	cout << endl;
+	/*cout << endl;*/
 	clearBitSetBuffer();
 }
 //----------------------------------------------------------------------------------------------------------------------
