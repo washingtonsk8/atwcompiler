@@ -20,13 +20,17 @@
 #define MAX_WRITING_BUFFER 10000
 #define WORD_SIZE		   2
 //---------------------------------------------------------------------------------------------------------------------
-namespace Instruction{
+namespace BinaryGen{
 	typedef enum{
 		NO_INSTRUCTION, ADD, ADDF, ADI, ADIF, BNG, BNGF, BNN, BNNF, BNP, BNPF,
 		BNZ, BNZF, BPS, BPSF, BZR, BZRF, CNV, DIV, ESC, HLT,
 		JMP, LDI, LDIF, LGT, LOD, LODF, MVE, MVEF, MUL, MULF,
 		NEG, NEGF, RTR, STI, STIF, STO, STOF, SUB, SUBF, TME
 	}Instruction;
+
+	typedef enum{
+		NO_REGISTER, A, B, C, D, E, F
+	}Register;
 }
 //---------------------------------------------------------------------------------------------------------------------
 class CodeGeneratorModule : public ProgramComponent, public IInitializable, public IDisposable
