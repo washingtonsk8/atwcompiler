@@ -34,6 +34,10 @@ void ProgramEvents::treatEvent(int _Args, void* _Argv[]){
 		exit(FILE_NOT_FOUND_EXCEPTION);
 	case NORMAL_ERROR:
 		break;
+	case FATAL_ERROR:
+		printf("ERRO FATAL!!!\n");
+		system("pause");
+		exit(FATAL_ERROR);
 	}
 
 	va_end(_variableList);
