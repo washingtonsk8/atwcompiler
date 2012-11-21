@@ -65,7 +65,7 @@ void CodeGeneratorModule::initialize(int _Argc, void** _Argv){
 	//	fileNameWithExtension.c_str(), 
 	//	GENERIC_WRITE, CREATE_ALWAYS, 
 	//	FILE_ATTRIBUTE_NORMAL );
-	
+
 	binaryFile.open("saida.exe");
 	//ASSEMBLY FILE CREATION
 }
@@ -77,7 +77,7 @@ void CodeGeneratorModule::dispose(int _Argc, void** _Argv){
 
 	binaryFile.close();
 	//binaryFile->dispose(0, NULL);
-    //delete binaryFile;
+	//delete binaryFile;
 	//binaryFile = 0x0;
 }
 //---------------------------------------------------------------------------------------------------------------------
@@ -93,34 +93,36 @@ void CodeGeneratorModule::clearWritingBuffer(){
 //---------------------------------------------------------------------------------------------------------------------
 void CodeGeneratorModule::insertCodeToWriteBin(int _Element, char* _Number){
 	if(_Number != NULL){//Se é para gravar imediato
+		char* _pNumber = _Number;
 		string _ValueDecimal = "", _ValueInteger = "";
 		//int    _ValueDecimal = 0, _ValueInteger = 0;
 		bool _isFloat = false;
 
 		//Copiar o valor do Number para dois temporarios se necessário
-		while((*_Number) != '\0'){
-			if((*_Number) == '.'){
-				_isFloat = true;
-				_Number ++;
+		while((*_pNumber) != '\0'){
+			if((*_pNumber) == '.'){
+				_isFloat = true;				
+				if ((*_Number) == '-'){//Se o número é negativo, a parte real também deverá ser
+					_ValueDecimal += '-';
+				}
+				_pNumber ++;
 			}
 
 			//Concatenando a parte inteira e real
 			if(!_isFloat)
-				_ValueInteger += *_Number;
+				_ValueInteger += *_pNumber;
 			else
-				_ValueDecimal += *_Number;
+				_ValueDecimal += *_pNumber;
 
-			_Number++;
+			_pNumber++;
 		}//end while
 		if(_isFloat){
+
 			int _valueIntegerI = ATWgetInt(_ValueInteger);
 			int _valueDecimalI = ATWgetInt(_ValueDecimal);
 
-			bitset<16>* _bitsetInteger = new bitset<16>();
-			bitset<16>* _bitsetDecimal = new bitset<16>();
-			
-			(*_bitsetInteger) = _valueIntegerI;
-			(*_bitsetDecimal) = _valueDecimalI;
+			bitset<16>* _bitsetInteger = new bitset<16>(_valueIntegerI);
+			bitset<16>* _bitsetDecimal = new bitset<16>(_valueDecimalI);
 
 			insertIntoBitSetBuffer(_bitsetInteger);
 			insertIntoBitSetBuffer(_bitsetDecimal);
@@ -137,9 +139,7 @@ void CodeGeneratorModule::insertCodeToWriteBin(int _Element, char* _Number){
 		else{
 			int _valueIntegerI = ATWgetInt(_ValueInteger);
 
-			bitset<16>* _bitsetInteger = new bitset<16>();
-
-			(*_bitsetInteger) = _valueIntegerI;
+			bitset<16>* _bitsetInteger = new bitset<16>(_valueIntegerI);
 
 			insertIntoBitSetBuffer(_bitsetInteger);
 
@@ -150,10 +150,8 @@ void CodeGeneratorModule::insertCodeToWriteBin(int _Element, char* _Number){
 		}//end else
 	}
 	else{
-		string _Value = ATWgetCStrBin(_Element);
-		_Value = binaryVerify(_Value);
-		_bBuffer[0] = _Value;
-		//cout << "Valor gravado: " << _Value << endl;
+		bitset<16>* _bitsetInteger = new bitset<16>(_Element);
+		insertIntoBitSetBuffer(_bitsetInteger);
 	}
 } 
 //---------------------------------------------------------------------------------------------------------------------
@@ -230,7 +228,7 @@ void CodeGeneratorModule::flushBin(){
 			_toWrite[1] = _toWrite[1] | (_pointer.at(i) << i - 8);
 			//(*(_toWrite+1)) = (*(_toWrite+1)) | (_pointer.at(i) << i - 8);
 		}
-		
+
 		unsigned char _A = static_cast<unsigned char>(_toWrite[1]);
 		unsigned char _B = static_cast<unsigned char>(_toWrite[0]);
 
@@ -261,16 +259,21 @@ int CodeGeneratorModule::ADD(char* _RegD, char* _RegO, char* _Comment)
 	insertCodeToWriteAsm(", ", _InstIndex++);
 	insertCodeToWriteAsm(_RegO, _InstIndex++);
 
-	if(strcmp(_Comment, "") != 0){char _sPrint[255];sprintf_s(_sPrint, " ATW_COMMENT: %s", _Comment);insertCodeToWriteAsm(_sPrint, _InstIndex++);}
+	if(strcmp(_Comment, "") != 0){
+		char _sPrint[255];
+		sprintf_s(_sPrint, " ATW_COMMENT: %s", _Comment);
+		insertCodeToWriteAsm(_sPrint, _InstIndex++);
+	}
+
 	insertCodeToWriteAsm("\n", _InstIndex++);
 
 	//BlockSize = 4 + 1
-	
+
 	//binary
-	insertCodeToWriteBin(1);
-	insertCodeToWriteBin(-23,_RegD);
-	insertCodeToWriteBin(-23,_RegO);
-	
+	insertCodeToWriteBin(Instruction::ADD);
+	insertCodeToWriteBin(NULL,_RegD);
+	insertCodeToWriteBin(NULL,_RegO);
+
 	return _InstIndexBase;
 }
 //----------------------------------------------------------------------------------------------------------------------
@@ -281,13 +284,19 @@ int CodeGeneratorModule::ADDF(char* _RegD, char* _RegO, char* _Comment)
 	insertCodeToWriteAsm(_RegD, _InstIndex++);
 	insertCodeToWriteAsm(", ", _InstIndex++);
 	insertCodeToWriteAsm(_RegO, _InstIndex++);
-	if(strcmp(_Comment, "") != 0){char _sPrint[255];sprintf_s(_sPrint, " ATW_COMMENT: %s", _Comment);insertCodeToWriteAsm(_sPrint, _InstIndex++);}
+
+	if(strcmp(_Comment, "") != 0){
+		char _sPrint[255];
+		sprintf_s(_sPrint, " ATW_COMMENT: %s", _Comment);
+		insertCodeToWriteAsm(_sPrint, _InstIndex++);
+	}
+
 	insertCodeToWriteAsm("\n", _InstIndex++);
 
 	//BlockSize = 4 + 1
-	insertCodeToWriteBin(2);
-	insertCodeToWriteBin(-23,_RegD);
-	insertCodeToWriteBin(-23,_RegO);
+	insertCodeToWriteBin(Instruction::ADDF);
+	insertCodeToWriteBin(NULL,_RegD);
+	insertCodeToWriteBin(NULL,_RegO);
 
 	return _InstIndexBase;
 }
@@ -299,14 +308,19 @@ int CodeGeneratorModule::ADI(char* _RegD, char* _Imed, char* _Comment)
 	insertCodeToWriteAsm(_RegD, _InstIndex++);
 	insertCodeToWriteAsm(", #", _InstIndex++);
 	insertCodeToWriteAsm(_Imed, _InstIndex++);
-	
-	if(strcmp(_Comment, "") != 0){char _sPrint[255];sprintf_s(_sPrint, " ATW_COMMENT: %s", _Comment);insertCodeToWriteAsm(_sPrint, _InstIndex++);}
+
+	if(strcmp(_Comment, "") != 0){
+		char _sPrint[255];
+		sprintf_s(_sPrint, " ATW_COMMENT: %s", _Comment);
+		insertCodeToWriteAsm(_sPrint, _InstIndex++);
+	}
+
 	insertCodeToWriteAsm("\n", _InstIndex++);
 
 	//BlockSize = 4 + 1
-	insertCodeToWriteBin(3);
-	insertCodeToWriteBin(-23,_RegD);
-	insertCodeToWriteBin(-23,_Imed);
+	insertCodeToWriteBin(Instruction::ADI);
+	insertCodeToWriteBin(NULL,_RegD);
+	insertCodeToWriteBin(NULL,_Imed);
 
 	return _InstIndexBase;
 }
@@ -319,13 +333,18 @@ int CodeGeneratorModule::ADIF(char* _RegD, char* _Imed, char* _Comment)
 	insertCodeToWriteAsm(", #", _InstIndex++);
 	insertCodeToWriteAsm(_Imed, _InstIndex++);
 
-	if(strcmp(_Comment, "") != 0){if(strcmp(_Comment, "") != 0){char _sPrint[255];sprintf_s(_sPrint, " ATW_COMMENT: %s", _Comment);insertCodeToWriteAsm(_sPrint, _InstIndex++);}}
+	if(strcmp(_Comment, "") != 0){
+		char _sPrint[255];
+		sprintf_s(_sPrint, " ATW_COMMENT: %s", _Comment);
+		insertCodeToWriteAsm(_sPrint, _InstIndex++);
+	}
+
 	insertCodeToWriteAsm("\n", _InstIndex++);
 
 	//BlockSize = 4 + 1
-	insertCodeToWriteBin(4);
-	insertCodeToWriteBin(-23,_RegD);
-	insertCodeToWriteBin(-23,_Imed);
+	insertCodeToWriteBin(Instruction::ADIF);
+	insertCodeToWriteBin(NULL,_RegD);
+	insertCodeToWriteBin(NULL,_Imed);
 
 	return _InstIndexBase;
 }
@@ -336,14 +355,19 @@ int CodeGeneratorModule::BNG(char* _Reg, char* _Rot, char* _Comment){
 	insertCodeToWriteAsm(_Reg, _InstIndex++);
 	insertCodeToWriteAsm(", ", _InstIndex++);
 	insertCodeToWriteAsm(_Rot, _InstIndex++);
-	
-	if(strcmp(_Comment, "") != 0){char _sPrint[255];sprintf_s(_sPrint, " ATW_COMMENT: %s", _Comment);insertCodeToWriteAsm(_sPrint, _InstIndex++);}
+
+	if(strcmp(_Comment, "") != 0){
+		char _sPrint[255];
+		sprintf_s(_sPrint, " ATW_COMMENT: %s", _Comment);
+		insertCodeToWriteAsm(_sPrint, _InstIndex++);
+	}
+
 	insertCodeToWriteAsm("\n", _InstIndex++);
 
 	//BlockSize = 5 + 1	
-	insertCodeToWriteBin(5);
-	insertCodeToWriteBin(-23,_Reg);
-	insertCodeToWriteBin(-23,_Rot);
+	insertCodeToWriteBin(Instruction::BNG);
+	insertCodeToWriteBin(NULL,_Reg);
+	insertCodeToWriteBin(NULL,_Rot);
 
 	return _InstIndexBase;
 }
@@ -355,14 +379,19 @@ int CodeGeneratorModule::BNGF(char* _Reg, char* _Rot, char* _Comment)
 	insertCodeToWriteAsm(_Reg, _InstIndex++);
 	insertCodeToWriteAsm(", ", _InstIndex++);
 	insertCodeToWriteAsm(_Rot, _InstIndex++);
-	
-	if(strcmp(_Comment, "") != 0){char _sPrint[255];sprintf_s(_sPrint, " ATW_COMMENT: %s", _Comment);insertCodeToWriteAsm(_sPrint, _InstIndex++);}
+
+	if(strcmp(_Comment, "") != 0){
+		char _sPrint[255];
+		sprintf_s(_sPrint, " ATW_COMMENT: %s", _Comment);
+		insertCodeToWriteAsm(_sPrint, _InstIndex++);
+	}
+
 	insertCodeToWriteAsm("\n", _InstIndex++);
 
 	//BlockSize = 5 + 1
-	insertCodeToWriteBin(6);
-	insertCodeToWriteBin(-23,_Reg);
-	insertCodeToWriteBin(-23,_Rot);
+	insertCodeToWriteBin(Instruction::BNGF);
+	insertCodeToWriteBin(NULL,_Reg);
+	insertCodeToWriteBin(NULL,_Rot);
 
 	return _InstIndexBase;
 }
@@ -374,14 +403,19 @@ int CodeGeneratorModule::BNN(char* _Reg, char* _Rot, char* _Comment)
 	insertCodeToWriteAsm(_Reg, _InstIndex++);
 	insertCodeToWriteAsm(", ", _InstIndex++);
 	insertCodeToWriteAsm(_Rot, _InstIndex++);
-	
-	if(strcmp(_Comment, "") != 0){char _sPrint[255];sprintf_s(_sPrint, " ATW_COMMENT: %s", _Comment);insertCodeToWriteAsm(_sPrint, _InstIndex++);}
+
+	if(strcmp(_Comment, "") != 0){
+		char _sPrint[255];
+		sprintf_s(_sPrint, " ATW_COMMENT: %s", _Comment);
+		insertCodeToWriteAsm(_sPrint, _InstIndex++);
+	}
+
 	insertCodeToWriteAsm("\n", _InstIndex++);
 
 	//BlockSize = 5 + 1
-	insertCodeToWriteBin(7);
-	insertCodeToWriteBin(-23,_Reg);
-	insertCodeToWriteBin(-23,_Rot);
+	insertCodeToWriteBin(Instruction::BNN);
+	insertCodeToWriteBin(NULL,_Reg);
+	insertCodeToWriteBin(NULL,_Rot);
 
 	return _InstIndexBase;
 }
@@ -393,14 +427,19 @@ int CodeGeneratorModule::BNNF(char* _Reg, char* _Rot, char* _Comment)
 	insertCodeToWriteAsm(_Reg, _InstIndex++);
 	insertCodeToWriteAsm(", ", _InstIndex++);
 	insertCodeToWriteAsm(_Rot, _InstIndex++);
-	
-	if(strcmp(_Comment, "") != 0){char _sPrint[255];sprintf_s(_sPrint, " ATW_COMMENT: %s", _Comment);insertCodeToWriteAsm(_sPrint, _InstIndex++);}
+
+	if(strcmp(_Comment, "") != 0){
+		char _sPrint[255];
+		sprintf_s(_sPrint, " ATW_COMMENT: %s", _Comment);
+		insertCodeToWriteAsm(_sPrint, _InstIndex++);
+	}
+
 	insertCodeToWriteAsm("\n", _InstIndex++);
 
 	//BlockSize = 5 + 1
-	insertCodeToWriteBin(8);
-	insertCodeToWriteBin(-23,_Reg);
-	insertCodeToWriteBin(-23,_Rot);
+	insertCodeToWriteBin(Instruction::BNNF);
+	insertCodeToWriteBin(NULL,_Reg);
+	insertCodeToWriteBin(NULL,_Rot);
 
 	return _InstIndexBase;
 }
@@ -412,14 +451,19 @@ int CodeGeneratorModule::BNP(char* _Reg, char* _Rot, char* _Comment)
 	insertCodeToWriteAsm(_Reg, _InstIndex++);
 	insertCodeToWriteAsm(", ", _InstIndex++);
 	insertCodeToWriteAsm(_Rot, _InstIndex++);
-	
-	if(strcmp(_Comment, "") != 0){char _sPrint[255];sprintf_s(_sPrint, " ATW_COMMENT: %s", _Comment);insertCodeToWriteAsm(_sPrint, _InstIndex++);}
+
+	if(strcmp(_Comment, "") != 0){
+		char _sPrint[255];
+		sprintf_s(_sPrint, " ATW_COMMENT: %s", _Comment);
+		insertCodeToWriteAsm(_sPrint, _InstIndex++);
+	}
+
 	insertCodeToWriteAsm("\n", _InstIndex++);
 
 	//BlockSize = 5 + 1
-	insertCodeToWriteBin(9);
-	insertCodeToWriteBin(-23,_Reg);
-	insertCodeToWriteBin(-23,_Rot);
+	insertCodeToWriteBin(Instruction::BNP);
+	insertCodeToWriteBin(NULL,_Reg);
+	insertCodeToWriteBin(NULL,_Rot);
 
 	return _InstIndexBase;
 }
@@ -431,14 +475,19 @@ int CodeGeneratorModule::BNPF(char* _Reg, char* _Rot, char* _Comment)
 	insertCodeToWriteAsm(_Reg, _InstIndex++);
 	insertCodeToWriteAsm(", ", _InstIndex++);
 	insertCodeToWriteAsm(_Rot, _InstIndex++);
-	
-	if(strcmp(_Comment, "") != 0){char _sPrint[255];sprintf_s(_sPrint, " ATW_COMMENT: %s", _Comment);insertCodeToWriteAsm(_sPrint, _InstIndex++);}
+
+	if(strcmp(_Comment, "") != 0){
+		char _sPrint[255];
+		sprintf_s(_sPrint, " ATW_COMMENT: %s", _Comment);
+		insertCodeToWriteAsm(_sPrint, _InstIndex++);
+	}
+
 	insertCodeToWriteAsm("\n", _InstIndex++);
 
 	//BlockSize = 5 + 1
-	insertCodeToWriteBin(10);
-	insertCodeToWriteBin(-23,_Reg);
-	insertCodeToWriteBin(-23,_Rot);
+	insertCodeToWriteBin(Instruction::BNPF);
+	insertCodeToWriteBin(NULL,_Reg);
+	insertCodeToWriteBin(NULL,_Rot);
 
 	return _InstIndexBase;
 }
@@ -450,14 +499,19 @@ int CodeGeneratorModule::BNZ(char* _Reg, char* _Rot, char* _Comment)
 	insertCodeToWriteAsm(_Reg, _InstIndex++);
 	insertCodeToWriteAsm(", ", _InstIndex++);
 	insertCodeToWriteAsm(_Rot, _InstIndex++);
-	
-	if(strcmp(_Comment, "") != 0){char _sPrint[255];sprintf_s(_sPrint, " ATW_COMMENT: %s", _Comment);insertCodeToWriteAsm(_sPrint, _InstIndex++);}
+
+	if(strcmp(_Comment, "") != 0){
+		char _sPrint[255];
+		sprintf_s(_sPrint, " ATW_COMMENT: %s", _Comment);
+		insertCodeToWriteAsm(_sPrint, _InstIndex++);
+	}
+
 	insertCodeToWriteAsm("\n", _InstIndex++);
 
 	//BlockSize = 5 + 1
-	insertCodeToWriteBin(11);
-	insertCodeToWriteBin(-23,_Reg);
-	insertCodeToWriteBin(-23,_Rot);
+	insertCodeToWriteBin(Instruction::BNZ);
+	insertCodeToWriteBin(NULL,_Reg);
+	insertCodeToWriteBin(NULL,_Rot);
 
 	return _InstIndexBase;
 }
@@ -469,14 +523,19 @@ int CodeGeneratorModule::BNZF(char* _Reg, char* _Rot, char* _Comment)
 	insertCodeToWriteAsm(_Reg, _InstIndex++);
 	insertCodeToWriteAsm(", ", _InstIndex++);
 	insertCodeToWriteAsm(_Rot, _InstIndex++);
-	
-	if(strcmp(_Comment, "") != 0){char _sPrint[255];sprintf_s(_sPrint, " ATW_COMMENT: %s", _Comment);insertCodeToWriteAsm(_sPrint, _InstIndex++);}
+
+	if(strcmp(_Comment, "") != 0){
+		char _sPrint[255];
+		sprintf_s(_sPrint, " ATW_COMMENT: %s", _Comment);
+		insertCodeToWriteAsm(_sPrint, _InstIndex++);
+	}
+
 	insertCodeToWriteAsm("\n", _InstIndex++);
 
 	//BlockSize = 5 + 1
-	insertCodeToWriteBin(12);
-	insertCodeToWriteBin(-23,_Reg);
-	insertCodeToWriteBin(-23,_Rot);
+	insertCodeToWriteBin(Instruction::BNZF);
+	insertCodeToWriteBin(NULL,_Reg);
+	insertCodeToWriteBin(NULL,_Rot);
 
 	return _InstIndexBase;
 }
@@ -488,14 +547,19 @@ int CodeGeneratorModule::BPS(char* _Reg, char* _Rot, char* _Comment)
 	insertCodeToWriteAsm(_Reg, _InstIndex++);
 	insertCodeToWriteAsm(", ", _InstIndex++);
 	insertCodeToWriteAsm(_Rot, _InstIndex++);
-	
-	if(strcmp(_Comment, "") != 0){char _sPrint[255];sprintf_s(_sPrint, " ATW_COMMENT: %s", _Comment);insertCodeToWriteAsm(_sPrint, _InstIndex++);}
+
+	if(strcmp(_Comment, "") != 0){
+		char _sPrint[255];
+		sprintf_s(_sPrint, " ATW_COMMENT: %s", _Comment);
+		insertCodeToWriteAsm(_sPrint, _InstIndex++);
+	}
+
 	insertCodeToWriteAsm("\n", _InstIndex++);
 
 	//BlockSize = 5 + 1
-	insertCodeToWriteBin(13);
-	insertCodeToWriteBin(-23,_Reg);
-	insertCodeToWriteBin(-23,_Rot);
+	insertCodeToWriteBin(Instruction::BPS);
+	insertCodeToWriteBin(NULL,_Reg);
+	insertCodeToWriteBin(NULL,_Rot);
 
 	return _InstIndexBase;
 }
@@ -507,14 +571,19 @@ int CodeGeneratorModule::BPSF(char* _Reg, char* _Rot, char* _Comment)
 	insertCodeToWriteAsm(_Reg, _InstIndex++);
 	insertCodeToWriteAsm(", ", _InstIndex++);
 	insertCodeToWriteAsm(_Rot, _InstIndex++);
-	
-	if(strcmp(_Comment, "") != 0){char _sPrint[255];sprintf_s(_sPrint, " ATW_COMMENT: %s", _Comment);insertCodeToWriteAsm(_sPrint, _InstIndex++);}
+
+	if(strcmp(_Comment, "") != 0){
+		char _sPrint[255];
+		sprintf_s(_sPrint, " ATW_COMMENT: %s", _Comment);
+		insertCodeToWriteAsm(_sPrint, _InstIndex++);
+	}
+
 	insertCodeToWriteAsm("\n", _InstIndex++);
 
 	//BlockSize = 5 + 1
-	insertCodeToWriteBin(14);
-	insertCodeToWriteBin(-23,_Reg);
-	insertCodeToWriteBin(-23,_Rot);
+	insertCodeToWriteBin(Instruction::BPSF);
+	insertCodeToWriteBin(NULL,_Reg);
+	insertCodeToWriteBin(NULL,_Rot);
 
 	return _InstIndexBase;
 }
@@ -526,14 +595,19 @@ int CodeGeneratorModule::BZR(char* _Reg, char* _Rot, char* _Comment)
 	insertCodeToWriteAsm(_Reg, _InstIndex++);
 	insertCodeToWriteAsm(", ", _InstIndex++);
 	insertCodeToWriteAsm(_Rot, _InstIndex++);
-	
-	if(strcmp(_Comment, "") != 0){char _sPrint[255];sprintf_s(_sPrint, " ATW_COMMENT: %s", _Comment);insertCodeToWriteAsm(_sPrint, _InstIndex++);}
+
+	if(strcmp(_Comment, "") != 0){
+		char _sPrint[255];
+		sprintf_s(_sPrint, " ATW_COMMENT: %s", _Comment);
+		insertCodeToWriteAsm(_sPrint, _InstIndex++);
+	}
+
 	insertCodeToWriteAsm("\n", _InstIndex++);
 
 	//BlockSize = 5 + 1
-	insertCodeToWriteBin(15);
-	insertCodeToWriteBin(-23,_Reg);
-	insertCodeToWriteBin(-23,_Rot);
+	insertCodeToWriteBin(Instruction::BZR);
+	insertCodeToWriteBin(NULL,_Reg);
+	insertCodeToWriteBin(NULL,_Rot);
 
 	return _InstIndexBase;
 }
@@ -545,14 +619,19 @@ int CodeGeneratorModule::BZRF(char* _Reg, char* _Rot, char* _Comment)
 	insertCodeToWriteAsm(_Reg, _InstIndex++);
 	insertCodeToWriteAsm(", ", _InstIndex++);
 	insertCodeToWriteAsm(_Rot, _InstIndex++);
-	
-	if(strcmp(_Comment, "") != 0){char _sPrint[255];sprintf_s(_sPrint, " ATW_COMMENT: %s", _Comment);insertCodeToWriteAsm(_sPrint, _InstIndex++);}
+
+	if(strcmp(_Comment, "") != 0){
+		char _sPrint[255];
+		sprintf_s(_sPrint, " ATW_COMMENT: %s", _Comment);
+		insertCodeToWriteAsm(_sPrint, _InstIndex++);
+	}
+
 	insertCodeToWriteAsm("\n", _InstIndex++);
 
 	//BlockSize = 5 + 1
-	insertCodeToWriteBin(16);
-	insertCodeToWriteBin(-23,_Reg);
-	insertCodeToWriteBin(-23,_Rot);
+	insertCodeToWriteBin(Instruction::BZRF);
+	insertCodeToWriteBin(NULL,_Reg);
+	insertCodeToWriteBin(NULL,_Rot);
 
 	return _InstIndexBase;
 }
@@ -565,13 +644,18 @@ int CodeGeneratorModule::CNV(char* _RegD, char* _RegO, char* _Comment)
 	insertCodeToWriteAsm(", ", _InstIndex++);
 	insertCodeToWriteAsm(_RegO, _InstIndex++);
 
-	if(strcmp(_Comment, "") != 0){char _sPrint[255];sprintf_s(_sPrint, " ATW_COMMENT: %s", _Comment);insertCodeToWriteAsm(_sPrint, _InstIndex++);}
+	if(strcmp(_Comment, "") != 0){
+		char _sPrint[255];
+		sprintf_s(_sPrint, " ATW_COMMENT: %s", _Comment);
+		insertCodeToWriteAsm(_sPrint, _InstIndex++);
+	}
+
 	insertCodeToWriteAsm("\n", _InstIndex++);
 
 	//BlockSize = 4 + 1
-	insertCodeToWriteBin(17);
-	insertCodeToWriteBin(-23,_RegD);
-	insertCodeToWriteBin(-23,_RegO);
+	insertCodeToWriteBin(Instruction::CNV);
+	insertCodeToWriteBin(NULL,_RegD);
+	insertCodeToWriteBin(NULL,_RegO);
 
 	return _InstIndexBase;
 }
@@ -584,13 +668,18 @@ int CodeGeneratorModule::DIV(char* _RegD, char* _RegO, char* _Comment)
 	insertCodeToWriteAsm(", ", _InstIndex++);
 	insertCodeToWriteAsm(_RegO, _InstIndex++);
 
-	if(strcmp(_Comment, "") != 0){char _sPrint[255];sprintf_s(_sPrint, " ATW_COMMENT: %s", _Comment);insertCodeToWriteAsm(_sPrint, _InstIndex++);}
+	if(strcmp(_Comment, "") != 0){
+		char _sPrint[255];
+		sprintf_s(_sPrint, " ATW_COMMENT: %s", _Comment);
+		insertCodeToWriteAsm(_sPrint, _InstIndex++);
+	}
+
 	insertCodeToWriteAsm("\n", _InstIndex++);
 
 	//BlockSize = 4 + 1
-	insertCodeToWriteBin(18);
-	insertCodeToWriteBin(-23,_RegD);
-	insertCodeToWriteBin(-23,_RegO);
+	insertCodeToWriteBin(Instruction::DIV);
+	insertCodeToWriteBin(NULL,_RegD);
+	insertCodeToWriteBin(NULL,_RegO);
 
 	return _InstIndexBase;
 }
@@ -603,13 +692,18 @@ int CodeGeneratorModule::ESC(char* _Reg1, char* _Reg2, char* _Comment)
 	insertCodeToWriteAsm(", ", _InstIndex++);
 	insertCodeToWriteAsm(_Reg2, _InstIndex++);
 
-	if(strcmp(_Comment, "") != 0){char _sPrint[255];sprintf_s(_sPrint, " ATW_COMMENT: %s", _Comment);insertCodeToWriteAsm(_sPrint, _InstIndex++);}
+	if(strcmp(_Comment, "") != 0){
+		char _sPrint[255];
+		sprintf_s(_sPrint, " ATW_COMMENT: %s", _Comment);
+		insertCodeToWriteAsm(_sPrint, _InstIndex++);
+	}
+
 	insertCodeToWriteAsm("\n", _InstIndex++);
 
 	//BlockSize = 4 + 1
-	insertCodeToWriteBin(19);
-	insertCodeToWriteBin(-23,_Reg1);
-	insertCodeToWriteBin(-23,_Reg2);
+	insertCodeToWriteBin(Instruction::ESC);
+	insertCodeToWriteBin(NULL,_Reg1);
+	insertCodeToWriteBin(NULL,_Reg2);
 
 	return _InstIndexBase;
 }
@@ -619,11 +713,16 @@ int CodeGeneratorModule::HLT(char* _Comment)
 	int _InstIndexBase = _InstIndex;
 	insertCodeToWriteAsm("HLT", _InstIndex++);
 
-	if(strcmp(_Comment, "") != 0){char _sPrint[255];sprintf_s(_sPrint, " ATW_COMMENT: %s", _Comment);insertCodeToWriteAsm(_sPrint, _InstIndex++);}
+	if(strcmp(_Comment, "") != 0){
+		char _sPrint[255];
+		sprintf_s(_sPrint, " ATW_COMMENT: %s", _Comment);
+		insertCodeToWriteAsm(_sPrint, _InstIndex++);
+	}
+
 	insertCodeToWriteAsm("\n", _InstIndex++);
 
 	//BlockSize = 1 + 1
-	insertCodeToWriteBin(20);
+	insertCodeToWriteBin(Instruction::HLT);
 
 	return _InstIndexBase;
 }
@@ -636,12 +735,18 @@ int CodeGeneratorModule::JMP(char* _Label, char* _Comment)//TODO:Label necessita
 	insertCodeToWriteAsm(_Label, _InstIndex++);
 	//itoa(_Value,_Label,10);
 	//insertCodeToWriteBin(_Value);
-	if(strcmp(_Comment, "") != 0){char _sPrint[255];sprintf_s(_sPrint, " ATW_COMMENT: %s", _Comment);insertCodeToWriteAsm(_sPrint, _InstIndex++);}
+
+	if(strcmp(_Comment, "") != 0){
+		char _sPrint[255];
+		sprintf_s(_sPrint, " ATW_COMMENT: %s", _Comment);
+		insertCodeToWriteAsm(_sPrint, _InstIndex++);
+	}
+
 	insertCodeToWriteAsm("\n", _InstIndex++);
 
 	//BlockSize = 3 + 1	
-	insertCodeToWriteBin(21);
-	insertCodeToWriteBin(-23,_Label);
+	insertCodeToWriteBin(Instruction::JMP);
+	insertCodeToWriteBin(NULL,_Label);
 
 	return _InstIndexBase;
 }
@@ -654,13 +759,18 @@ int CodeGeneratorModule::LDI(char* _RegD, char* _Imed, char* _Comment)
 	insertCodeToWriteAsm(", #", _InstIndex++);
 	insertCodeToWriteAsm(_Imed, _InstIndex++);
 
-	if(strcmp(_Comment, "") != 0){char _sPrint[255];sprintf_s(_sPrint, " ATW_COMMENT: %s", _Comment);insertCodeToWriteAsm(_sPrint, _InstIndex++);}
+	if(strcmp(_Comment, "") != 0){
+		char _sPrint[255];
+		sprintf_s(_sPrint, " ATW_COMMENT: %s", _Comment);
+		insertCodeToWriteAsm(_sPrint, _InstIndex++);
+	}
+
 	insertCodeToWriteAsm("\n", _InstIndex++);
 
 	//BlockSize = 4 + 1
-	insertCodeToWriteBin(22);
-	insertCodeToWriteBin(-23,_RegD);
-	insertCodeToWriteBin(-23,_Imed);
+	insertCodeToWriteBin(Instruction::LDI);
+	insertCodeToWriteBin(NULL,_RegD);
+	insertCodeToWriteBin(NULL,_Imed);
 
 	return _InstIndexBase;
 }
@@ -673,13 +783,18 @@ int CodeGeneratorModule::LDIF(char* _RegD, char* _Imed, char* _Comment)
 	insertCodeToWriteAsm(", #", _InstIndex++);
 	insertCodeToWriteAsm(_Imed, _InstIndex++);
 
-	if(strcmp(_Comment, "") != 0){char _sPrint[255];sprintf_s(_sPrint, " ATW_COMMENT: %s", _Comment);insertCodeToWriteAsm(_sPrint, _InstIndex++);}
+	if(strcmp(_Comment, "") != 0){
+		char _sPrint[255];
+		sprintf_s(_sPrint, " ATW_COMMENT: %s", _Comment);
+		insertCodeToWriteAsm(_sPrint, _InstIndex++);
+	}
+
 	insertCodeToWriteAsm("\n", _InstIndex++);
 
 	//BlockSize = 4 + 1	
-	insertCodeToWriteBin(23);
-	insertCodeToWriteBin(-23,_RegD);
-	insertCodeToWriteBin(-23,_Imed);
+	insertCodeToWriteBin(Instruction::LDIF);
+	insertCodeToWriteBin(NULL,_RegD);
+	insertCodeToWriteBin(NULL,_Imed);
 
 	return _InstIndexBase;
 }
@@ -690,12 +805,17 @@ int CodeGeneratorModule::LGT(char* _Reg, char* _Comment)
 	insertCodeToWriteAsm("LGT ", _InstIndex++);
 	insertCodeToWriteAsm(_Reg, _InstIndex++);
 
-	if(strcmp(_Comment, "") != 0){char _sPrint[255];sprintf_s(_sPrint, " ATW_COMMENT: %s", _Comment);insertCodeToWriteAsm(_sPrint, _InstIndex++);}
+	if(strcmp(_Comment, "") != 0){
+		char _sPrint[255];
+		sprintf_s(_sPrint, " ATW_COMMENT: %s", _Comment);
+		insertCodeToWriteAsm(_sPrint, _InstIndex++);
+	}
+
 	insertCodeToWriteAsm("\n", _InstIndex++);
 
 	//BlockSize = 2 + 1
-	insertCodeToWriteBin(24);
-	insertCodeToWriteBin(-23,_Reg);
+	insertCodeToWriteBin(Instruction::LGT);
+	insertCodeToWriteBin(NULL,_Reg);
 
 	return _InstIndexBase;
 }
@@ -709,12 +829,18 @@ int CodeGeneratorModule::LOD(char* _RegD, Address _Desl, char* _Comment)
 	insertCodeToWriteAsm(ATWgetCStr(_Desl), _InstIndex++);
 
 	insertCodeToWriteAsm("(DS)", _InstIndex++);
-	if(strcmp(_Comment, "") != 0){char _sPrint[255];sprintf_s(_sPrint, " ATW_COMMENT: %s", _Comment);insertCodeToWriteAsm(_sPrint, _InstIndex++);}
+
+	if(strcmp(_Comment, "") != 0){
+		char _sPrint[255];
+		sprintf_s(_sPrint, " ATW_COMMENT: %s", _Comment);
+		insertCodeToWriteAsm(_sPrint, _InstIndex++);
+	}
+
 	insertCodeToWriteAsm("\n", _InstIndex++);
 
 	//BlockSize = 5 + 1
-	insertCodeToWriteBin(25);
-	insertCodeToWriteBin(-23,_RegD);
+	insertCodeToWriteBin(Instruction::LOD);
+	insertCodeToWriteBin(NULL,_RegD);
 
 	return _InstIndexBase;
 }
@@ -728,12 +854,17 @@ int CodeGeneratorModule::LODF(char* _RegD, Address _Desl, char* _Comment)
 	insertCodeToWriteAsm(ATWgetCStr(_Desl), _InstIndex++);
 	insertCodeToWriteAsm("(DS)", _InstIndex++);
 
-	if(strcmp(_Comment, "") != 0){char _sPrint[255];sprintf_s(_sPrint, " ATW_COMMENT: %s", _Comment);insertCodeToWriteAsm(_sPrint, _InstIndex++);}
+	if(strcmp(_Comment, "") != 0){
+		char _sPrint[255];
+		sprintf_s(_sPrint, " ATW_COMMENT: %s", _Comment);
+		insertCodeToWriteAsm(_sPrint, _InstIndex++);
+	}
+
 	insertCodeToWriteAsm("\n", _InstIndex++);
 
 	//BlockSize = 5 + 1
-	insertCodeToWriteBin(26);
-	insertCodeToWriteBin(-23,_RegD);
+	insertCodeToWriteBin(Instruction::LODF);
+	insertCodeToWriteBin(NULL,_RegD);
 
 	return _InstIndexBase;
 }
@@ -746,13 +877,18 @@ int CodeGeneratorModule::MVE(char* _RegD, char* _RegO, char* _Comment)
 	insertCodeToWriteAsm(", ", _InstIndex++);
 	insertCodeToWriteAsm(_RegO, _InstIndex++);
 
-	if(strcmp(_Comment, "") != 0){char _sPrint[255];sprintf_s(_sPrint, " ATW_COMMENT: %s", _Comment);insertCodeToWriteAsm(_sPrint, _InstIndex++);}
+	if(strcmp(_Comment, "") != 0){
+		char _sPrint[255];
+		sprintf_s(_sPrint, " ATW_COMMENT: %s", _Comment);
+		insertCodeToWriteAsm(_sPrint, _InstIndex++);
+	}
+
 	insertCodeToWriteAsm("\n", _InstIndex++);
 
 	//BlockSize = 4 + 1
-	insertCodeToWriteBin(27);
-	insertCodeToWriteBin(-23,_RegD);
-	insertCodeToWriteBin(-23,_RegO);
+	insertCodeToWriteBin(Instruction::MVE);
+	insertCodeToWriteBin(NULL,_RegD);
+	insertCodeToWriteBin(NULL,_RegO);
 
 	return _InstIndexBase;
 }
@@ -764,14 +900,19 @@ int CodeGeneratorModule::MVEF(char* _RegD, char* _RegO, char* _Comment)
 	insertCodeToWriteAsm(_RegD, _InstIndex++);
 	insertCodeToWriteAsm(", ", _InstIndex++);
 	insertCodeToWriteAsm(_RegO, _InstIndex++);
-	
-	if(strcmp(_Comment, "") != 0){char _sPrint[255];sprintf_s(_sPrint, " ATW_COMMENT: %s", _Comment);insertCodeToWriteAsm(_sPrint, _InstIndex++);}
+
+	if(strcmp(_Comment, "") != 0){
+		char _sPrint[255];
+		sprintf_s(_sPrint, " ATW_COMMENT: %s", _Comment);
+		insertCodeToWriteAsm(_sPrint, _InstIndex++);
+	}
+
 	insertCodeToWriteAsm("\n", _InstIndex++);
 
 	//BlockSize = 4 + 1	
-	insertCodeToWriteBin(28);
-	insertCodeToWriteBin(-23,_RegD);
-	insertCodeToWriteBin(-23,_RegO);
+	insertCodeToWriteBin(Instruction::MVEF);
+	insertCodeToWriteBin(NULL,_RegD);
+	insertCodeToWriteBin(NULL,_RegO);
 
 	return _InstIndexBase;
 }
@@ -783,14 +924,19 @@ int CodeGeneratorModule::MUL(char* _RegD, char* _RegO, char* _Comment)
 	insertCodeToWriteAsm(_RegD, _InstIndex++);
 	insertCodeToWriteAsm(", ", _InstIndex++);
 	insertCodeToWriteAsm(_RegO, _InstIndex++);
-	
-	if(strcmp(_Comment, "") != 0){char _sPrint[255];sprintf_s(_sPrint, " ATW_COMMENT: %s", _Comment);insertCodeToWriteAsm(_sPrint, _InstIndex++);}
+
+	if(strcmp(_Comment, "") != 0){
+		char _sPrint[255];
+		sprintf_s(_sPrint, " ATW_COMMENT: %s", _Comment);
+		insertCodeToWriteAsm(_sPrint, _InstIndex++);
+	}
+
 	insertCodeToWriteAsm("\n", _InstIndex++);
 
 	//BlockSize = 4 + 1	
-	insertCodeToWriteBin(29);
-	insertCodeToWriteBin(-23,_RegD);
-	insertCodeToWriteBin(-23,_RegO);
+	insertCodeToWriteBin(Instruction::MUL);
+	insertCodeToWriteBin(NULL,_RegD);
+	insertCodeToWriteBin(NULL,_RegO);
 
 	return _InstIndexBase;
 }
@@ -803,13 +949,18 @@ int CodeGeneratorModule::MULF(char* _RegD, char* _RegO, char* _Comment)
 	insertCodeToWriteAsm(", ", _InstIndex++);
 	insertCodeToWriteAsm(_RegO, _InstIndex++);
 
-	if(strcmp(_Comment, "") != 0){char _sPrint[255];sprintf_s(_sPrint, " ATW_COMMENT: %s", _Comment);insertCodeToWriteAsm(_sPrint, _InstIndex++);}
+	if(strcmp(_Comment, "") != 0){
+		char _sPrint[255];
+		sprintf_s(_sPrint, " ATW_COMMENT: %s", _Comment);
+		insertCodeToWriteAsm(_sPrint, _InstIndex++);
+	}
+
 	insertCodeToWriteAsm("\n", _InstIndex++);
 
 	//BlockSize = 4 + 1
-	insertCodeToWriteBin(30);
-	insertCodeToWriteBin(-23,_RegD);
-	insertCodeToWriteBin(-23,_RegO);
+	insertCodeToWriteBin(Instruction::MULF);
+	insertCodeToWriteBin(NULL,_RegD);
+	insertCodeToWriteBin(NULL,_RegO);
 
 	return _InstIndexBase;
 }
@@ -820,12 +971,17 @@ int CodeGeneratorModule::NEG(char* _Reg, char* _Comment)
 	insertCodeToWriteAsm("NEG ", _InstIndex++);
 	insertCodeToWriteAsm(_Reg, _InstIndex++);	
 
-	if(strcmp(_Comment, "") != 0){char _sPrint[255];sprintf_s(_sPrint, " ATW_COMMENT: %s", _Comment);insertCodeToWriteAsm(_sPrint, _InstIndex++);}
+	if(strcmp(_Comment, "") != 0){
+		char _sPrint[255];
+		sprintf_s(_sPrint, " ATW_COMMENT: %s", _Comment);
+		insertCodeToWriteAsm(_sPrint, _InstIndex++);
+	}
+
 	insertCodeToWriteAsm("\n", _InstIndex++);
 
 	//BlockSize = 2 + 1	
-	insertCodeToWriteBin(31);
-	insertCodeToWriteBin(-23,_Reg);
+	insertCodeToWriteBin(Instruction::NEG);
+	insertCodeToWriteBin(NULL,_Reg);
 
 	return _InstIndexBase;
 }
@@ -836,12 +992,17 @@ int CodeGeneratorModule::NEGF(char* _Reg, char* _Comment)
 	insertCodeToWriteAsm("NEGF ", _InstIndex++);
 	insertCodeToWriteAsm(_Reg, _InstIndex++);	
 
-	if(strcmp(_Comment, "") != 0){char _sPrint[255];sprintf_s(_sPrint, " ATW_COMMENT: %s", _Comment);insertCodeToWriteAsm(_sPrint, _InstIndex++);}
+	if(strcmp(_Comment, "") != 0){
+		char _sPrint[255];
+		sprintf_s(_sPrint, " ATW_COMMENT: %s", _Comment);
+		insertCodeToWriteAsm(_sPrint, _InstIndex++);
+	}
+
 	insertCodeToWriteAsm("\n", _InstIndex++);
 
 	//BlockSize = 2 + 1	
-	insertCodeToWriteBin(32);
-	insertCodeToWriteBin(-23,_Reg);
+	insertCodeToWriteBin(Instruction::NEGF);
+	insertCodeToWriteBin(NULL,_Reg);
 
 	return _InstIndexBase;
 }
@@ -850,12 +1011,17 @@ int CodeGeneratorModule::RTR(char* _Comment)
 {
 	int _InstIndexBase = _InstIndex;
 	insertCodeToWriteAsm("RTR", _InstIndex++);
-	
-	if(strcmp(_Comment, "") != 0){char _sPrint[255];sprintf_s(_sPrint, " ATW_COMMENT: %s", _Comment);insertCodeToWriteAsm(_sPrint, _InstIndex++);}
+
+	if(strcmp(_Comment, "") != 0){
+		char _sPrint[255];
+		sprintf_s(_sPrint, " ATW_COMMENT: %s", _Comment);
+		insertCodeToWriteAsm(_sPrint, _InstIndex++);
+	}
+
 	insertCodeToWriteAsm("\n", _InstIndex++);
 
 	//BlockSize =
-	insertCodeToWriteBin(33);
+	insertCodeToWriteBin(Instruction::RTR);
 
 	return _InstIndexBase;
 }
@@ -869,12 +1035,18 @@ int CodeGeneratorModule::STI(char* _Imed, Address _Desl, char* _Comment){
 	insertCodeToWriteAsm(ATWgetCStr(_Desl), _InstIndex++);
 	insertCodeToWriteAsm("(DS)", _InstIndex++);
 
-	if(strcmp(_Comment, "") != 0){char _sPrint[255];sprintf_s(_sPrint, " ATW_COMMENT: %s", _Comment);insertCodeToWriteAsm(_sPrint, _InstIndex++);}
-	insertCodeToWriteAsm("\n", _InstIndex++);
+	if(strcmp(_Comment, "") != 0){
+		char _sPrint[255];
+		sprintf_s(_sPrint, " ATW_COMMENT: %s", _Comment);
+		insertCodeToWriteAsm(_sPrint, _InstIndex++);
+	}
 
+	insertCodeToWriteAsm("\n", _InstIndex++);
+	
 	//BlockSize = 5 + 1
-	insertCodeToWriteBin(34);
-	insertCodeToWriteBin(-23,_Imed);
+	insertCodeToWriteBin(Instruction::STI);
+	insertCodeToWriteBin(NULL, _Imed);
+	insertCodeToWriteBin(_Desl);
 
 	return _InstIndexBase;
 }
@@ -888,12 +1060,18 @@ int CodeGeneratorModule::STIF(char* _Imed, Address _Desl, char* _Comment)
 	insertCodeToWriteAsm(ATWgetCStr(_Desl), _InstIndex++);
 	insertCodeToWriteAsm("(DS)", _InstIndex++);
 
-	if(strcmp(_Comment, "") != 0){char _sPrint[255];sprintf_s(_sPrint, " ATW_COMMENT: %s", _Comment);insertCodeToWriteAsm(_sPrint, _InstIndex++);}
-	insertCodeToWriteAsm("\n", _InstIndex++);
+	if(strcmp(_Comment, "") != 0){
+		char _sPrint[255];
+		sprintf_s(_sPrint, " ATW_COMMENT: %s", _Comment);
+		insertCodeToWriteAsm(_sPrint, _InstIndex++);
+	}
 	
+	insertCodeToWriteAsm("\n", _InstIndex++);
+
 	//BlockSize = 5 + 1
-	insertCodeToWriteBin(35);
-	insertCodeToWriteBin(-23,_Imed);
+	insertCodeToWriteBin(Instruction::STIF);
+	insertCodeToWriteBin(NULL,_Imed);
+	insertCodeToWriteBin(_Desl);
 
 	return _InstIndexBase;
 }
@@ -907,12 +1085,18 @@ int CodeGeneratorModule::STO(char* _Reg, Address _Desl, char* _Comment)
 	insertCodeToWriteAsm(ATWgetCStr(_Desl), _InstIndex++);
 
 	insertCodeToWriteAsm("(DS)", _InstIndex++);
-	if(strcmp(_Comment, "") != 0){char _sPrint[255];sprintf_s(_sPrint, " ATW_COMMENT: %s", _Comment);insertCodeToWriteAsm(_sPrint, _InstIndex++);}
+	
+	if(strcmp(_Comment, "") != 0){
+		char _sPrint[255];
+		sprintf_s(_sPrint, " ATW_COMMENT: %s", _Comment);
+		insertCodeToWriteAsm(_sPrint, _InstIndex++);
+	}
+
 	insertCodeToWriteAsm("\n", _InstIndex++);
 
 	//BlockSize = 5 + 1
-	insertCodeToWriteBin(36);
-	insertCodeToWriteBin(-23,_Reg);
+	insertCodeToWriteBin(Instruction::STO);
+	insertCodeToWriteBin(NULL,_Reg);
 
 	return _InstIndexBase;
 }
@@ -926,12 +1110,17 @@ int CodeGeneratorModule::STOF(char* _Reg, Address _Desl, char* _Comment)
 	insertCodeToWriteAsm(ATWgetCStr(_Desl), _InstIndex++);
 	insertCodeToWriteAsm("(DS)", _InstIndex++);
 
-	if(strcmp(_Comment, "") != 0){char _sPrint[255];sprintf_s(_sPrint, " ATW_COMMENT: %s", _Comment);insertCodeToWriteAsm(_sPrint, _InstIndex++);}
+	if(strcmp(_Comment, "") != 0){
+		char _sPrint[255];
+		sprintf_s(_sPrint, " ATW_COMMENT: %s", _Comment);
+		insertCodeToWriteAsm(_sPrint, _InstIndex++);
+	}
+
 	insertCodeToWriteAsm("\n", _InstIndex++);
 
 	//BlockSize = 5 + 1
-	insertCodeToWriteBin(37);
-	insertCodeToWriteBin(-23,_Reg);
+	insertCodeToWriteBin(Instruction::STOF);
+	insertCodeToWriteBin(NULL,_Reg);
 
 	return _InstIndexBase;
 }
@@ -943,13 +1132,19 @@ int CodeGeneratorModule::SUB(char* _RegD, char* _RegO, char* _Comment)
 	insertCodeToWriteAsm(_RegD, _InstIndex++);
 	insertCodeToWriteAsm(", ", _InstIndex++);
 	insertCodeToWriteAsm(_RegO, _InstIndex++);
-	if(strcmp(_Comment, "") != 0){char _sPrint[255];sprintf_s(_sPrint, " ATW_COMMENT: %s", _Comment);insertCodeToWriteAsm(_sPrint, _InstIndex++);}
+	
+	if(strcmp(_Comment, "") != 0){
+		char _sPrint[255];
+		sprintf_s(_sPrint, " ATW_COMMENT: %s", _Comment);
+		insertCodeToWriteAsm(_sPrint, _InstIndex++);
+	}
+
 	insertCodeToWriteAsm("\n", _InstIndex++);
 
 	//BlockSize = 4 + 1
-	insertCodeToWriteBin(38);
-	insertCodeToWriteBin(-23,_RegD);
-	insertCodeToWriteBin(-23,_RegO);
+	insertCodeToWriteBin(Instruction::SUB);
+	insertCodeToWriteBin(NULL,_RegD);
+	insertCodeToWriteBin(NULL,_RegO);
 
 	return _InstIndexBase;
 }
@@ -962,13 +1157,18 @@ int CodeGeneratorModule::SUBF(char* _RegD, char* _RegO, char* _Comment)
 	insertCodeToWriteAsm(", ", _InstIndex++);
 	insertCodeToWriteAsm(_RegO, _InstIndex++);
 
-	if(strcmp(_Comment, "") != 0){char _sPrint[255];sprintf_s(_sPrint, " ATW_COMMENT: %s", _Comment);insertCodeToWriteAsm(_sPrint, _InstIndex++);}
+	if(strcmp(_Comment, "") != 0){
+		char _sPrint[255];
+		sprintf_s(_sPrint, " ATW_COMMENT: %s", _Comment);
+		insertCodeToWriteAsm(_sPrint, _InstIndex++);
+	}
+
 	insertCodeToWriteAsm("\n", _InstIndex++);
 
 	//BlockSize = 4 + 1
-	insertCodeToWriteBin(39);
-	insertCodeToWriteBin(-23,_RegD);
-	insertCodeToWriteBin(-23,_RegO);
+	insertCodeToWriteBin(Instruction::SUBF);
+	insertCodeToWriteBin(NULL,_RegD);
+	insertCodeToWriteBin(NULL,_RegO);
 
 	return _InstIndexBase;
 }
@@ -978,12 +1178,18 @@ int CodeGeneratorModule::TME(char* _Reg, char* _Comment)
 	int _InstIndexBase = _InstIndex;
 	insertCodeToWriteAsm("TME ", _InstIndex++);
 	insertCodeToWriteAsm(_Reg, _InstIndex++);
-	if(strcmp(_Comment, "") != 0){char _sPrint[255];sprintf_s(_sPrint, " ATW_COMMENT: %s", _Comment);insertCodeToWriteAsm(_sPrint, _InstIndex++);}
+	
+	if(strcmp(_Comment, "") != 0){
+		char _sPrint[255];
+		sprintf_s(_sPrint, " ATW_COMMENT: %s", _Comment);
+		insertCodeToWriteAsm(_sPrint, _InstIndex++);
+	}
+
 	insertCodeToWriteAsm("\n", _InstIndex++);
 
 	//BlockSize = 2 + 1
-	insertCodeToWriteBin(40);
-	insertCodeToWriteBin(-23,_Reg);
+	insertCodeToWriteBin(Instruction::TME);
+	insertCodeToWriteBin(NULL,_Reg);
 
 	return _InstIndexBase;
 }

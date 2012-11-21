@@ -149,6 +149,7 @@
     <None Include="teste1.asm" />
     <None Include="teste1.gl" />
     <None Include="TesteCmd.gl" />
+    <None Include="TesteDecl.gl" />
     <None Include="TesteExp.gl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

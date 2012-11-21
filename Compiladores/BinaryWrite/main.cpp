@@ -1,5 +1,5 @@
 // Program that converts a number from decimal to binary and show the positions where the bit of the number in binary contains 1
-
+/*
 #include <iostream>
 #include <bitset>
 using namespace std;
@@ -14,4 +14,16 @@ int main() {
   cout << _memoryPos[0] << _memoryPos[1] << endl;  
   system("pause");
   return 0;
+}*/
+
+#include <fstream>
+
+int main()
+{
+char c = 40;
+std::ofstream f("teste.dat", std::ios::out | std::ios::binary);
+f.write(static_cast<char*>(&c), 2);
+f.close();
+
+return 0;
 }
