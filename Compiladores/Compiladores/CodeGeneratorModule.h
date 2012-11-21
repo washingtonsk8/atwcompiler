@@ -129,6 +129,8 @@ private:
 	list        <bitset<16>*> _memoryPositions;
 	FileManager* fManager;
 	ofstream     binaryFile;
+
+
 	//FileManager* binaryFile;
 	
 };
