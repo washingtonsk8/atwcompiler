@@ -243,7 +243,7 @@ void LabelControllerTests(){
 /*COMPILER MAIN LOGIC*/
 void _RunCompiler(int argc, char* argv[], char* envp[]){
 	//void* _SuperArg[2] = {"symbols.txt", argv[1]};
-	void* _SuperArg[2] = {"symbols.dat", "TesteCmd.gl"};
+	void* _SuperArg[2] = {"symbols.dat", "ex1.gl"};
 
 	load();
 	initialize(2, _SuperArg);
