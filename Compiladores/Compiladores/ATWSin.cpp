@@ -570,6 +570,7 @@ void ATWSin::Command(){
 	Address _ExpAdr = 0, _Exp1Adr = 0, _Exp2Adr = 0, _Exp3Adr = 0, _Exp4Adr = 0, _Exp5Adr = 0;//(59) - COD
 	ATW_BUFF_ELEMENT _idAux;//(32) - SEMÂNTICO
 	char* _CRotStart, *_CRotEnd, *_CRotFalse;
+	Address* _FixFalse = 0x00, *_FixEnd = 0x00;
 
 	switch(_CurrentToken._Token){
 	case ID:
@@ -626,7 +627,7 @@ void ATWSin::Command(){
 		_Sem->TypeVerify(_PreviousToken, _ExpType, TIPO_LOGICO);//(32) - SEMÂNTICO
 
 		_cg->LOD("A", _ExpAdr);
-		_cg->BZR("A", _CRotEnd);
+		_FixEnd = _cg->BZR("A", _CRotEnd);
 		//(32) - COD -------------------------------------------------------------------------
 		
 		CT(FACA);
@@ -644,7 +645,7 @@ void ATWSin::Command(){
 
 		//(60) - COD -------------------------------------------------------------------------
 		_cg->JMP(_CRotStart);
-		_cg->writeRot(_CRotEnd);
+		_cg->writeRot(_CRotEnd, _FixEnd[1]+2);
 		//(60) - COD -------------------------------------------------------------------------
 		break;
 	case ESCALA:
@@ -807,7 +808,6 @@ void ATWSin::Command(){
 		}
 		else
 		_cg->LODF("F", _Exp5Adr);
-
 		_cg->LDI("A", ATWgetCStr(_idAux._End));
 
 		_cg->RTR("FIM ROTTRANS");
@@ -817,7 +817,7 @@ void ATWSin::Command(){
 		break;
 	case SE:
 		CT(SE);
-
+		
 		_memory->ATWResetTemp();//(46) - COD
 		Exp(_ExpType, _ExpAdr);
 
@@ -827,8 +827,8 @@ void ATWSin::Command(){
 
 		_Sem->TypeVerify(_PreviousToken, _ExpType, TIPO_LOGICO);//(61) - SEMÂNTICO
 
-		_cg->LOD("A", _ExpAdr);
-		_cg->BZR("A", _CRotFalse);
+		_cg->LOD("A", _ExpAdr, "SE");
+		_FixFalse = _cg->BZR("A", _CRotFalse);
 		//(61) - COD -------------------------------------------------------------------------
 
 		CT(ENTAO);
@@ -844,8 +844,8 @@ void ATWSin::Command(){
 		}
 
 		//(62) - COD -------------------------------------------------------------------------
-		_cg->JMP(_CRotEnd);
-		_cg->writeRot(_CRotFalse);
+		_FixEnd = _cg->JMP(_CRotEnd);
+		_cg->writeRot(_CRotFalse, _FixFalse[1]+2);
 		//(62) - COD -------------------------------------------------------------------------
 
 		if(_CurrentToken._Token == SENAO){
@@ -863,7 +863,7 @@ void ATWSin::Command(){
 			}
 		}
 		//(63) - COD -------------------------------------------------------------------------
-		_cg->writeRot(_CRotEnd);
+		_cg->writeRot(_CRotEnd, _FixEnd[1]+1);
 		//(63) - COD -------------------------------------------------------------------------
 		break;
 	case EXP_END:
@@ -871,12 +871,13 @@ void ATWSin::Command(){
 		break;
 	}
 	_cg->flush();
-	_cg->flushBin();
+	//FlushBinRetirado
 }
 //---------------------------------------------------------------------------------------------------------------------
 void ATWSin::Exp(Type& _ExpType, Address& _ExpAdr){
 	Type _ExpSType, _ExpS1Type;
 	Address _ExpSAdr = 0, _ExpS1Adr = 0;
+	Address* _FixTrue = 0x00, *_FixEnd = 0x00;
 
 	EXPS(_ExpSType, _ExpSAdr);//(29) - SEMÂNTICO
 	_ExpType = _ExpSType;
@@ -932,22 +933,22 @@ void ATWSin::Exp(Type& _ExpType, Address& _ExpAdr){
 				switch(_ROp)
 				{
 				case LT:
-					_cg->BNG("A", _ExpRotTrue);
+					_FixTrue = _cg->BNG("A", _ExpRotTrue);
 					break;
 				case GT:
-					_cg->BPS("A", _ExpRotTrue);
+					_FixTrue = _cg->BPS("A", _ExpRotTrue);
 					break;
 				case LE:
-					_cg->BNP("A", _ExpRotTrue);
+					_FixTrue = _cg->BNP("A", _ExpRotTrue);
 					break;
 				case GE:
-					_cg->BNN("A", _ExpRotTrue);
+					_FixTrue = _cg->BNN("A", _ExpRotTrue);
 					break;
 				case DEQ:
-					_cg->BZR("A", _ExpRotTrue);
+					_FixTrue = _cg->BZR("A", _ExpRotTrue);
 					break;
 				case DIFF:
-					_cg->BNZ("A", _ExpRotTrue);
+					_FixTrue = _cg->BNZ("A", _ExpRotTrue);
 					break;
 				}//end switch
 			}//end if
@@ -958,22 +959,22 @@ void ATWSin::Exp(Type& _ExpType, Address& _ExpAdr){
 				switch(_ROp)
 				{
 				case LT:
-					_cg->BNGF("A", _ExpRotTrue);
+					_FixTrue = _cg->BNGF("A", _ExpRotTrue);
 					break;
 				case GT:
-					_cg->BPSF("A", _ExpRotTrue);
+					_FixTrue = _cg->BPSF("A", _ExpRotTrue);
 					break;
 				case LE:
-					_cg->BNPF("A", _ExpRotTrue);
+					_FixTrue = _cg->BNPF("A", _ExpRotTrue);
 					break;
 				case GE:
-					_cg->BNNF("A", _ExpRotTrue);
+					_FixTrue = _cg->BNNF("A", _ExpRotTrue);
 					break;
 				case DEQ:
-					_cg->BZRF("A", _ExpRotTrue);
+					_FixTrue = _cg->BZRF("A", _ExpRotTrue);
 					break;
 				case DIFF:
-					_cg->BNZF("A", _ExpRotTrue);
+					_FixTrue = _cg->BNZF("A", _ExpRotTrue);
 					break;
 				}//end switch
 			}//end else
@@ -982,16 +983,16 @@ void ATWSin::Exp(Type& _ExpType, Address& _ExpAdr){
 			_cg->LDI("A", "0");
 
 			char* _ExpRotEnd = ATWNovoRot();
-			_cg->JMP(_ExpRotEnd);
-			_cg->writeRot(_ExpRotTrue);
+			_FixEnd = _cg->JMP(_ExpRotEnd);
+			_cg->writeRot(_ExpRotTrue, _FixTrue[1]+2);
 			_cg->LDI("A", "1");
-			_cg->writeRot(_ExpRotEnd);
+			_cg->writeRot(_ExpRotEnd, _FixEnd[1]+1);
 			_ExpAdr = _memory->ATWNovoTemp(TIPO_INTEIRO);
 			_ExpType = TIPO_LOGICO;
 			_cg->STO("A", _ExpAdr);
 	}
 	_cg->flush();
-	_cg->flushBin();
+	//FlushBinRetirado
 }
 //---------------------------------------------------------------------------------------------------------------------
 void ATWSin::R(Token& _ROp){
@@ -1170,6 +1171,7 @@ void ATWSin::EXPS(Type& _ExpSType, Address& _ExpSAdr){
 		}//end elseif
 		else
 		{
+			Address* _FixExpSRot = 0x00;
 			if (_ExpSType == TIPO_LOGICO && _T1Type == TIPO_LOGICO)
 			{
 				_ExpSType = TIPO_LOGICO;
@@ -1177,9 +1179,9 @@ void ATWSin::EXPS(Type& _ExpSType, Address& _ExpSAdr){
 				_cg->LOD("B", _T1Adr);
 				_cg->ADD("A", "B");
 				char* _ExpSRot = ATWNovoRot();
-				_cg->BZR("A", _ExpSRot);
+				_FixExpSRot = _cg->BZR("A", _ExpSRot);
 				_cg->LDI("A", "1", "FIM");
-				_cg->writeRot(_ExpSRot);
+				_cg->writeRot(_ExpSRot, _FixExpSRot[1]+2);
 			}
 			else
 			{
@@ -1191,7 +1193,7 @@ void ATWSin::EXPS(Type& _ExpSType, Address& _ExpSAdr){
 		//(27) - SEMÂNTICO --------------------------------------------------------------------------------
 	}//end while
 	_cg->flush();
-	_cg->flushBin();
+	//FlushBinRetirado
 }
 //---------------------------------------------------------------------------------------------------------------------
 void ATWSin::T(Type& _TType, Address& _TAdr){
@@ -1330,7 +1332,7 @@ void ATWSin::T(Type& _TType, Address& _TAdr){
 		//(22) - SEMÂNTICO --------------------------------------------------------------------------------
 	}
 	_cg->flush();
-	_cg->flushBin();
+	//FlushBinRetirado
 }
 //---------------------------------------------------------------------------------------------------------------------
 void ATWSin::F(Type& _FType, Address& _FAdr){//Fend = _FAdr
@@ -1395,5 +1397,5 @@ void ATWSin::F(Type& _FType, Address& _FAdr){//Fend = _FAdr
 		break;
 	}
 	_cg->flush();
-	_cg->flushBin();
+	//FlushBinRetirado
 }
