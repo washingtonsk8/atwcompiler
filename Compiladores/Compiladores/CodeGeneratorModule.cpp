@@ -316,7 +316,7 @@ Address* CodeGeneratorModule::ADD(char* _RegD, char* _RegO, char* _Comment)
 	insertCodeToWriteBin(NULL,_RegD);
 	insertCodeToWriteBin(NULL,_RegO);
 
-	_Memory->incrementPC(); return _InstIndexBase;
+	_Memory->incrementPC(3); return _InstIndexBase;
 }
 //----------------------------------------------------------------------------------------------------------------------
 Address* CodeGeneratorModule::ADDF(char* _RegD, char* _RegO, char* _Comment)
@@ -340,7 +340,7 @@ Address* CodeGeneratorModule::ADDF(char* _RegD, char* _RegO, char* _Comment)
 	insertCodeToWriteBin(NULL,_RegD);
 	insertCodeToWriteBin(NULL,_RegO);
 
-	_Memory->incrementPC(); return _InstIndexBase;
+	_Memory->incrementPC(3); return _InstIndexBase;
 }
 //----------------------------------------------------------------------------------------------------------------------
 Address* CodeGeneratorModule::ADI(char* _RegD, char* _Imed, char* _Comment)
@@ -364,7 +364,7 @@ Address* CodeGeneratorModule::ADI(char* _RegD, char* _Imed, char* _Comment)
 	insertCodeToWriteBin(NULL,_RegD);
 	insertCodeToWriteBin(NULL,_Imed);
 
-	_Memory->incrementPC(); return _InstIndexBase;
+	_Memory->incrementPC(3); return _InstIndexBase;
 }
 //----------------------------------------------------------------------------------------------------------------------
 Address* CodeGeneratorModule::ADIF(char* _RegD, char* _Imed, char* _Comment)
@@ -389,7 +389,7 @@ Address* CodeGeneratorModule::ADIF(char* _RegD, char* _Imed, char* _Comment)
 	insertCodeToWriteBin(NULL,_RegD);
 	insertCodeToWriteBin(NULL,_Imed);
 
-	_Memory->incrementPC(); return _InstIndexBase;
+	_Memory->incrementPC(4); return _InstIndexBase;
 }
 //----------------------------------------------------------------------------------------------------------------------
 Address* CodeGeneratorModule::BNG(char* _Reg, char* _Rot, char* _Comment){
@@ -412,7 +412,7 @@ Address* CodeGeneratorModule::BNG(char* _Reg, char* _Rot, char* _Comment){
 	insertCodeToWriteBin(NULL,_Reg);
 	insertCodeToWriteBin(NULL,_Rot);
 
-	_Memory->incrementPC(); return _InstIndexBase;
+	_Memory->incrementPC(3); return _InstIndexBase;
 }
 //----------------------------------------------------------------------------------------------------------------------
 Address* CodeGeneratorModule::BNGF(char* _Reg, char* _Rot, char* _Comment)
@@ -436,7 +436,7 @@ Address* CodeGeneratorModule::BNGF(char* _Reg, char* _Rot, char* _Comment)
 	insertCodeToWriteBin(NULL,_Reg);
 	insertCodeToWriteBin(NULL,_Rot);
 
-	_Memory->incrementPC(); return _InstIndexBase;
+	_Memory->incrementPC(3); return _InstIndexBase;
 }
 //----------------------------------------------------------------------------------------------------------------------
 Address* CodeGeneratorModule::BNN(char* _Reg, char* _Rot, char* _Comment)
@@ -460,7 +460,7 @@ Address* CodeGeneratorModule::BNN(char* _Reg, char* _Rot, char* _Comment)
 	insertCodeToWriteBin(NULL,_Reg);
 	insertCodeToWriteBin(NULL,_Rot);
 
-	_Memory->incrementPC(); return _InstIndexBase;
+	_Memory->incrementPC(3); return _InstIndexBase;
 }
 //----------------------------------------------------------------------------------------------------------------------
 Address* CodeGeneratorModule::BNNF(char* _Reg, char* _Rot, char* _Comment)
@@ -484,7 +484,7 @@ Address* CodeGeneratorModule::BNNF(char* _Reg, char* _Rot, char* _Comment)
 	insertCodeToWriteBin(NULL,_Reg);
 	insertCodeToWriteBin(NULL,_Rot);
 
-	_Memory->incrementPC(); return _InstIndexBase;
+	_Memory->incrementPC(3); return _InstIndexBase;
 }
 //----------------------------------------------------------------------------------------------------------------------
 Address* CodeGeneratorModule::BNP(char* _Reg, char* _Rot, char* _Comment)
@@ -508,7 +508,7 @@ Address* CodeGeneratorModule::BNP(char* _Reg, char* _Rot, char* _Comment)
 	insertCodeToWriteBin(NULL,_Reg);
 	insertCodeToWriteBin(NULL,_Rot);
 
-	_Memory->incrementPC(); return _InstIndexBase;
+	_Memory->incrementPC(3); return _InstIndexBase;
 }
 //----------------------------------------------------------------------------------------------------------------------
 Address* CodeGeneratorModule::BNPF(char* _Reg, char* _Rot, char* _Comment)
@@ -532,7 +532,7 @@ Address* CodeGeneratorModule::BNPF(char* _Reg, char* _Rot, char* _Comment)
 	insertCodeToWriteBin(NULL,_Reg);
 	insertCodeToWriteBin(NULL,_Rot);
 
-	_Memory->incrementPC(); return _InstIndexBase;
+	_Memory->incrementPC(3); return _InstIndexBase;
 }
 //----------------------------------------------------------------------------------------------------------------------
 Address* CodeGeneratorModule::BNZ(char* _Reg, char* _Rot, char* _Comment)
@@ -556,7 +556,7 @@ Address* CodeGeneratorModule::BNZ(char* _Reg, char* _Rot, char* _Comment)
 	insertCodeToWriteBin(NULL,_Reg);
 	insertCodeToWriteBin(NULL,_Rot);
 
-	_Memory->incrementPC(); return _InstIndexBase;
+	_Memory->incrementPC(3); return _InstIndexBase;
 }
 //----------------------------------------------------------------------------------------------------------------------
 Address* CodeGeneratorModule::BNZF(char* _Reg, char* _Rot, char* _Comment)
@@ -580,7 +580,7 @@ Address* CodeGeneratorModule::BNZF(char* _Reg, char* _Rot, char* _Comment)
 	insertCodeToWriteBin(NULL,_Reg);
 	insertCodeToWriteBin(NULL,_Rot);
 
-	_Memory->incrementPC(); return _InstIndexBase;
+	_Memory->incrementPC(3); return _InstIndexBase;
 }
 //----------------------------------------------------------------------------------------------------------------------
 Address* CodeGeneratorModule::BPS(char* _Reg, char* _Rot, char* _Comment)
@@ -604,7 +604,7 @@ Address* CodeGeneratorModule::BPS(char* _Reg, char* _Rot, char* _Comment)
 	insertCodeToWriteBin(NULL,_Reg);
 	insertCodeToWriteBin(NULL,_Rot);
 
-	_Memory->incrementPC(); return _InstIndexBase;
+	_Memory->incrementPC(3); return _InstIndexBase;
 }
 //----------------------------------------------------------------------------------------------------------------------
 Address* CodeGeneratorModule::BPSF(char* _Reg, char* _Rot, char* _Comment)
@@ -628,7 +628,7 @@ Address* CodeGeneratorModule::BPSF(char* _Reg, char* _Rot, char* _Comment)
 	insertCodeToWriteBin(NULL,_Reg);
 	insertCodeToWriteBin(NULL,_Rot);
 
-	_Memory->incrementPC(); return _InstIndexBase;
+	_Memory->incrementPC(3); return _InstIndexBase;
 }
 //----------------------------------------------------------------------------------------------------------------------
 Address* CodeGeneratorModule::BZR(char* _Reg, char* _Rot, char* _Comment)
@@ -652,7 +652,7 @@ Address* CodeGeneratorModule::BZR(char* _Reg, char* _Rot, char* _Comment)
 	insertCodeToWriteBin(NULL,_Reg);
 	insertCodeToWriteBin(NULL,_Rot);
 
-	_Memory->incrementPC(); return _InstIndexBase;
+	_Memory->incrementPC(3); return _InstIndexBase;
 }
 //----------------------------------------------------------------------------------------------------------------------
 Address* CodeGeneratorModule::BZRF(char* _Reg, char* _Rot, char* _Comment)
@@ -676,7 +676,7 @@ Address* CodeGeneratorModule::BZRF(char* _Reg, char* _Rot, char* _Comment)
 	insertCodeToWriteBin(NULL,_Reg);
 	insertCodeToWriteBin(NULL,_Rot);
 
-	_Memory->incrementPC(); return _InstIndexBase;
+	_Memory->incrementPC(3); return _InstIndexBase;
 }
 //----------------------------------------------------------------------------------------------------------------------
 Address* CodeGeneratorModule::CNV(char* _RegD, char* _RegO, char* _Comment)
@@ -700,7 +700,7 @@ Address* CodeGeneratorModule::CNV(char* _RegD, char* _RegO, char* _Comment)
 	insertCodeToWriteBin(NULL,_RegD);
 	insertCodeToWriteBin(NULL,_RegO);
 
-	_Memory->incrementPC(); return _InstIndexBase;
+	_Memory->incrementPC(3); return _InstIndexBase;
 }
 //----------------------------------------------------------------------------------------------------------------------
 Address* CodeGeneratorModule::DIV(char* _RegD, char* _RegO, char* _Comment)
@@ -724,7 +724,7 @@ Address* CodeGeneratorModule::DIV(char* _RegD, char* _RegO, char* _Comment)
 	insertCodeToWriteBin(NULL,_RegD);
 	insertCodeToWriteBin(NULL,_RegO);
 
-	_Memory->incrementPC(); return _InstIndexBase;
+	_Memory->incrementPC(3); return _InstIndexBase;
 }
 //----------------------------------------------------------------------------------------------------------------------
 Address* CodeGeneratorModule::ESC(char* _Reg1, char* _Reg2, char* _Comment)
@@ -748,7 +748,7 @@ Address* CodeGeneratorModule::ESC(char* _Reg1, char* _Reg2, char* _Comment)
 	insertCodeToWriteBin(NULL,_Reg1);
 	insertCodeToWriteBin(NULL,_Reg2);
 
-	_Memory->incrementPC(); return _InstIndexBase;
+	_Memory->incrementPC(3); return _InstIndexBase;
 }
 //----------------------------------------------------------------------------------------------------------------------
 Address* CodeGeneratorModule::HLT(char* _Comment)
@@ -788,7 +788,7 @@ Address* CodeGeneratorModule::JMP(char* _Label, char* _Comment)//TODO:Label nece
 	insertCodeToWriteBin(BinaryGen::JMP);
 	insertCodeToWriteBin(NULL,_Label);
 
-	_Memory->incrementPC(); return _InstIndexBase;
+	_Memory->incrementPC(2); return _InstIndexBase;
 }
 //----------------------------------------------------------------------------------------------------------------------
 Address* CodeGeneratorModule::LDI(char* _RegD, char* _Imed, char* _Comment)
@@ -812,7 +812,7 @@ Address* CodeGeneratorModule::LDI(char* _RegD, char* _Imed, char* _Comment)
 	insertCodeToWriteBin(NULL,_RegD);
 	insertCodeToWriteBin(NULL,_Imed);
 
-	_Memory->incrementPC(); return _InstIndexBase;
+	_Memory->incrementPC(3); return _InstIndexBase;
 }
 //----------------------------------------------------------------------------------------------------------------------
 Address* CodeGeneratorModule::LDIF(char* _RegD, char* _Imed, char* _Comment)
@@ -836,7 +836,7 @@ Address* CodeGeneratorModule::LDIF(char* _RegD, char* _Imed, char* _Comment)
 	insertCodeToWriteBin(NULL,_RegD);
 	insertCodeToWriteBin(NULL,_Imed);
 
-	_Memory->incrementPC(); return _InstIndexBase;
+	_Memory->incrementPC(4); return _InstIndexBase;
 }
 //----------------------------------------------------------------------------------------------------------------------
 Address* CodeGeneratorModule::LGT(char* _Reg, char* _Comment)
@@ -857,7 +857,7 @@ Address* CodeGeneratorModule::LGT(char* _Reg, char* _Comment)
 	insertCodeToWriteBin(BinaryGen::LGT);
 	insertCodeToWriteBin(NULL,_Reg);
 
-	_Memory->incrementPC(); return _InstIndexBase;
+	_Memory->incrementPC(2); return _InstIndexBase;
 }
 //----------------------------------------------------------------------------------------------------------------------
 Address* CodeGeneratorModule::LOD(char* _RegD, Address _Desl, char* _Comment)
@@ -883,7 +883,7 @@ Address* CodeGeneratorModule::LOD(char* _RegD, Address _Desl, char* _Comment)
 	insertCodeToWriteBin(NULL,_RegD);
 	insertCodeToWriteBin(_Desl);
 
-	_Memory->incrementPC(); return _InstIndexBase;
+	_Memory->incrementPC(3); return _InstIndexBase;
 }
 //----------------------------------------------------------------------------------------------------------------------
 Address* CodeGeneratorModule::LODF(char* _RegD, Address _Desl, char* _Comment)
@@ -908,7 +908,7 @@ Address* CodeGeneratorModule::LODF(char* _RegD, Address _Desl, char* _Comment)
 	insertCodeToWriteBin(NULL,_RegD);
 	insertCodeToWriteBin(_Desl);
 
-	_Memory->incrementPC(); return _InstIndexBase;
+	_Memory->incrementPC(3); return _InstIndexBase;
 }
 //----------------------------------------------------------------------------------------------------------------------
 Address* CodeGeneratorModule::MVE(char* _RegD, char* _RegO, char* _Comment)
@@ -932,7 +932,7 @@ Address* CodeGeneratorModule::MVE(char* _RegD, char* _RegO, char* _Comment)
 	insertCodeToWriteBin(NULL,_RegD);
 	insertCodeToWriteBin(NULL,_RegO);
 
-	_Memory->incrementPC(); return _InstIndexBase;
+	_Memory->incrementPC(3); return _InstIndexBase;
 }
 //----------------------------------------------------------------------------------------------------------------------
 Address* CodeGeneratorModule::MVEF(char* _RegD, char* _RegO, char* _Comment)
@@ -956,7 +956,7 @@ Address* CodeGeneratorModule::MVEF(char* _RegD, char* _RegO, char* _Comment)
 	insertCodeToWriteBin(NULL,_RegD);
 	insertCodeToWriteBin(NULL,_RegO);
 
-	_Memory->incrementPC(); return _InstIndexBase;
+	_Memory->incrementPC(3); return _InstIndexBase;
 }
 //----------------------------------------------------------------------------------------------------------------------
 Address* CodeGeneratorModule::MUL(char* _RegD, char* _RegO, char* _Comment)
@@ -980,7 +980,7 @@ Address* CodeGeneratorModule::MUL(char* _RegD, char* _RegO, char* _Comment)
 	insertCodeToWriteBin(NULL,_RegD);
 	insertCodeToWriteBin(NULL,_RegO);
 
-	_Memory->incrementPC(); return _InstIndexBase;
+	_Memory->incrementPC(3); return _InstIndexBase;
 }
 //----------------------------------------------------------------------------------------------------------------------
 Address* CodeGeneratorModule::MULF(char* _RegD, char* _RegO, char* _Comment)
@@ -1004,7 +1004,7 @@ Address* CodeGeneratorModule::MULF(char* _RegD, char* _RegO, char* _Comment)
 	insertCodeToWriteBin(NULL,_RegD);
 	insertCodeToWriteBin(NULL,_RegO);
 
-	_Memory->incrementPC(); return _InstIndexBase;
+	_Memory->incrementPC(3); return _InstIndexBase;
 }
 //----------------------------------------------------------------------------------------------------------------------
 Address* CodeGeneratorModule::NEG(char* _Reg, char* _Comment)
@@ -1025,7 +1025,7 @@ Address* CodeGeneratorModule::NEG(char* _Reg, char* _Comment)
 	insertCodeToWriteBin(BinaryGen::NEG);
 	insertCodeToWriteBin(NULL,_Reg);
 
-	_Memory->incrementPC(); return _InstIndexBase;
+	_Memory->incrementPC(2); return _InstIndexBase;
 }
 //----------------------------------------------------------------------------------------------------------------------
 Address* CodeGeneratorModule::NEGF(char* _Reg, char* _Comment)
@@ -1046,7 +1046,7 @@ Address* CodeGeneratorModule::NEGF(char* _Reg, char* _Comment)
 	insertCodeToWriteBin(BinaryGen::NEGF);
 	insertCodeToWriteBin(NULL,_Reg);
 
-	_Memory->incrementPC(); return _InstIndexBase;
+	_Memory->incrementPC(1); return _InstIndexBase;
 }
 //----------------------------------------------------------------------------------------------------------------------
 Address* CodeGeneratorModule::RTR(char* _Comment)
@@ -1090,7 +1090,7 @@ Address* CodeGeneratorModule::STI(char* _Imed, Address _Desl, char* _Comment){
 	insertCodeToWriteBin(NULL, _Imed);
 	insertCodeToWriteBin(_Desl);
 
-	_Memory->incrementPC(); return _InstIndexBase;
+	_Memory->incrementPC(3); return _InstIndexBase;
 }
 //----------------------------------------------------------------------------------------------------------------------
 Address* CodeGeneratorModule::STIF(char* _Imed, Address _Desl, char* _Comment)
@@ -1115,7 +1115,7 @@ Address* CodeGeneratorModule::STIF(char* _Imed, Address _Desl, char* _Comment)
 	insertCodeToWriteBin(NULL,_Imed);
 	insertCodeToWriteBin(_Desl);
 
-	_Memory->incrementPC(); return _InstIndexBase;
+	_Memory->incrementPC(4); return _InstIndexBase;
 }
 //----------------------------------------------------------------------------------------------------------------------
 Address* CodeGeneratorModule::STO(char* _Reg, Address _Desl, char* _Comment)
@@ -1141,7 +1141,7 @@ Address* CodeGeneratorModule::STO(char* _Reg, Address _Desl, char* _Comment)
 	insertCodeToWriteBin(NULL,_Reg);
 	insertCodeToWriteBin(_Desl);
 
-	_Memory->incrementPC(); return _InstIndexBase;
+	_Memory->incrementPC(3); return _InstIndexBase;
 }
 //----------------------------------------------------------------------------------------------------------------------
 Address* CodeGeneratorModule::STOF(char* _Reg, Address _Desl, char* _Comment)
@@ -1166,7 +1166,7 @@ Address* CodeGeneratorModule::STOF(char* _Reg, Address _Desl, char* _Comment)
 	insertCodeToWriteBin(NULL,_Reg);
 	insertCodeToWriteBin(_Desl);
 
-	_Memory->incrementPC(); return _InstIndexBase;
+	_Memory->incrementPC(3); return _InstIndexBase;
 }
 //----------------------------------------------------------------------------------------------------------------------
 Address* CodeGeneratorModule::SUB(char* _RegD, char* _RegO, char* _Comment)
@@ -1190,7 +1190,7 @@ Address* CodeGeneratorModule::SUB(char* _RegD, char* _RegO, char* _Comment)
 	insertCodeToWriteBin(NULL,_RegD);
 	insertCodeToWriteBin(NULL,_RegO);
 
-	_Memory->incrementPC(); return _InstIndexBase;
+	_Memory->incrementPC(3); return _InstIndexBase;
 }
 //----------------------------------------------------------------------------------------------------------------------
 Address* CodeGeneratorModule::SUBF(char* _RegD, char* _RegO, char* _Comment)
@@ -1214,7 +1214,7 @@ Address* CodeGeneratorModule::SUBF(char* _RegD, char* _RegO, char* _Comment)
 	insertCodeToWriteBin(NULL,_RegD);
 	insertCodeToWriteBin(NULL,_RegO);
 
-	_Memory->incrementPC(); return _InstIndexBase;
+	_Memory->incrementPC(3); return _InstIndexBase;
 }
 //----------------------------------------------------------------------------------------------------------------------
 Address* CodeGeneratorModule::TME(char* _Reg, char* _Comment)
@@ -1235,6 +1235,6 @@ Address* CodeGeneratorModule::TME(char* _Reg, char* _Comment)
 	insertCodeToWriteBin(BinaryGen::TME);
 	insertCodeToWriteBin(NULL,_Reg);
 
-	_Memory->incrementPC(); return _InstIndexBase;
+	_Memory->incrementPC(2); return _InstIndexBase;
 }
 //----------------------------------------------------------------------------------------------------------------------
