@@ -182,11 +182,6 @@ void CodeGeneratorModule::insertCodeToWriteBin(int _Element, char* _String){
 			case 'L':
 				//Retrocorreção de LIXO
 				break;
-			default:
-				printf("ERRO!!\n%s\n",_String);
-				system("pause");
-				exit(-1);
-				break;
 			}//end switch
 			insertIntoBitSetBuffer(_bitsetRegister);
 			_BinIndex++;
