@@ -244,10 +244,11 @@ void CodeGeneratorModule::flushBin(){
 
 	for(; it != _memoryPositions.end(); it++){
 		bitset<16> _pointer = (*(*it));
+		cout << _pointer << " ";
 		forWriting = static_cast<short>(_pointer.to_ulong());		
 		writeS16(forWriting);
 	}//end for
-
+	cout << endl;
 	clearBitSetBuffer();
 	_BinIndex = 0;
 }
