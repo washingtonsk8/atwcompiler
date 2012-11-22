@@ -570,7 +570,10 @@ void ATWSin::Command(){
 	Address _ExpAdr = 0, _Exp1Adr = 0, _Exp2Adr = 0, _Exp3Adr = 0, _Exp4Adr = 0, _Exp5Adr = 0;//(59) - COD
 	ATW_BUFF_ELEMENT _idAux;//(32) - SEMÂNTICO
 	char* _CRotStart, *_CRotEnd, *_CRotFalse;
-	Address* _FixFalse = 0x00, *_FixEnd = 0x00;
+	Address* _FixFalse = (Address*) malloc(sizeof(Address)*2);
+	memset(_FixFalse, 0, sizeof(Address));
+	Address* _FixEnd = (Address*) malloc(sizeof(Address)*2);
+	memset(_FixEnd, 0, sizeof(Address));
 
 	switch(_CurrentToken._Token){
 	case ID:
@@ -1094,8 +1097,8 @@ void ATWSin::EXPS(Type& _ExpSType, Address& _ExpSAdr){
 			{
 				_ExpSType = TIPO_REAL;
 				_cg->LOD("A", _ExpSAdr, "T + T");
-				_cg->CNV("A", "A");
 				_cg->LODF("B", _T1Adr);
+				_cg->CNV("A", "A");
 				_cg->ADDF("A", "B");
 				_ExpSAdr = _memory->ATWNovoTemp(TIPO_REAL);
 				_cg->STOF("A", _ExpSAdr, "FIM");
@@ -1139,8 +1142,8 @@ void ATWSin::EXPS(Type& _ExpSType, Address& _ExpSAdr){
 			{
 				_ExpSType = TIPO_REAL;
 				_cg->LOD("A", _ExpSAdr, "T - T");
-				_cg->CNV("A", "A");
 				_cg->LODF("B", _T1Adr);
+				_cg->CNV("A", "A");
 				_cg->SUBF("A", "B");
 				_ExpSAdr = _memory->ATWNovoTemp(TIPO_REAL);
 				_cg->STOF("A", _ExpSAdr, "FIM");
