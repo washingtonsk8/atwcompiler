@@ -1,4 +1,4 @@
-{Exemplo de programa-fonte da linguagem "GL" }
+{ Exemplo de programa-fonte da linguagem "GL" }
 
 DPonto
       P1=(-10,10,10)
@@ -10,8 +10,7 @@ DPonto
       P7=(10,-10,-10)
       P8=(10,10,-10)
 DCor
-      AZUL   = 15,20,20,40,60,30,60
-	  BRANCO = 1 ,1 ,1 ,1 ,1 ,1 ,1
+      AZUL=15,20,20,40,30,30,60
 DFace
       F1=AZUL,P1,P2,P3,P4
       F2=AZUL,P4,P3,P7,P8
@@ -20,29 +19,34 @@ DFace
       F5=AZUL,P5,P1,P4,P8
       F6=AZUL,P7,P3,P2,P6
 DLuz
-      L1=(300,300,300)
+      L1=(200,200,200)
 DObjeto
       CUBO = F1,F2,F3,F4,F5,F6
-	  cuba = F1,F2,F3,F4,F5,F6
 DConst
-      ESC         = 5.5
-	  CUBAESCALA  = 1
-      MAXTEMPO    = 50
-Dvar
-	  inteiro i
+      ESC = 1.5
+      MAXTEMPO = 50
+      G = 0.07
+      D0X = -200
+      D0Y = 200
+      D0Z = 0
+      V0X = 8
+      V0Y = 2
+      V0Z = 0
+DVar
+      inteiro i;
 
 { Programa Principal }
 
 Inicio
    Luz L1
-   Escala cuba, CUBAESCALA
-   Rottrans cuba,0,0,0,0,1,0
-   i = 1
+   Escala CUBO,ESC
+   i=1
 
-   enquanto i < MAXTEMPO faca $
+   Rottrans CUBO,0,0,0,D0X,D0Y,D0Z
+   enquanto i<MAXTEMPO faca $
    inicio
-	 rottrans cuba,I*5,0,0,0,0,0
-	 i = i + 1
-     pausa 0.001
+     Rottrans CUBO,0.1,0.1,0,V0X,V0Y-0.5*G*i*i,V0Z
+     i=i+1
+     pausa 0.05
    fim
-fim
+Fim

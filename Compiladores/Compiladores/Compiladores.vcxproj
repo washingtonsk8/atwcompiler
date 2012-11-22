@@ -143,7 +143,14 @@
     <ClCompile Include="SymbolTable.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="ex1.asm" />
+    <None Include="ex1.exe" />
+    <None Include="ex1.gl" />
+    <None Include="ex2.asm" />
+    <None Include="ex2.exe" />
+    <None Include="ex2.gl" />
     <None Include="exemplo1.exe" />
+    <None Include="exemplo1.gl" />
     <None Include="exemplo2.asm" />
     <None Include="exemplo2.exe" />
     <None Include="exemplo2.gl" />
