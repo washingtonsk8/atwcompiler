@@ -33,7 +33,7 @@ DConst
       V0Y = 2
       V0Z = 0
 DVar
-      inteiro i;
+      inteiro i
 
 { Programa Principal }
 

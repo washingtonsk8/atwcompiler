@@ -662,18 +662,18 @@ void ATWSin::Command(){
 		_Sem->DiffTypeVerify(_PreviousToken, _ExpType, TIPO_LOGICO);//(33) - SEMÂNTICO
 
 		//(57) - COD -------------------------------------------------------------------------
-		_cg->LDI("A", ATWgetCStr(_idAux._End), "ESCALA ID EXP");
 		if(_ExpType == TIPO_INTEIRO)
 		{
-			_cg->LOD("B", _ExpAdr);
-			_cg->CNV("B", "B");
+			_cg->LOD("B", _ExpAdr, "ESCALA ID EXP");
+			_cg->CNV("A", "B");
 		}//end if
 		else
 		{
-			_cg->LODF("B", _ExpAdr);
+			_cg->LODF("A", _ExpAdr, "ESCALA ID EXP");
 		}//end else
+		_cg->LDI("A", ATWgetCStr(_idAux._End));
 
-		_cg->ESC("A", "B", "FIM ESCALA");
+		_cg->ESC("A", "A", "FIM ESCALA");
 		//(57) - COD -------------------------------------------------------------------------
 
 		CT(EXP_END);
