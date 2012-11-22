@@ -12,7 +12,7 @@ void CodeGeneratorModule::fixCode(Address _AddressAsm, Address _AddressBin, char
 	list<bitset<16>*>::iterator it = _memoryPositions.begin();
 
 	for(int i = 0; it != _memoryPositions.end() && i < _AddressBin; it++, i++);
-	
+
 	bitset<16>* _pointer = (*it);
 	(*_pointer) = ATWgetInt(_value);
 }
@@ -29,20 +29,6 @@ void CodeGeneratorModule::initialize(const char* _icFile){
 	fManager->openFile(_icFile, GENERIC_WRITE, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL);
 	_Memory = ATWMemory::getInstance();
 
-	//binaryFile = new FileManager();
-	//binaryFile->initialize(0, NULL);
-
-	//ASSEMBLY FILE CREATION
-	//pog
-	//string fileNameWithExtension = "saida";
-	//fileNameWithExtension += ".exe";
-	//pog
-
-	//binaryFile->openFile(
-	//	fileNameWithExtension.c_str(), 
-	//	GENERIC_WRITE, CREATE_ALWAYS, 
-	//	FILE_ATTRIBUTE_NORMAL );
-	//ASSEMBLY FILE CREATION
 	binaryFile.open("saida.exe", ios::out | ios::binary);
 }
 //---------------------------------------------------------------------------------------------------------------------
@@ -63,20 +49,7 @@ void CodeGeneratorModule::initialize(int _Argc, void** _Argv){
 	fManager->openFile((char*)_Argv[0], GENERIC_WRITE, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL);
 	_Memory = ATWMemory::getInstance();
 
-	//ASSEMBLY FILE CREATION
-	//pog
-	//char _print[255];
-	//string fileNameWithExtension = "saida";
-	//fileNameWithExtension += ".exe";
-	//pog
-
-	//binaryFile->openFile(
-	//	fileNameWithExtension.c_str(), 
-	//	GENERIC_WRITE, CREATE_ALWAYS, 
-	//	FILE_ATTRIBUTE_NORMAL );
-
 	binaryFile.open("saida.exe", ios::out | ios::binary);
-	//ASSEMBLY FILE CREATION
 }
 //---------------------------------------------------------------------------------------------------------------------
 void CodeGeneratorModule::dispose(int _Argc, void** _Argv){
@@ -85,9 +58,6 @@ void CodeGeneratorModule::dispose(int _Argc, void** _Argv){
 	fManager = 0x0;
 
 	binaryFile.close();
-	//binaryFile->dispose(0, NULL);
-	//delete binaryFile;
-	//binaryFile = 0x0;
 }
 //---------------------------------------------------------------------------------------------------------------------
 void CodeGeneratorModule::clearWritingBufferFULL(){
@@ -198,18 +168,15 @@ void CodeGeneratorModule::insertCodeToWriteBin(int _Element, char* _String){
 				*_bitsetRegister = BinaryGen::F;
 				break;
 			case 'R'://Rótulos
-				//TODO: Procurar os rótulos aqui trocando pelo valor de endereço na Hash
 				*_bitsetRegister = (int)getLabelAddress(_String);
-				printf("Rótulo: %s\n",_String);
 				break;
-			case 'L'://Rótulos
-				printf("Retrocorreção: %s\n",_String);
-					//TODO: Retrocorrigir erro aqui
+			case 'L':
+				//Retrocorreção de LIXO
 				break;
 			default:
 				printf("ERRO!!\n%s\n",_String);
 				system("pause");
-				//exit(-1);
+				exit(-1);
 				break;
 			}//end switch
 			insertIntoBitSetBuffer(_bitsetRegister);
@@ -274,27 +241,27 @@ void CodeGeneratorModule::flush(){
 void CodeGeneratorModule::flushBin(){
 	list<bitset<16>*>::iterator it = _memoryPositions.begin();
 	short forWriting = 0x00;
+
 	for(; it != _memoryPositions.end(); it++){
 		bitset<16> _pointer = (*(*it));
-		cout << _pointer << endl;
 		forWriting = static_cast<short>(_pointer.to_ulong());		
 		writeS16(forWriting);
 	}//end for
-	cout << endl;
+
 	clearBitSetBuffer();
 	_BinIndex = 0;
 }
 //----------------------------------------------------------------------------------------------------------------------
 void CodeGeneratorModule::writeS16(short val)
 {
-  char bytes[2];
+	char bytes[2];
 
-  // extract the individual bytes from our value
-  bytes[0] = (val) & 0xFF;  // low byte
-  bytes[1] = (val >> 8) & 0xFF;  // high byte
+	// extract the individual bytes from our value
+	bytes[0] = (val) & 0xFF;  // low byte
+	bytes[1] = (val >> 8) & 0xFF;  // high byte
 
-  // write those bytes to the file
-  binaryFile.write((char*)bytes, 2);
+	// write those bytes to the file
+	binaryFile.write((char*)bytes, 2);
 }
 //----------------------------------------------------------------------------------------------------------------------
 void CodeGeneratorModule::write(char* _String)
@@ -797,10 +764,7 @@ Address* CodeGeneratorModule::JMP(char* _Label, char* _Comment)//TODO:Label nece
 {
 	Address* _InstIndexBase = (Address*) malloc (sizeof(Address)*2); memset(_InstIndexBase, 0, sizeof(Address)*2); _InstIndexBase[0] = _InstIndex; _InstIndexBase[1] = _BinIndex;
 	insertCodeToWriteAsm("JMP ", _InstIndex++);
-	//insertCodeToWriteBin(21);
 	insertCodeToWriteAsm(_Label, _InstIndex++);
-	//itoa(_Value,_Label,10);
-	//insertCodeToWriteBin(_Value);
 
 	if(strcmp(_Comment, "") != 0){
 		char _sPrint[255];
@@ -1096,7 +1060,7 @@ Address* CodeGeneratorModule::RTR(char* _Comment)
 //----------------------------------------------------------------------------------------------------------------------
 Address* CodeGeneratorModule::STI(char* _Imed, Address _Desl, char* _Comment){
 	Address* _InstIndexBase = (Address*) malloc (sizeof(Address)*2); memset(_InstIndexBase, 0, sizeof(Address)*2); _InstIndexBase[0] = _InstIndex; _InstIndexBase[1] = _BinIndex;
-	
+
 	insertCodeToWriteAsm("STI #", _InstIndex++);
 	insertCodeToWriteAsm(_Imed, _InstIndex++);
 	insertCodeToWriteAsm(", ", _InstIndex++);

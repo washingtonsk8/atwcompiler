@@ -34,6 +34,9 @@
     <Filter Include="Arquivos de Origem\event handlers">
       <UniqueIdentifier>{8f86b0ab-1fbb-4987-b6c1-811e01aa2b9c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Arquivos de Recurso\ProfTests">
+      <UniqueIdentifier>{dd19965e-a7fe-4094-98ba-4d2d5aade104}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ARS_PrinterHelper.h">
@@ -255,6 +258,27 @@
     </None>
     <None Include="exemplo2.gl">
       <Filter>Arquivos de Recurso</Filter>
+    </None>
+    <None Include="exemplo1.gl">
+      <Filter>Arquivos de Recurso</Filter>
+    </None>
+    <None Include="ex1.asm">
+      <Filter>Arquivos de Recurso\ProfTests</Filter>
+    </None>
+    <None Include="ex1.exe">
+      <Filter>Arquivos de Recurso\ProfTests</Filter>
+    </None>
+    <None Include="ex1.gl">
+      <Filter>Arquivos de Recurso\ProfTests</Filter>
+    </None>
+    <None Include="ex2.asm">
+      <Filter>Arquivos de Recurso\ProfTests</Filter>
+    </None>
+    <None Include="ex2.exe">
+      <Filter>Arquivos de Recurso\ProfTests</Filter>
+    </None>
+    <None Include="ex2.gl">
+      <Filter>Arquivos de Recurso\ProfTests</Filter>
     </None>
   </ItemGroup>
 </Project>
