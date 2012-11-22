@@ -17,6 +17,15 @@ void CodeGeneratorModule::fixCode(Address _AddressAsm, Address _AddressBin, char
 	(*_pointer) = ATWgetInt(_value);
 }
 //---------------------------------------------------------------------------------------------------------------------
+void CodeGeneratorModule::fixCodeOnlyBin(Address _AddressBin, Address _value){
+	list<bitset<16>*>::iterator it = _memoryPositions.begin();
+
+	for(int i = 0; it != _memoryPositions.end() && i < _AddressBin; it++, i++);
+
+	bitset<16>* _pointer = (*it);
+	(*_pointer) = (int)_value;
+}
+//---------------------------------------------------------------------------------------------------------------------
 void CodeGeneratorModule::initialize(const char* _icFile){
 	this->setGroupID(COMPILER_GROUP);
 	clearWritingBuffer();
@@ -270,7 +279,7 @@ void CodeGeneratorModule::write(char* _String)
 	insertCodeToWriteAsm(_String, _InstIndex++);
 }
 //----------------------------------------------------------------------------------------------------------------------
-void CodeGeneratorModule::writeRot(char* _String)
+void CodeGeneratorModule::writeRot(char* _String, Address _FixCode)
 {
 	//ADDRESS
 	Address _PCAddress = *_CurrentPCAdress;
@@ -282,6 +291,8 @@ void CodeGeneratorModule::writeRot(char* _String)
 	strcat(_Rot, _String);
 	strcat(_Rot, ":\n");
 	insertCodeToWriteAsm(_Rot, _InstIndex++);
+	if (_FixCode != -1)
+		fixCodeOnlyBin(_FixCode, _PCAddress);
 }
 //----------------------------------------------------------------------------------------------------------------------
 Address* CodeGeneratorModule::ADD(char* _RegD, char* _RegO, char* _Comment)

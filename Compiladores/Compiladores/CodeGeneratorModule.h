@@ -50,6 +50,7 @@ public:
 	void insertCodeToWriteBin(int _Element, char* _Number =	NULL);
 	void insertCodeToWriteAsm(char* _Code, int _codeIndex = -1, bool _Overlap = true);
 	void fixCode(Address _AddressAsm, Address _AddressBin, char* _value);
+	void fixCodeOnlyBin(Address _AddressBin, Address _value);
 	string getCode(int _codeIndex = -1);
 	void writeS16(short value);
 	void flush();
@@ -59,7 +60,7 @@ public:
 	* Funções utilizadas para a escrita do código no arquivo
 	*/
 	void write(char* _String);
-	void writeRot(char* _String);
+	void writeRot(char* _String, Address _FixCode = -1);
 	Address* ADD(char* _RegD, char* _RegO, char* _Comment = "");
 	Address* ADDF(char* _RegD, char* _RegO, char* _Comment = "");
 	Address* ADI(char* _RegD, char* _Imed, char* _Comment = "");

@@ -88,7 +88,7 @@ SymbolTable* ATW::getSymbolTable(){
 //---------------------------------------------------------------------------------------------------------------------
 int ATW::run(void* _Args){
 	if(_Components->size()>0){
-		_Components->at(0)->run(PARALLEL);	
+		_Components->at(0)->run(0);	
 		return true;
 	}
 	return false;
